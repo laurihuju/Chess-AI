@@ -13,5 +13,66 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\pieces">
+      <UniqueIdentifier>{c3b85d20-ef60-4426-9079-d427d7fdf250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\pieces">
+      <UniqueIdentifier>{d10d1679-7e9b-4789-9809-bab725ff33df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\gameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\pieces\bishop.cpp">
+      <Filter>Source Files\pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="main\pieces\king.cpp">
+      <Filter>Source Files\pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="main\pieces\knight.cpp">
+      <Filter>Source Files\pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="main\pieces\pawn.cpp">
+      <Filter>Source Files\pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="main\pieces\queen.cpp">
+      <Filter>Source Files\pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="main\pieces\rook.cpp">
+      <Filter>Source Files\pieces</Filter>
+    </ClCompile>
+    <ClCompile Include="main\piece.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main\gameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\pieces\king.h">
+      <Filter>Header Files\pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="main\pieces\knight.h">
+      <Filter>Header Files\pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="main\pieces\pawn.h">
+      <Filter>Header Files\pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="main\pieces\queen.h">
+      <Filter>Header Files\pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="main\pieces\rook.h">
+      <Filter>Header Files\pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="main\pieces\bishop.h">
+      <Filter>Header Files\pieces</Filter>
+    </ClInclude>
+    <ClInclude Include="main\piece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
