@@ -7,6 +7,7 @@ private:
 
 public:
 	Piece(bool isWhite);
+	virtual ~Piece();
 
 	bool isWhite();
 
