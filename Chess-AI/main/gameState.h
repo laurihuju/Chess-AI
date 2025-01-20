@@ -1,4 +1,5 @@
 #pragma once
+
 #include "piece.h"
 #include "pieces/bishop.h"
 #include "pieces/king.h"
@@ -22,8 +23,6 @@ private:
 	};
 
 public:
-	GameState() {
-		
-	}
+	GameState();
 
 };

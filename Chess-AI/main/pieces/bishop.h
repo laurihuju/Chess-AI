@@ -4,6 +4,6 @@
 class Bishop : public Piece {
 
 public:
-	Bishop(bool isAI) : Piece(isAI) {}
+	Bishop(bool isWhite);
 
 };

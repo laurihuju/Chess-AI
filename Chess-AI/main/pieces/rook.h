@@ -4,6 +4,6 @@
 class Rook : public Piece {
 
 public:
-	Rook(bool isAI) : Piece(isAI) {}
+	Rook(bool isWhite);
 
 };

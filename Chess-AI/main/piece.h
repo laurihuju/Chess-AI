@@ -3,13 +3,11 @@
 class Piece {
 
 private:
-	bool _isAI;
+	bool _isWhite;
 
 public:
-	Piece(bool isAI) : _isAI(isAI) {}
+	Piece(bool isWhite);
 
-	bool isAI() {
-		return _isAI;
-	}
+	bool isWhite();
 
 };

@@ -4,6 +4,6 @@
 class Knight : public Piece {
 
 public:
-	Knight(bool isAI) : Piece(isAI) {}
+	Knight(bool isWhite);
 
 };
