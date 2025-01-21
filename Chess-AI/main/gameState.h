@@ -27,5 +27,5 @@ public:
 	~GameState();
 
 	King* findKing(bool isWhite, int& x, int& y) const;
-
+	void printBoard() const;
 };
