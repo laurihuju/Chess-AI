@@ -1,3 +1,5 @@
+#include <locale>
+#include <codecvt>
 #include "gameState.h"
 #include <iostream>
 
@@ -35,35 +37,37 @@ King* GameState::findKing(bool isWhite, int& x, int& y) const {
 }
 
 void GameState::printBoard() const {
-	for (int i = 0; i < 8; ++i) {
-		for (int j = 0; j < 8; ++j) {
-			if (_board[i][j] == 0) {
-				if ((i + j) % 2 == 0) {
-					// white square
-					std::cout << " # ";
-				}
-				else {
-					// black square
-					std::cout << "   ";
-				}
-			}
-			else {
-				char pieceChar = ' ';
-				if (dynamic_cast<Rook*>(_board[i][j])) pieceChar = 'R';
-				else if (dynamic_cast<Knight*>(_board[i][j])) pieceChar = 'N';
-				else if (dynamic_cast<Bishop*>(_board[i][j])) pieceChar = 'B';
-				else if (dynamic_cast<Queen*>(_board[i][j])) pieceChar = 'Q';
-				else if (dynamic_cast<King*>(_board[i][j])) pieceChar = 'K';
-				else if (dynamic_cast<Pawn*>(_board[i][j])) pieceChar = 'P';
+    // Set the locale to support Unicode
+    std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
 
-				if (_board[i][j]->isWhite()) {
-					pieceChar = tolower(pieceChar);
-				}
-				std::cout << " " << pieceChar << " ";
-			}
-		}
-		std::cout << std::endl;
-	}
+    std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
+    for (int i = 0; i < 8; ++i) {
+        std::wcout << 8 - i << L" |";
+        for (int j = 0; j < 8; ++j) {
+            wchar_t pieceChar = L' ';
+            if (_board[i][j] != nullptr) {
+                if (dynamic_cast<Rook*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♖' : L'♜';
+                else if (dynamic_cast<Knight*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♘' : L'♞';
+                else if (dynamic_cast<Bishop*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♗' : L'♝';
+                else if (dynamic_cast<Queen*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♕' : L'♛';
+                else if (dynamic_cast<King*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♔' : L'♚';
+                else if (dynamic_cast<Pawn*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♙' : L'♟';
+            }
+            else {
+                // Determine if the square is white or black
+                if ((i + j) % 2 == 0) {
+                    pieceChar = L'.';
+                }
+                else {
+                    pieceChar = L'#';
+                }
+            }
+            std::wcout << L" " << pieceChar << L" |";
+        }
+        std::wcout << std::endl;
+        std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
+    }
+    std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
 }
   
 // Castling
