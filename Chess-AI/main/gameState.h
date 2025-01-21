@@ -22,10 +22,28 @@ private:
 		{new Rook(true), new Knight(true), new Bishop(true), new Queen(true), new King(true), new Bishop(true), new Knight(true), new Rook(true)}
 	};
 
+	// Castling
+	bool _upperLeftCastlingPossible = true;
+	bool _upperRightCastlingPossible = true;
+	bool _lowerLeftCastlingPossible = true;
+	bool _lowerRightCastlingPossible = true;
+
 public:
 	GameState();
 	~GameState();
 
 	King* findKing(bool isWhite, int& x, int& y) const;
-	void printBoard() const;
+  void printBoard() const;
+  
+	// Castling
+	bool upperLeftCastlingPossible() const;
+	bool upperRightCastlingPossible() const;
+	bool lowerLeftCastlingPossible() const;
+	bool lowerRightCastlingPossible() const;
+
+	bool setUpperLeftCastlingNotPossible();
+	bool setUpperRightCastlingNotPossible();
+	bool setLowerLeftCastlingNotPossible();
+	bool setLowerRightCastlingNotPossible();
+  
 };
