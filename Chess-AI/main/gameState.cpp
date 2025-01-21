@@ -79,15 +79,15 @@ bool GameState::lowerRightCastlingPossible() const {
 	return _lowerRightCastlingPossible;
 }
 
-bool GameState::setUpperLeftCastlingNotPossible() {
+void GameState::setUpperLeftCastlingNotPossible() {
 	_upperLeftCastlingPossible = false;
 }
-bool GameState::setUpperRightCastlingNotPossible() {
+void GameState::setUpperRightCastlingNotPossible() {
 	_upperRightCastlingPossible = false;
 }
-bool GameState::setLowerLeftCastlingNotPossible() {
+void GameState::setLowerLeftCastlingNotPossible() {
 	_lowerLeftCastlingPossible = false;
 }
-bool GameState::setLowerRightCastlingNotPossible() {
+void GameState::setLowerRightCastlingNotPossible() {
 	_lowerRightCastlingPossible = false;
 }

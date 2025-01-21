@@ -41,9 +41,9 @@ public:
 	bool lowerLeftCastlingPossible() const;
 	bool lowerRightCastlingPossible() const;
 
-	bool setUpperLeftCastlingNotPossible();
-	bool setUpperRightCastlingNotPossible();
-	bool setLowerLeftCastlingNotPossible();
-	bool setLowerRightCastlingNotPossible();
+	void setUpperLeftCastlingNotPossible();
+	void setUpperRightCastlingNotPossible();
+	void setLowerLeftCastlingNotPossible();
+	void setLowerRightCastlingNotPossible();
   
 };
