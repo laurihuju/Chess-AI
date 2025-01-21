@@ -1,12 +1,5 @@
 #pragma once
-
-#include "piece.h"
-#include "pieces/bishop.h"
-#include "pieces/king.h"
-#include "pieces/knight.h"
-#include "pieces/pawn.h"
-#include "pieces/queen.h"
-#include "pieces/rook.h"
+#include "include.h"
 
 class GameState {
 

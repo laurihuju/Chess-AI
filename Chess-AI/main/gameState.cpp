@@ -1,7 +1,4 @@
-#include <locale>
-#include <codecvt>
-#include "gameState.h"
-#include <iostream>
+#include "include.h"
 
 GameState::GameState() {}
 

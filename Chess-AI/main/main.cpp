@@ -1,6 +1,4 @@
-#include <windows.h>
-#include <iostream>
-#include "gameState.h"
+#include "include.h"
 
 int main() {
     GameState gameState;

@@ -80,5 +80,8 @@
     <ClInclude Include="main\move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="main\include.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

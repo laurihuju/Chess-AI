@@ -1,3 +1,3 @@
-#include "queen.h"
+#include "../include.h"
 
 Queen::Queen(bool isWhite) : Piece(isWhite) {}

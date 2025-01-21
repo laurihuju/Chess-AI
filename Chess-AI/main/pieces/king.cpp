@@ -1,3 +1,3 @@
-#include "king.h"
+#include "../include.h"
 
 King::King(bool isWhite) : Piece(isWhite) {}

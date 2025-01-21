@@ -139,6 +139,7 @@
     <ClCompile Include="main\pieces\rook.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main\include.h" />
     <ClInclude Include="main\move.h" />
     <ClInclude Include="main\pieces\bishop.h" />
     <ClInclude Include="main\gameState.h" />

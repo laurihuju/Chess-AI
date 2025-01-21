@@ -1,3 +1,3 @@
-#include "bishop.h"
+#include "../include.h"
 
 Bishop::Bishop(bool isWhite) : Piece(isWhite) {}
