@@ -46,12 +46,12 @@ void GameState::printBoard() const {
         for (int j = 0; j < 8; ++j) {
             wchar_t pieceChar = L' ';
             if (_board[i][j] != nullptr) {
-                if (dynamic_cast<Rook*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♖' : L'♜';
-                else if (dynamic_cast<Knight*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♘' : L'♞';
-                else if (dynamic_cast<Bishop*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♗' : L'♝';
-                else if (dynamic_cast<Queen*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♕' : L'♛';
-                else if (dynamic_cast<King*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♔' : L'♚';
-                else if (dynamic_cast<Pawn*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'♙' : L'♟';
+                if (dynamic_cast<Rook*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u2656' : L'\u265C';
+                else if (dynamic_cast<Knight*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u2658' : L'\u265E';
+                else if (dynamic_cast<Bishop*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u2657' : L'\u265D';
+                else if (dynamic_cast<Queen*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u2655' : L'\u265B';
+                else if (dynamic_cast<King*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u2654' : L'\u265A';
+                else if (dynamic_cast<Pawn*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u2659' : L'\u265F';
             }
             else {
                 // Determine if the square is white or black
