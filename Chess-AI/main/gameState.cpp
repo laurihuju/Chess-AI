@@ -31,6 +31,7 @@ King* GameState::findKing(bool isWhite, int& x, int& y) const {
 		}
 	}
 
+	return 0;
 }
 
 void GameState::printBoard() const {
