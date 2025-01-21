@@ -56,10 +56,10 @@ void GameState::printBoard() const {
             else {
                 // Determine if the square is white or black
                 if ((i + j) % 2 == 0) {
-                    pieceChar = L'.';
+                    pieceChar = L'\u25A0';
                 }
                 else {
-                    pieceChar = L'#';
+                    pieceChar = L'\u25A1';
                 }
             }
             std::wcout << L" " << pieceChar << L" |";
