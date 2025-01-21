@@ -40,6 +40,7 @@ void GameState::printBoard() const {
     // Set the locale to support Unicode
     std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
 
+    std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
     std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
     for (int i = 0; i < 8; ++i) {
         std::wcout << 8 - i << L" |";
@@ -56,15 +57,15 @@ void GameState::printBoard() const {
             else {
                 // Determine if the square is white or black
                 if ((i + j) % 2 == 0) {
-                    pieceChar = L'\u25A0';
+                    pieceChar = L'\u25A0'; // Black square
                 }
                 else {
-                    pieceChar = L'\u25A1';
+                    pieceChar = L'\u25A1'; // White square
                 }
             }
             std::wcout << L" " << pieceChar << L" |";
         }
-        std::wcout << std::endl;
+        std::wcout << L" " << 8 - i << std::endl;
         std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
     }
     std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
