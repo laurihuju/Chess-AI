@@ -48,6 +48,9 @@
     <ClCompile Include="main\piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main\move.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gameState.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files\pieces</Filter>
     </ClInclude>
     <ClInclude Include="main\piece.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

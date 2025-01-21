@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main\move.cpp" />
     <ClCompile Include="main\pieces\bishop.cpp" />
     <ClCompile Include="main\gameState.cpp" />
     <ClCompile Include="main\pieces\king.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="main\pieces\rook.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main\move.h" />
     <ClInclude Include="main\pieces\bishop.h" />
     <ClInclude Include="main\gameState.h" />
     <ClInclude Include="main\pieces\king.h" />
