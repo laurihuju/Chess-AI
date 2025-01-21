@@ -33,7 +33,7 @@ public:
 	~GameState();
 
 	King* findKing(bool isWhite, int& x, int& y) const;
-  void printBoard() const;
+	void printBoard() const;
   
 	// Castling
 	bool upperLeftCastlingPossible() const;

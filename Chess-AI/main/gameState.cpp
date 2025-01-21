@@ -40,7 +40,8 @@ void GameState::printBoard() const {
 				if ((i + j) % 2 == 0) {
 					// white square
 					std::cout << " # ";
-				} else {
+				}
+				else {
 					// black square
 					std::cout << "   ";
 				}
@@ -62,6 +63,7 @@ void GameState::printBoard() const {
 		}
 		std::cout << std::endl;
 	}
+}
   
 // Castling
 bool GameState::upperLeftCastlingPossible() const {
