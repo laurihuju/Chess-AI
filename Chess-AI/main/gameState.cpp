@@ -31,3 +31,30 @@ King* GameState::findKing(bool isWhite, int& x, int& y) const {
 	}
 
 }
+
+// Castling
+bool GameState::upperLeftCastlingPossible() const {
+	return _upperLeftCastlingPossible;
+}
+bool GameState::upperRightCastlingPossible() const {
+	return _upperRightCastlingPossible;
+}
+bool GameState::lowerLeftCastlingPossible() const {
+	return _lowerLeftCastlingPossible;
+}
+bool GameState::lowerRightCastlingPossible() const {
+	return _lowerRightCastlingPossible;
+}
+
+bool GameState::setUpperLeftCastlingNotPossible() {
+	_upperLeftCastlingPossible = false;
+}
+bool GameState::setUpperRightCastlingNotPossible() {
+	_upperRightCastlingPossible = false;
+}
+bool GameState::setLowerLeftCastlingNotPossible() {
+	_lowerLeftCastlingPossible = false;
+}
+bool GameState::setLowerRightCastlingNotPossible() {
+	_lowerRightCastlingPossible = false;
+}
