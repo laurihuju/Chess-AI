@@ -19,6 +19,8 @@ Move::Move(const std::string& input) {
 	_y2 = convertYCoordinateFromInput(input[3]);
 }
 
+Move::Move() {}
+
 int Move::x1() const {
 	return _x1;
 }

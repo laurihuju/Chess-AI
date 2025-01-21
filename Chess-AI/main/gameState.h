@@ -1,4 +1,6 @@
-#pragma once
+#ifndef gamestate_h
+#define gamestate_h
+
 #include "include.h"
 
 class GameState {
@@ -27,7 +29,7 @@ public:
 
 	King* findKing(bool isWhite, int& x, int& y) const;
 	void printBoard() const;
-  
+
 	// Castling
 	bool upperLeftCastlingPossible() const;
 	bool upperRightCastlingPossible() const;
@@ -38,5 +40,7 @@ public:
 	void setUpperRightCastlingNotPossible();
 	void setLowerLeftCastlingNotPossible();
 	void setLowerRightCastlingNotPossible();
-  
+
 };
+
+#endif
