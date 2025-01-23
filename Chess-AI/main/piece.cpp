@@ -1,4 +1,4 @@
-#include "include.h"
+#include "piece.h"
 
 Piece::Piece(bool isWhite) : _isWhite(isWhite) {}
 Piece::~Piece() {}

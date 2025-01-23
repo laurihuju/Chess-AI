@@ -1,7 +1,10 @@
-#ifndef piece_h
-#define piece_h
+#ifndef PIECE_H
+#define PIECE_H
 
-#include "include.h"
+#include <vector>
+
+class Move;
+class GameState;
 
 class Piece {
 
@@ -14,9 +17,7 @@ public:
 
 	bool isWhite();
 
-	virtual std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const {
-
-	}
+	virtual std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const = 0;
 
 };
 

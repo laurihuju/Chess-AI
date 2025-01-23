@@ -1,7 +1,8 @@
-#ifndef move_h
-#define move_h
+#ifndef MOVE_H
+#define MOVE_H
 
-#include "include.h"
+#include <string>
+#include "move.h"
 
 class Move {
 
@@ -18,7 +19,6 @@ private:
 public:
 	Move(int x1, int y1, int x2, int y2);
 	Move(const std::string& input);
-	Move();
 
 	int x1() const;
 	int y1() const;
@@ -27,6 +27,5 @@ public:
 	int y2() const;
 
 };
-
 
 #endif

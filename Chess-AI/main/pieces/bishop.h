@@ -1,12 +1,18 @@
-#ifndef bishop_h
-#define bishop_h
+#ifndef BISHOP_H
+#define BISHOP_H
 
-#include "../include.h"
+#include <vector>
+#include "../piece.h"
+
+class Move;
+class GameState;
 
 class Bishop : public Piece {
 
 public:
 	Bishop(bool isWhite);
+
+	std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const override;
 
 };
 

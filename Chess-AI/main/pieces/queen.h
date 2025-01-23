@@ -1,12 +1,18 @@
-#ifndef queen_h
-#define queen_h
+#ifndef QUEEN_H
+#define QUEEN_H
 
-#include "../include.h"
+#include <vector>
+#include "../piece.h"
+
+class Move;
+class GameState;
 
 class Queen : public Piece {
 
 public:
 	Queen(bool isWhite);
+
+	std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const override;
 
 };
 

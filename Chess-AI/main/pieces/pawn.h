@@ -1,12 +1,18 @@
-#ifndef pawn_h
-#define pawn_h
+#ifndef PAWN_H
+#define PAWN_H
 
-#include "../include.h"
+#include <vector>
+#include "../piece.h"
+
+class Move;
+class GameState;
 
 class Pawn : public Piece {
 
 public:
 	Pawn(bool isWhite);
+
+	std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const override;
 
 };
 

@@ -1,21 +1,13 @@
-#ifndef gamestate_h
-#define gamestate_h
+#ifndef GAMESTATE_H
+#define GAMESTATE_H
 
-#include "include.h"
+class Piece;
+class King;
 
 class GameState {
 
 private:
-	Piece* _board[8][8] = {
-		{new Rook(false), new Knight(false), new Bishop(false), new Queen(false), new King(false), new Bishop(false), new Knight(false), new Rook(false)},
-		{new Pawn(false), new Pawn(false), new Pawn(false), new Pawn(false), new Pawn(false), new Pawn(false), new Pawn(false), new Pawn(false)},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 0, 0},
-		{new Pawn(true), new Pawn(true), new Pawn(true), new Pawn(true), new Pawn(true), new Pawn(true), new Pawn(true), new Pawn(true)},
-		{new Rook(true), new Knight(true), new Bishop(true), new Queen(true), new King(true), new Bishop(true), new Knight(true), new Rook(true)}
-	};
+	Piece* _board[8][8];
 
 	// Castling
 	bool _upperLeftCastlingPossible = true;
