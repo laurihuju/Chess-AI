@@ -36,8 +36,7 @@ GameState::GameState() {
 
     // Initialize board row 7 (index 6)
     for (int x = 0; x < 8; x++) {
-        // _board[6][x] = new Pawn(true);
-        _board[6][x] = 0;
+        _board[6][x] = new Pawn(true);
     }
 
     // Initialize board row 8 (index 7)
@@ -49,8 +48,6 @@ GameState::GameState() {
     _board[7][5] = new Bishop(true);
     _board[7][6] = new Knight(true);
     _board[7][7] = new Rook(true);
-
-    _board[4][4] = new Bishop(true);
 }
 
 GameState::~GameState() {

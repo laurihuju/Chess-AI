@@ -5,7 +5,7 @@
 #include "move.h"
 
 int main() {
-	  SetConsoleOutputCP(CP_UTF8);
+	SetConsoleOutputCP(CP_UTF8);
     GameState gameState;
     gameState.printBoard();
     Bishop* bishopTest = dynamic_cast<Bishop*>(gameState.getPieceAt(4,4));
