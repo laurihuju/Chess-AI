@@ -48,7 +48,6 @@ GameState::GameState() {
     _board[7][5] = new Bishop(true);
     _board[7][6] = new Knight(true);
     _board[7][7] = new Rook(true);
-
 }
 
 GameState::~GameState() {
@@ -92,7 +91,7 @@ void GameState::printBoard() const {
     // Set the locale to support Unicode
     std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
 
-    std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
+    std::wcout << L"    0   1   2   3   4   5   6   7" << std::endl;
     std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
     for (int i = 0; i < 8; ++i) {
         std::wcout << 8 - i << L" |";
@@ -117,7 +116,7 @@ void GameState::printBoard() const {
             }
             std::wcout << L" " << pieceChar << L" |";
         }
-        std::wcout << L" " << 8 - i << std::endl;
+        std::wcout << L" " << i << std::endl;
         std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
     }
     std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
