@@ -20,7 +20,7 @@ public:
 	GameState();
 	~GameState();
 
-	bool applyMove(const Move& move);
+	void applyMove(const Move& move);
 	King* findKing(bool isWhite, int& x, int& y) const;
 	void printBoard() const;
 	Piece* getPieceAt(int x, int y) const;
