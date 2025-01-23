@@ -1,4 +1,10 @@
-#pragma once
+#ifndef PIECE_H
+#define PIECE_H
+
+#include <vector>
+
+class Move;
+class GameState;
 
 class Piece {
 
@@ -11,4 +17,8 @@ public:
 
 	bool isWhite();
 
+	virtual std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const = 0;
+
 };
+
+#endif
