@@ -13,11 +13,14 @@ private:
 	int _x2;
 	int _y2;
 
+	char _promotionPiece;
+
 	int convertXCoordinateFromInput(char coordinateInputChar) const;
 	int convertYCoordinateFromInput(char coordinateInputChar) const;
 
 public:
 	Move(int x1, int y1, int x2, int y2);
+	Move(int x1, int y1, int x2, int y2, char promotionPiece);
 	Move(const std::string& input);
 
 	int x1() const;
@@ -25,6 +28,8 @@ public:
 
 	int x2() const;
 	int y2() const;
+
+	char promotionPiece() const;
 
 };
 

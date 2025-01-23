@@ -68,6 +68,28 @@ void GameState::applyMove(const Move& move) {
     _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
     _board[move.y1()][move.x1()] = 0;
 
+    // Handle promotion
+    if (move.promotionPiece() == 'q') {
+        Queen* promotionPiece = new Queen(_board[move.y2()][move.x2()]->isWhite());
+        delete _board[move.y2()][move.x2()];
+        _board[move.y2()][move.x2()] = promotionPiece;
+    }
+    else if (move.promotionPiece() == 'k') {
+        King* promotionPiece = new King(_board[move.y2()][move.x2()]->isWhite());
+        delete _board[move.y2()][move.x2()];
+        _board[move.y2()][move.x2()] = promotionPiece;
+    }
+    else if (move.promotionPiece() == 'b') {
+        Bishop* promotionPiece = new Bishop(_board[move.y2()][move.x2()]->isWhite());
+        delete _board[move.y2()][move.x2()];
+        _board[move.y2()][move.x2()] = promotionPiece;
+    }
+    else if (move.promotionPiece() == 'r') {
+        Rook* promotionPiece = new Rook(_board[move.y2()][move.x2()]->isWhite());
+        delete _board[move.y2()][move.x2()];
+        _board[move.y2()][move.x2()] = promotionPiece;
+    }
+
     // Handle en passant move
     if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
