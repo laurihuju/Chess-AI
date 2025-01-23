@@ -15,7 +15,7 @@ public:
 	Piece(bool isWhite);
 	virtual ~Piece();
 
-	bool isWhite();
+	bool isWhite() const;
 
 	virtual std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const = 0;
 
