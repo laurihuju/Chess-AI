@@ -35,7 +35,7 @@ GameState::GameState() {
 
     // Initialize board row 7 (index 6)
     for (int x = 0; x < 8; x++) {
-        _board[6][x] = new Pawn(false);
+        _board[6][x] = new Pawn(true);
     }
 
     // Initialize board row 8 (index 7)
