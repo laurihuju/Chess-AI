@@ -64,15 +64,55 @@ GameState::~GameState() {
 }
 
 void GameState::applyMove(const Move& move) {
-    delete _board[move.x2()][move.y2()];
-    _board[move.x2()][move.y2()] = _board[move.x1()][move.y1()];
-    _board[move.x1()][move.y1()] = 0;
+    // Handle the move and capturing
+    delete _board[move.y2()][move.x2()];
+    _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
+    _board[move.y1()][move.x1()] = 0;
+
+    // Handle en passant move
+    if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
+        if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
+            delete _board[3][move.x2()];
+            _board[3][move.x2()] = 0;
+        } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
+            delete _board[4][move.x2()];
+            _board[3][move.x2()] = 0;
+        }
+    }
+
+    // Handle castling move
+    if (dynamic_cast<King*>(_board[move.y2()][move.x2()]) != 0) {
+        if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
+            delete _board[0][3];
+            _board[0][3] = _board[0][0];
+            _board[0][0] = 0;
+
+        }
+        else if (move.x2() == 6 && move.y2() == 0 && upperRightCastlingPossible()) {
+            delete _board[0][5];
+            _board[0][5] = _board[0][7];
+            _board[0][7] = 0;
+
+        }
+        else if (move.x2() == 2 && move.y2() == 7 && lowerLeftCastlingPossible()) {
+            delete _board[7][3];
+            _board[7][3] = _board[7][0];
+            _board[7][0] = 0;
+
+        }
+        else if (move.x2() == 6 && move.y2() == 7 && lowerRightCastlingPossible()) {
+            delete _board[7][5];
+            _board[7][5] = _board[7][7];
+            _board[7][7] = 0;
+
+        }
+    }
 
     // Update en passant flags
     _upperEnPassantColumn = -1;
     _lowerEnPassantColumn = -1;
 
-    if (dynamic_cast<Pawn*>(_board[move.x2()][move.y2()]) != 0) {
+    if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.y2() == 3 && move.y2() - move.y1() == 2) {
             _upperEnPassantColumn = move.x2();
         }
@@ -109,7 +149,7 @@ void GameState::applyMove(const Move& move) {
 King* GameState::findKing(bool isWhite, int& x, int& y) const {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
-			King* king = dynamic_cast<King*>(_board[i][j]);
+			King* king = dynamic_cast<King*>(_board[j][i]);
 			if (king == 0)
 				continue;
 			if (king->isWhite() != isWhite)
@@ -161,7 +201,7 @@ void GameState::printBoard() const {
 }
 
 Piece* GameState::getPieceAt(int x, int y) const {
-    return _board[x][y];
+    return _board[y][x];
 }
   
 // Castling

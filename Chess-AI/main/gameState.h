@@ -30,6 +30,7 @@ public:
 
 	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.
+	/// Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically.
 	/// Does not check if the move is valid!
 	/// </summary>
 	/// <param name="move"></param>
