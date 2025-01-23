@@ -14,7 +14,7 @@ private:
 	bool _upperLeftCastlingPossible = true;
 	bool _upperRightCastlingPossible = true;
 	bool _lowerLeftCastlingPossible = true;
-	bool _lowerRightCastlingPossible = true;
+	bool _lowerRightCastlingPossible = true; 
 
 public:
 	GameState();
@@ -23,6 +23,7 @@ public:
 	bool applyMove(const Move& move);
 	King* findKing(bool isWhite, int& x, int& y) const;
 	void printBoard() const;
+	Piece* getPieceAt(int x, int y) const;
 
 	// Castling
 	bool upperLeftCastlingPossible() const;

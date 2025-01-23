@@ -126,6 +126,10 @@ void GameState::printBoard() const {
     }
     std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
 }
+
+Piece* GameState::getPieceAt(int x, int y) const {
+    return _board[x][y];
+}
   
 // Castling
 bool GameState::upperLeftCastlingPossible() const {
