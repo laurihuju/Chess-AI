@@ -2,6 +2,7 @@
 #define GAMESTATE_H
 
 class Piece;
+class Move;
 class King;
 
 class GameState {
@@ -19,6 +20,7 @@ public:
 	GameState();
 	~GameState();
 
+	bool applyMove(const Move& move);
 	King* findKing(bool isWhite, int& x, int& y) const;
 	void printBoard() const;
 

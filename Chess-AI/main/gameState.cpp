@@ -2,6 +2,7 @@
 #include <codecvt>
 #include <iostream>
 #include "gameState.h"
+#include "move.h"
 
 #include "pieces/rook.h"
 #include "pieces/knight.h"
@@ -60,6 +61,16 @@ GameState::~GameState() {
 		}
 	}
 
+}
+
+bool GameState::applyMove(const Move& move) {
+    if (_board[move.x2()][move.y2()] != 0)
+        return false;
+
+    _board[move.x2()][move.y2()] = _board[move.x1()][move.y1()];
+    _board[move.x1()][move.y1()] = 0;
+
+    return true;
 }
 
 King* GameState::findKing(bool isWhite, int& x, int& y) const {
