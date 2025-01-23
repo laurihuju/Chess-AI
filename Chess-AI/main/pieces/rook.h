@@ -7,7 +7,7 @@
 class Move;
 class GameState;
 
-class Rook : public Piece {
+class Rook : virtual public Piece {
 
 public:
 	Rook(bool isWhite);

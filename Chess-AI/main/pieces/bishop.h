@@ -7,7 +7,7 @@
 class Move;
 class GameState;
 
-class Bishop : public Piece {
+class Bishop : virtual public Piece {
 
 public:
 	Bishop(bool isWhite);
