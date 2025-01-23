@@ -67,6 +67,44 @@ void GameState::applyMove(const Move& move) {
     delete _board[move.x2()][move.y2()];
     _board[move.x2()][move.y2()] = _board[move.x1()][move.y1()];
     _board[move.x1()][move.y1()] = 0;
+
+    // Update en passant flags
+    _upperEnPassantColumn = -1;
+    _lowerEnPassantColumn = -1;
+
+    if (dynamic_cast<Pawn*>(_board[move.x2()][move.y2()]) != 0) {
+        if (move.y2() == 3 && move.y2() - move.y1() == 2) {
+            _upperEnPassantColumn = move.x2();
+        }
+        else if (move.y2() == 4 && move.y2() - move.y1() == -2) {
+            _lowerEnPassantColumn = move.x2();
+        }
+    }
+
+    // Update castling flags
+    if (dynamic_cast<Rook*>(_board[move.x2()][move.y2()])) {
+        if (move.x1() == 0 && move.y1() == 0) {
+            _upperLeftCastlingPossible = false;
+        } else if (move.x1() == 7 && move.y1() == 0) {
+            _upperRightCastlingPossible = false;
+        } else if (move.x1() == 0 && move.y1() == 7) {
+            _lowerLeftCastlingPossible = false;
+        } else if (move.x1() == 7 && move.y1() == 7) {
+            _lowerRightCastlingPossible = false;
+        }
+
+    } else if (dynamic_cast<King*>(_board[move.x2()][move.y2()])) {
+        if (move.x1() == 4 && move.y1() == 0) {
+            _upperLeftCastlingPossible = false;
+            _upperRightCastlingPossible = false;
+        }
+        else if (move.x1() == 4 && move.y1() == 7) {
+            _lowerLeftCastlingPossible = false;
+            _lowerRightCastlingPossible = false;
+        }
+
+    }
+
 }
 
 King* GameState::findKing(bool isWhite, int& x, int& y) const {
@@ -141,15 +179,11 @@ bool GameState::lowerRightCastlingPossible() const {
 	return _lowerRightCastlingPossible;
 }
 
-void GameState::setUpperLeftCastlingNotPossible() {
-	_upperLeftCastlingPossible = false;
+//En passant
+int GameState::upperEnPassantColumn() const {
+    return _upperEnPassantColumn;
 }
-void GameState::setUpperRightCastlingNotPossible() {
-	_upperRightCastlingPossible = false;
-}
-void GameState::setLowerLeftCastlingNotPossible() {
-	_lowerLeftCastlingPossible = false;
-}
-void GameState::setLowerRightCastlingNotPossible() {
-	_lowerRightCastlingPossible = false;
+
+int GameState::lowerEnPassantColumn() const {
+    return _lowerEnPassantColumn;
 }

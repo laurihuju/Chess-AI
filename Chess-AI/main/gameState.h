@@ -14,7 +14,11 @@ private:
 	bool _upperLeftCastlingPossible = true;
 	bool _upperRightCastlingPossible = true;
 	bool _lowerLeftCastlingPossible = true;
-	bool _lowerRightCastlingPossible = true; 
+	bool _lowerRightCastlingPossible = true;
+
+	// En passant
+	int _upperEnPassantColumn = -1;
+	int _lowerEnPassantColumn = -1;
 
 public:
 	/// <summary>
@@ -60,10 +64,9 @@ public:
 	bool lowerLeftCastlingPossible() const;
 	bool lowerRightCastlingPossible() const;
 
-	void setUpperLeftCastlingNotPossible();
-	void setUpperRightCastlingNotPossible();
-	void setLowerLeftCastlingNotPossible();
-	void setLowerRightCastlingNotPossible();
+	// En passant
+	int upperEnPassantColumn() const;
+	int lowerEnPassantColumn() const;
 
 };
 
