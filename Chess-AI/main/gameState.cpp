@@ -82,27 +82,26 @@ void GameState::applyMove(const Move& move) {
     }
 
     // Update castling flags
-    if (dynamic_cast<Rook*>(_board[move.x2()][move.y2()])) {
-        if (move.x1() == 0 && move.y1() == 0) {
-            _upperLeftCastlingPossible = false;
-        } else if (move.x1() == 7 && move.y1() == 0) {
-            _upperRightCastlingPossible = false;
-        } else if (move.x1() == 0 && move.y1() == 7) {
-            _lowerLeftCastlingPossible = false;
-        } else if (move.x1() == 7 && move.y1() == 7) {
-            _lowerRightCastlingPossible = false;
-        }
+    if (move.x1() == 0 && move.y1() == 0) {
+        _upperLeftCastlingPossible = false;
+    }
+    else if (move.x1() == 7 && move.y1() == 0) {
+        _upperRightCastlingPossible = false;
+    }
+    else if (move.x1() == 0 && move.y1() == 7) {
+        _lowerLeftCastlingPossible = false;
+    }
+    else if (move.x1() == 7 && move.y1() == 7) {
+        _lowerRightCastlingPossible = false;
+    }
 
-    } else if (dynamic_cast<King*>(_board[move.x2()][move.y2()])) {
-        if (move.x1() == 4 && move.y1() == 0) {
-            _upperLeftCastlingPossible = false;
-            _upperRightCastlingPossible = false;
-        }
-        else if (move.x1() == 4 && move.y1() == 7) {
-            _lowerLeftCastlingPossible = false;
-            _lowerRightCastlingPossible = false;
-        }
-
+    if (move.x1() == 4 && move.y1() == 0) {
+        _upperLeftCastlingPossible = false;
+        _upperRightCastlingPossible = false;
+    }
+    else if (move.x1() == 4 && move.y1() == 7) {
+        _lowerLeftCastlingPossible = false;
+        _lowerRightCastlingPossible = false;
     }
 
 }
