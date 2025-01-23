@@ -14,7 +14,11 @@ private:
 	bool _upperLeftCastlingPossible = true;
 	bool _upperRightCastlingPossible = true;
 	bool _lowerLeftCastlingPossible = true;
-	bool _lowerRightCastlingPossible = true; 
+	bool _lowerRightCastlingPossible = true;
+
+	// En passant
+	int _upperEnPassantColumn = -1;
+	int _lowerEnPassantColumn = -1;
 
 public:
 	/// <summary>
@@ -26,6 +30,7 @@ public:
 
 	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.
+	/// Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically.
 	/// Does not check if the move is valid!
 	/// </summary>
 	/// <param name="move"></param>
@@ -60,10 +65,9 @@ public:
 	bool lowerLeftCastlingPossible() const;
 	bool lowerRightCastlingPossible() const;
 
-	void setUpperLeftCastlingNotPossible();
-	void setUpperRightCastlingNotPossible();
-	void setLowerLeftCastlingNotPossible();
-	void setLowerRightCastlingNotPossible();
+	// En passant
+	int upperEnPassantColumn() const;
+	int lowerEnPassantColumn() const;
 
 };
 
