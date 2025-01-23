@@ -2,6 +2,7 @@
 #include <codecvt>
 #include <iostream>
 #include "gameState.h"
+#include "move.h"
 
 #include "pieces/rook.h"
 #include "pieces/knight.h"
@@ -62,6 +63,12 @@ GameState::~GameState() {
 
 }
 
+void GameState::applyMove(const Move& move) {
+    delete _board[move.x2()][move.y2()];
+    _board[move.x2()][move.y2()] = _board[move.x1()][move.y1()];
+    _board[move.x1()][move.y1()] = 0;
+}
+
 King* GameState::findKing(bool isWhite, int& x, int& y) const {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
@@ -114,6 +121,10 @@ void GameState::printBoard() const {
         std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
     }
     std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
+}
+
+Piece* GameState::getPieceAt(int x, int y) const {
+    return _board[x][y];
 }
   
 // Castling
