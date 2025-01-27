@@ -40,6 +40,7 @@ int main() {
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Bishop* bishopTest = dynamic_cast<Bishop*>(gameState.getPieceAt(i, j));
+				// Makes sure that the piece is a bishop and not a queen (since queen inherits bishop)
                 Bishop* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest == 0 && bishopTest && bishopTest->isWhite()) {
                     auto moves = bishopTest->possibleMoves(i, j, gameState);
@@ -60,6 +61,7 @@ int main() {
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Rook* rookTest = dynamic_cast<Rook*>(gameState.getPieceAt(i, j));
+				// Makes sure that the piece is a rook and not a queen (since queen inherits rook)
                 Rook* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest == 0 && rookTest && rookTest->isWhite()) {
                     auto moves = rookTest->possibleMoves(i, j, gameState);
