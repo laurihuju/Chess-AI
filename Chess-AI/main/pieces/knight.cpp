@@ -6,5 +6,19 @@
 Knight::Knight(bool isWhite) : Piece(isWhite) {}
 
 std::vector<Move> Knight::possibleMoves(int x, int y, const GameState& gameState) const {
-	return std::vector<Move>();
+    std::vector<Move> moves;
+    
+    // Possible moves for a knight
+    int directions[8][2] = {{-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}};
+    for (auto& dir : directions) {
+        int dx = x + dir[0];
+        int dy = y + dir[1];
+        if (dx >= 0 && dx <= 7 && dy >= 0 && dy <= 7) {
+            Piece* p = gameState.getPieceAt(dx, dy);
+            if (!p || p->isWhite() != this->isWhite()) {
+                moves.push_back(Move(x, y, dx, dy));
+            }
+        }
+    }
+    return moves;
 }
