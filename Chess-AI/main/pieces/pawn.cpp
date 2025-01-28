@@ -31,7 +31,8 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 		// En passant
 		if (y == 3 && gameState.upperEnPassantColumn() == x - 1) {
 			moves.push_back(Move(x, y, x - 1, y - 1));
-		} else if (y == 3 && gameState.upperEnPassantColumn() == x + 1) {
+		}
+		else if (y == 3 && gameState.upperEnPassantColumn() == x + 1) {
 			moves.push_back(Move(x, y, x + 1, y - 1));
 		}
 
