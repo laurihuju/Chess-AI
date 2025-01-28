@@ -1,7 +1,7 @@
 #include <vector>
 #include "bishop.h"
 #include "../move.h"
-#include "../gameState.h"
+#include "../gameState/gameState.h"
 
 Bishop::Bishop(bool isWhite) : Piece(isWhite) {}
 
@@ -17,15 +17,16 @@ void Bishop::possibleMoves(std::vector<Move>& moves, int x, int y, const GameSta
 			if (dx < 0 || dx > 7 || dy < 0 || dy > 7)
 				break;
 
-			Piece* p = gameState.getPieceAt(dx, dy);
-			if (p) {
-				if (p->isWhite() != this->isWhite()) {
-					moves.push_back(Move(x, y, dx, dy));
-				}
-				break;
-			}
-			moves.push_back(Move(x, y, dx, dy));
-		}
-	}
+            Piece* p = gameState.getPieceAt(dx, dy);
+            if (p) {
+                if (p->isWhite() != this->isWhite()) {
+                    moves.push_back(Move(x, y, dx, dy));
+                }
+                break;
+            }
+
+            moves.push_back(Move(x, y, dx, dy));
+        }
+    }
 
 }

@@ -1,8 +1,8 @@
 #include <vector>
 #include "pawn.h"
 #include "../move.h"
-#include "../gameState.h"
 #include "../piece.h"
+#include "../gameState/gameState.h"
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite) {}
 
@@ -50,7 +50,7 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 		}
 		else {
 			moves.push_back(Move(x, y, x, y - 1, 'q'));
-			moves.push_back(Move(x, y, x, y - 1, 'k'));
+			moves.push_back(Move(x, y, x, y - 1, 'n'));
 			moves.push_back(Move(x, y, x, y - 1, 'b'));
 			moves.push_back(Move(x, y, x, y - 1, 'r'));
 		}
@@ -101,7 +101,7 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 	}
 	else {
 		moves.push_back(Move(x, y, x, y + 1, 'q'));
-		moves.push_back(Move(x, y, x, y + 1, 'k'));
+		moves.push_back(Move(x, y, x, y + 1, 'n'));
 		moves.push_back(Move(x, y, x, y + 1, 'b'));
 		moves.push_back(Move(x, y, x, y + 1, 'r'));
 	}

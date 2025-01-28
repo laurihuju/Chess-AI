@@ -2,7 +2,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "gameState.h"
+#include "gameState/gameState.h"
+#include "gameState/currentGameState.h"
 #include "pieces/bishop.h"
 #include "pieces/rook.h"
 #include "pieces/queen.h"
@@ -23,7 +24,7 @@ void setConsoleColor(WORD color) {
 
 int main() {
 	SetConsoleOutputCP(CP_UTF8);
-	GameState gameState;
+	CurrentGameState gameState;
 	gameState.printBoard();
 
 	while (true) {

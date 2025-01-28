@@ -1,7 +1,7 @@
 #include <vector>
 #include "king.h"
 #include "../move.h"
-#include "../gameState.h"
+#include "../gameState/gameState.h"
 
 King::King(bool isWhite) : Piece(isWhite) {}
 

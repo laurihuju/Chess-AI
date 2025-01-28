@@ -8,7 +8,7 @@ Move::Move(int x1, int y1, int x2, int y2, char promotionPiece) : _x1(x1), _y1(y
 Move::Move(const std::string& input) {
 	// Parse promotion piece
 	if (input.length() == 5) {
-		if (input[4] != 'k' && input[4] != 'b' && input[4] != 'r' && input[4] != 'q') {
+		if (input[4] != 'n' && input[4] != 'b' && input[4] != 'r' && input[4] != 'q') {
 			_promotionPiece = 'q';
 		}
 		else {

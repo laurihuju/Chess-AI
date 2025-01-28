@@ -127,9 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main\gameState\currentGameState.cpp" />
     <ClCompile Include="main\move.cpp" />
     <ClCompile Include="main\pieces\bishop.cpp" />
-    <ClCompile Include="main\gameState.cpp" />
+    <ClCompile Include="main\gameState\gameState.cpp" />
     <ClCompile Include="main\pieces\king.cpp" />
     <ClCompile Include="main\pieces\knight.cpp" />
     <ClCompile Include="main\main.cpp" />
@@ -139,9 +140,10 @@
     <ClCompile Include="main\pieces\rook.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main\gameState\currentGameState.h" />
     <ClInclude Include="main\move.h" />
     <ClInclude Include="main\pieces\bishop.h" />
-    <ClInclude Include="main\gameState.h" />
+    <ClInclude Include="main\gameState\gameState.h" />
     <ClInclude Include="main\pieces\king.h" />
     <ClInclude Include="main\pieces\knight.h" />
     <ClInclude Include="main\pieces\pawn.h" />

@@ -24,7 +24,7 @@
     <ClCompile Include="main\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main\gameState.cpp">
+    <ClCompile Include="main\gameState\gameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main\pieces\bishop.cpp">
@@ -51,9 +51,12 @@
     <ClCompile Include="main\move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main\gameState\currentGameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main\gameState.h">
+    <ClInclude Include="main\gameState\gameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\pieces\king.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\move.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\gameState\currentGameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
