@@ -176,6 +176,25 @@ int main() {
 		std::cin >> input;
 
 		Move move(input);
+
+		std::vector<GameState> possibleNewGameStates = gameState.possibleNewGameStates(gameState.getPieceAt(move.x1(), move.y1())->isWhite());
+		GameState newGameState(gameState);
+		newGameState.applyMove(move);
+
+		bool gameStateValid = false;
+		for (int i = 0; i < possibleNewGameStates.size(); i++) {
+			if (possibleNewGameStates[i] == newGameState) {
+				gameStateValid = true;
+				break;
+			}
+		}
+
+		if (!gameStateValid) {
+			gameState.printBoard();
+			std::cout << "The given move is not valid!\n";
+			continue;
+		}
+
 		gameState.applyMove(move);
 		gameState.printBoard();
 	}

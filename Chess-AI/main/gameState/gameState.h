@@ -37,6 +37,7 @@ protected:
 
 public:
 	GameState& operator=(const GameState&) = delete;
+	bool operator==(const GameState& other);
 
 	/// <summary>
 	/// Creates a copy of the given GameState. Doesn't copy the vector of owned pieces.
@@ -85,6 +86,20 @@ public:
 	/// <param name="y"></param>
 	/// <returns>The piece at the given coordinates.</returns>
 	Piece* getPieceAt(int x, int y) const;
+
+	/// <summary>
+	/// Returns a vector containing all possible new game states that can be created from this game state with one move.
+	/// </summary>
+	/// <param name="isWhite"></param>
+	/// <returns></returns>
+	std::vector<GameState> possibleNewGameStates(bool isWhite);
+
+	/// <summary>
+	/// Checks if the king of the given color is in check.
+	/// </summary>
+	/// <param name="isWhite"></param>
+	/// <returns>True if the king of the given color is in check</returns>
+	bool isCheck(bool isWhite);
 
 	// Castling
 	bool upperLeftCastlingPossible() const;

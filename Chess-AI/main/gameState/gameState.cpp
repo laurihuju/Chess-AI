@@ -11,6 +11,28 @@
 #include "../pieces/king.h"
 #include "../pieces/pawn.h"
 
+bool GameState::operator==(const GameState& other) {
+    if (_upperLeftCastlingPossible != other._upperLeftCastlingPossible)
+        return false;
+    if (_upperRightCastlingPossible != other._upperRightCastlingPossible)
+        return false;
+    if (_lowerLeftCastlingPossible != other._lowerLeftCastlingPossible)
+        return false;
+    if (_lowerRightCastlingPossible != other._lowerRightCastlingPossible)
+        return false;
+    if (_upperEnPassantColumn != other._upperEnPassantColumn)
+        return false;
+    if (_lowerEnPassantColumn != other._lowerEnPassantColumn)
+        return false;
+
+    for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++)
+            if (_board[i][j] != other._board[i][j])
+                return false;
+
+    return true;
+}
+
 GameState::GameState(const GameState& other) {
     // Board content
     for (int i = 0; i < 8; i++) {
@@ -229,6 +251,57 @@ void GameState::printBoard() const {
 
 Piece* GameState::getPieceAt(int x, int y) const {
     return _board[y][x];
+}
+
+std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) {
+    std::vector<Move> moves;
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (_board[i][j] == 0)
+                continue;
+            if (_board[i][j]->isWhite() != isWhite)
+                continue;
+
+            _board[i][j]->possibleMoves(moves, j, i, *this);
+        }
+    }
+
+    std::vector<GameState> newGameStates;
+    for (int i = 0; i < moves.size(); i++) {
+        GameState newGameState(*this);
+        newGameState.applyMove(moves[i]);
+
+        if (!newGameState.isCheck(isWhite)) {
+            newGameStates.push_back(newGameState);
+        }
+    }
+    
+    return newGameStates;
+}
+
+bool GameState::isCheck(bool isWhite) {
+    int kingX;
+    int kingY;
+    findKing(isWhite, kingX, kingY);
+
+    std::vector<Move> otherMoves;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (_board[i][j] == 0)
+                continue;
+            if (_board[i][j]->isWhite() == isWhite)
+                continue;
+
+            _board[i][j]->possibleMoves(otherMoves, j, i, *this);
+        }
+    }
+
+    for (int i = 0; i < otherMoves.size(); i++)
+        if (otherMoves[i].x2() == kingX && otherMoves[i].y2() == kingY)
+            return true;
+
+    return false;
 }
   
 // Castling
