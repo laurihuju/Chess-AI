@@ -1,7 +1,7 @@
 #include <vector>
 #include "rook.h"
 #include "../move.h"
-#include "../gameState.h"
+#include "../gameState/gameState.h"
 
 Rook::Rook(bool isWhite) : Piece(isWhite) {}
 
@@ -24,6 +24,7 @@ void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
                 }
                 break;
             }
+
             moves.push_back(Move(x, y, dx, dy));
         }
     }

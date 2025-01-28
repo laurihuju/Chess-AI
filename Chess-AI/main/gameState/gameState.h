@@ -1,13 +1,18 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
+#include <vector>
+
 class Piece;
 class Move;
 class King;
 
 class GameState {
 
-private:
+protected:
+	/// <summary>
+	/// The current board content.
+	/// </summary>
 	Piece* _board[8][8];
 
 	// Castling
@@ -20,17 +25,39 @@ private:
 	int _upperEnPassantColumn = -1;
 	int _lowerEnPassantColumn = -1;
 
-public:
 	/// <summary>
-	/// Initializes the GameState with default board content.
+	/// The pieces this GameState owns and is responsible to destroy.
+	/// </summary>
+	std::vector<Piece*> ownPieces;
+
+	/// <summary>
+	/// Deletes the given piece if it is owned by this GameState.
+	/// </summary>
+	void handlePieceDelete(Piece* piece);
+
+public:
+	GameState& operator=(const GameState&) = delete;
+
+	/// <summary>
+	/// Creates a copy of the given GameState. Doesn't copy the vector of owned pieces.
+	/// </summary>
+	/// <param name="other"></param>
+	GameState(const GameState& other);
+
+	/// <summary>
+	/// Creates a new GameState with empty board.
 	/// </summary>
 	GameState();
 
-	~GameState();
+	/// <summary>
+	/// Deletes all pieces owned by this GameState.
+	/// </summary>
+	virtual ~GameState();
 
 	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.
 	/// Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically.
+	/// Handles piece promotion if the move has specified the promotion piece.
 	/// Does not check if the move is valid!
 	/// </summary>
 	/// <param name="move"></param>
