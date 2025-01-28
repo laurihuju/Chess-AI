@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <iostream>
 #include <string>
+#include <vector>
 #include "gameState.h"
 #include "pieces/bishop.h"
 #include "pieces/rook.h"
@@ -22,7 +23,8 @@ int main() {
             for (int j = 0; j < 8; ++j) {
                 Queen* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest && queenTest->isWhite()) {
-                    auto moves = queenTest->possibleMoves(i, j, gameState);
+                    std::vector<Move> moves;
+                    queenTest->possibleMoves(moves, i, j, gameState);
                     if (moves.empty()) {
                         std::cout << "No moves available for white queen at (" << i << "," << j << ").\n";
                     }
@@ -43,7 +45,8 @@ int main() {
 				// Makes sure that the piece is a bishop and not a queen (since queen inherits bishop)
                 Bishop* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest == 0 && bishopTest && bishopTest->isWhite()) {
-                    auto moves = bishopTest->possibleMoves(i, j, gameState);
+                    std::vector<Move> moves;
+                    bishopTest->possibleMoves(moves, i, j, gameState);
                     if (moves.empty()) {
                         std::cout << "No moves available for white bishop at (" << i << "," << j << ").\n";
                     }
@@ -64,7 +67,8 @@ int main() {
 				// Makes sure that the piece is a rook and not a queen (since queen inherits rook)
                 Rook* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest == 0 && rookTest && rookTest->isWhite()) {
-                    auto moves = rookTest->possibleMoves(i, j, gameState);
+                    std::vector<Move> moves;
+                    rookTest->possibleMoves(moves, i, j, gameState);
                     if (moves.empty()) {
                         std::cout << "No moves available for white rook at (" << i << "," << j << ").\n";
                     }
@@ -83,7 +87,8 @@ int main() {
             for (int j = 0; j < 8; ++j) {
                 Knight* knightTest = dynamic_cast<Knight*>(gameState.getPieceAt(i, j));
                 if (knightTest && knightTest->isWhite()) {
-                    auto moves = knightTest->possibleMoves(i, j, gameState);
+                    std::vector<Move> moves;
+                    knightTest->possibleMoves(moves, i, j, gameState);
                     if (moves.empty()) {
                         std::cout << "No moves available for white knight at (" << i << "," << j << ").\n";
                     }
@@ -101,7 +106,8 @@ int main() {
 			for (int j = 0; j < 8; ++j) {
 				Pawn* pawnTest = dynamic_cast<Pawn*>(gameState.getPieceAt(i, j));
 				if (pawnTest && pawnTest->isWhite()) {
-					auto moves = pawnTest->possibleMoves(i, j, gameState);
+                    std::vector<Move> moves;
+					pawnTest->possibleMoves(moves, i, j, gameState);
 					if (moves.empty()) {
 						std::cout << "No moves available for white pawn at (" << i << "," << j << ").\n";
 					}
