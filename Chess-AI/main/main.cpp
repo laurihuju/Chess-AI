@@ -11,6 +11,11 @@
 #include "pieces/king.h"
 #include "move.h"
 
+// Helper function to convert coordinates to chess notation
+std::string indexToCoord(int x, int y) {
+    return std::string(1, char('a' + x)) + std::string(1, char('8' - y));
+}
+
 int main() {
 	SetConsoleOutputCP(CP_UTF8);
 	GameState gameState;
@@ -20,126 +25,125 @@ int main() {
 
 		// Piece tests go after this line <----------------------------------------------
 		
+        // Test for kings
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+                King* kingTest = dynamic_cast<King*>(gameState.getPieceAt(i, j));
+                if (kingTest && kingTest->isWhite()) {
+                    std::vector<Move> moves;
+                    kingTest->possibleMoves(moves, i, j, gameState);
+                    std::cout << "wK at: " << indexToCoord(i, j) << "; moves:";
+                    if (moves.empty()) {
+                        std::cout << " N/A";
+                    }
+                    else {
+                        for (const auto& move : moves) {
+                            std::cout << " " << indexToCoord(move.x2(), move.y2());
+                        }
+                    }
+                    std::cout << "\n";
+                }
+            }
+        }
+
+        // Test for queens
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Queen* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest && queenTest->isWhite()) {
                     std::vector<Move> moves;
                     queenTest->possibleMoves(moves, i, j, gameState);
+                    std::cout << "wQ at: " << indexToCoord(i, j) << "; moves:";
                     if (moves.empty()) {
-                        std::cout << "No moves available for white queen at (" << i << "," << j << ").\n";
-                    }
-                    else {
+                        std::cout << " N/A";
+                    } else {
                         for (const auto& move : moves) {
-                            std::cout << "White queen at (" << i << "," << j << ") can move to ("
-                                << move.x2() << "," << move.y2() << ")\n";
+                            std::cout << " " << indexToCoord(move.x2(), move.y2());
                         }
                     }
+                    std::cout << "\n";
                 }
             }
         }
 
-        // Collect and print moves for all white bishops
+        // Test for bishops
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Bishop* bishopTest = dynamic_cast<Bishop*>(gameState.getPieceAt(i, j));
-				// Makes sure that the piece is a bishop and not a queen (since queen inherits bishop)
                 Bishop* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest == 0 && bishopTest && bishopTest->isWhite()) {
                     std::vector<Move> moves;
                     bishopTest->possibleMoves(moves, i, j, gameState);
+                    std::cout << "wB at: " << indexToCoord(i, j) << "; moves:";
                     if (moves.empty()) {
-                        std::cout << "No moves available for white bishop at (" << i << "," << j << ").\n";
-                    }
-                    else {
+                        std::cout << " N/A";
+                    } else {
                         for (const auto& move : moves) {
-                            std::cout << "White bishop at (" << i << "," << j << ") can move to ("
-                                << move.x2() << "," << move.y2() << ")\n";
+                            std::cout << " " << indexToCoord(move.x2(), move.y2());
                         }
                     }
+                    std::cout << "\n";
                 }
             }
         }
 
-        // Collect and print moves for all white rooks
+        // Test for rooks
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Rook* rookTest = dynamic_cast<Rook*>(gameState.getPieceAt(i, j));
-				// Makes sure that the piece is a rook and not a queen (since queen inherits rook)
                 Rook* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
                 if (queenTest == 0 && rookTest && rookTest->isWhite()) {
                     std::vector<Move> moves;
                     rookTest->possibleMoves(moves, i, j, gameState);
+                    std::cout << "wR at: " << indexToCoord(i, j) << "; moves:";
                     if (moves.empty()) {
-                        std::cout << "No moves available for white rook at (" << i << "," << j << ").\n";
-                    }
-                    else {
+                        std::cout << " N/A";
+                    } else {
                         for (const auto& move : moves) {
-                            std::cout << "White rook at (" << i << "," << j << ") can move to ("
-                                << move.x2() << "," << move.y2() << ")\n";
+                            std::cout << " " << indexToCoord(move.x2(), move.y2());
                         }
                     }
+                    std::cout << "\n";
                 }
             }
         }
 
-        // Collect and print moves for all white knights
+        // Test for knights
         for (int i = 0; i < 8; ++i) {
             for (int j = 0; j < 8; ++j) {
                 Knight* knightTest = dynamic_cast<Knight*>(gameState.getPieceAt(i, j));
                 if (knightTest && knightTest->isWhite()) {
                     std::vector<Move> moves;
                     knightTest->possibleMoves(moves, i, j, gameState);
+                    std::cout << "wN at: " << indexToCoord(i, j) << "; moves:";
                     if (moves.empty()) {
-                        std::cout << "No moves available for white knight at (" << i << "," << j << ").\n";
-                    }
-                    else {
+                        std::cout << " N/A";
+                    } else {
                         for (const auto& move : moves) {
-                            std::cout << "White knight at (" << i << "," << j << ") can move to ("
-                                << move.x2() << "," << move.y2() << ")\n";
+                            std::cout << " " << indexToCoord(move.x2(), move.y2());
                         }
                     }
+                    std::cout << "\n";
                 }
             }
         }
 
-		// Collect and print moves for all white pawns
+		// Test for pawns
 		for (int i = 0; i < 8; ++i) {
 			for (int j = 0; j < 8; ++j) {
 				Pawn* pawnTest = dynamic_cast<Pawn*>(gameState.getPieceAt(i, j));
 				if (pawnTest && pawnTest->isWhite()) {
                     std::vector<Move> moves;
 					pawnTest->possibleMoves(moves, i, j, gameState);
-					if (moves.empty()) {
-						std::cout << "No moves available for white pawn at (" << i << "," << j << ").\n";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << "White pawn at (" << i << "," << j << ") can move to ("
-								<< move.x2() << "," << move.y2() << ")\n";
-						}
-					}
-				}
-			}
-		}
-
-		// Currently doesn't work, always says no moves available
-		// Collect and print moves for all white kings
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				King* kingTest = dynamic_cast<King*>(gameState.getPieceAt(i, j));
-				if (kingTest && kingTest->isWhite()) {
-					std::vector<Move> moves;
-					kingTest->possibleMoves(moves, i, j, gameState);
-					if (moves.empty()) {
-						std::cout << "No moves available for white king at (" << i << "," << j << ").\n";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << "White king at (" << i << "," << j << ") can move to ("
-								<< move.x2() << "," << move.y2() << ")\n";
-						}
-					}
+					std::cout << "wP at: " << indexToCoord(i, j) << "; moves:";
+                    if (moves.empty()) {
+                        std::cout << " N/A";
+                    } else {
+                        for (const auto& move : moves) {
+                            std::cout << " " << indexToCoord(move.x2(), move.y2());
+                        }
+                    }
+                    std::cout << "\n";
 				}
 			}
 		}
