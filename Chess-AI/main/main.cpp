@@ -8,6 +8,7 @@
 #include "pieces/queen.h"
 #include "pieces/knight.h"
 #include "pieces/pawn.h"
+#include "pieces/king.h"
 #include "move.h"
 
 int main() {
@@ -102,6 +103,7 @@ int main() {
             }
         }
 
+		// Collect and print moves for all white pawns
 		for (int i = 0; i < 8; ++i) {
 			for (int j = 0; j < 8; ++j) {
 				Pawn* pawnTest = dynamic_cast<Pawn*>(gameState.getPieceAt(i, j));
@@ -114,6 +116,27 @@ int main() {
 					else {
 						for (const auto& move : moves) {
 							std::cout << "White pawn at (" << i << "," << j << ") can move to ("
+								<< move.x2() << "," << move.y2() << ")\n";
+						}
+					}
+				}
+			}
+		}
+
+		// Currently doesn't work, always says no moves available
+		// Collect and print moves for all white kings
+		for (int i = 0; i < 8; ++i) {
+			for (int j = 0; j < 8; ++j) {
+				King* kingTest = dynamic_cast<King*>(gameState.getPieceAt(i, j));
+				if (kingTest && kingTest->isWhite()) {
+					std::vector<Move> moves;
+					kingTest->possibleMoves(moves, i, j, gameState);
+					if (moves.empty()) {
+						std::cout << "No moves available for white king at (" << i << "," << j << ").\n";
+					}
+					else {
+						for (const auto& move : moves) {
+							std::cout << "White king at (" << i << "," << j << ") can move to ("
 								<< move.x2() << "," << move.y2() << ")\n";
 						}
 					}
