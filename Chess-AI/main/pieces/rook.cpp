@@ -5,9 +5,7 @@
 
 Rook::Rook(bool isWhite) : Piece(isWhite) {}
 
-std::vector<Move> Rook::possibleMoves(int x, int y, const GameState& gameState) const {
-    std::vector<Move> moves;
-    
+void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
     // Directions: up, down, left, right
     int directions[4][2] = {{-1,0}, {1,0}, {0,-1}, {0,1}};
     for (auto& dir : directions) {
@@ -29,5 +27,5 @@ std::vector<Move> Rook::possibleMoves(int x, int y, const GameState& gameState) 
             moves.push_back(Move(x, y, dx, dy));
         }
     }
-    return moves;
+
 }

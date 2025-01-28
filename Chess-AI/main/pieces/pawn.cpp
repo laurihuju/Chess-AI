@@ -6,14 +6,12 @@
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite) {}
 
-std::vector<Move> Pawn::possibleMoves(int x, int y, const GameState& gameState) const {
-	std::vector<Move> moves;
-
+void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Moves for white
 	if (isWhite()) {
 		// There are no possible moves when white pawn is on the top row
 		if (y <= 0) {
-			return moves;
+			return;
 		}
 
 		// Capturing
@@ -39,7 +37,7 @@ std::vector<Move> Pawn::possibleMoves(int x, int y, const GameState& gameState) 
 
 		// Prevent moving forward when there is an obstacle
 		if (gameState.getPieceAt(x, y - 1) != 0) {
-			return moves;
+			return;
 		}
 
 		// Forward moves
@@ -56,14 +54,14 @@ std::vector<Move> Pawn::possibleMoves(int x, int y, const GameState& gameState) 
 			moves.push_back(Move(x, y, x, y - 1, 'r'));
 		}
 
-		return moves;
+		return;
 	}
 
 	// Moves for black
 
 	// There are no possible moves when black pawn is on the bottom row
 	if (y >= 7) {
-		return moves;
+		return;
 	}
 
 	// Capturing
@@ -90,7 +88,7 @@ std::vector<Move> Pawn::possibleMoves(int x, int y, const GameState& gameState) 
 
 	// Prevent moving forward when there is an obstacle
 	if (gameState.getPieceAt(x, y + 1) != 0) {
-		return moves;
+		return;
 	}
 
 	// Forward moves
@@ -107,5 +105,4 @@ std::vector<Move> Pawn::possibleMoves(int x, int y, const GameState& gameState) 
 		moves.push_back(Move(x, y, x, y + 1, 'r'));
 	}
 
-	return moves;
 }

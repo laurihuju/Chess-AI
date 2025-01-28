@@ -17,7 +17,7 @@ public:
 
 	bool isWhite() const;
 
-	virtual std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const = 0;
+	virtual void possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const = 0;
 
 };
 

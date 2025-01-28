@@ -5,6 +5,6 @@
 
 Knight::Knight(bool isWhite) : Piece(isWhite) {}
 
-std::vector<Move> Knight::possibleMoves(int x, int y, const GameState& gameState) const {
-	return std::vector<Move>();
+void Knight::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
+
 }

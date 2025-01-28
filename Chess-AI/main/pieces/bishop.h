@@ -12,7 +12,7 @@ class Bishop : virtual public Piece {
 public:
 	Bishop(bool isWhite);
 
-	std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const override;
+	void possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const override;
 
 };
 
