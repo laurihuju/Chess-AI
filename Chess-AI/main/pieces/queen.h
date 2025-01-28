@@ -10,9 +10,12 @@ class Move;
 class GameState;
 
 class Queen : public Bishop, public Rook {
+
 public:
     Queen(bool isWhite);
-    std::vector<Move> possibleMoves(int x, int y, const GameState& gameState) const override;
+
+    void possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const override;
+
 };
 
 #endif
