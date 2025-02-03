@@ -1,4 +1,5 @@
 #include <vector>
+#include <cmath>
 #include "king.h"
 #include "../move.h"
 #include "../gameState/gameState.h"
@@ -23,17 +24,24 @@ void King::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 			moves.push_back(Move(x, y, dx, dy));
 		}
 	}
+
+	// Castling
+	if (!gameState.isCheck(isWhite())) {
+		int castlingRow = isWhite() ? 7 : 0;
+
+		// Left castling
+		if ((isWhite() ? gameState.lowerLeftCastlingPossible() : gameState.upperLeftCastlingPossible()) && gameState.getPieceAt(1, castlingRow) == 0 && gameState.getPieceAt(2, castlingRow) == 0 && gameState.getPieceAt(3, castlingRow) == 0 && !gameState.isThreatened(isWhite(), 2, castlingRow) && !gameState.isThreatened(isWhite(), 3, castlingRow)) {
+			moves.push_back(Move(4, 7, 2, 7));
+		}
+
+		// Right castling
+		if ((isWhite() ? gameState.lowerRightCastlingPossible() : gameState.upperRightCastlingPossible()) && gameState.getPieceAt(5, castlingRow) == 0 && gameState.getPieceAt(6, castlingRow) == 0 && !gameState.isThreatened(true, 5, castlingRow) && !gameState.isThreatened(isWhite(), 6, castlingRow)) {
+			moves.push_back(Move(4, 7, 6, 7));
+		}
+	}
+
 }
 
-/*for (int i = (x - 1 >= 0 ? x - 1 : x); i <= x + 1 && i < 8; i++) {
-		for (int j = (y - 1 >= 0 ? y - 1 : y); i <= y + 1 && j < 8; j++) {
-			if (i == x && j == y)
-				continue;
-
-			Piece* squarePiece = gameState.getPieceAt(x, y);
-			if (squarePiece != 0 && squarePiece->isWhite() == isWhite())
-				continue;
-
-			moves.push_back(Move(x, y, i, j));
-		}
-	}*/
+bool King::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
+	return std::abs(ownX - squareX) <= 1 && std::abs(ownY - squareY) <= 1;
+}
