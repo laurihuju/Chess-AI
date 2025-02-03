@@ -29,3 +29,29 @@ void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 		}
 	}
 }
+
+bool Rook::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
+	if (ownX != squareX && ownY != squareY) {
+		return false;
+	}
+
+	int directionX = squareX > ownX ? 1 : (squareX < ownX ? -1 : 0);
+	int directionY = squareY > ownY ? 1 : (squareY < ownY ? -1 : 0);
+
+	int currentX = ownX + directionX;
+	int currentY = ownY + directionY;
+
+	while (currentX < 8 && currentX > -1 && currentY < 8 && currentY > -1) {
+		if (currentX == squareX && currentY == squareY) {
+			return true;
+		}
+		if (gameState.getPieceAt(currentX, currentY) != 0) {
+			return false;
+		}
+
+		currentX += directionX;
+		currentY += directionY;
+	}
+
+	return false;
+}

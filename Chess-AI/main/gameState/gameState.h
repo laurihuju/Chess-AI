@@ -88,18 +88,27 @@ public:
 	Piece* getPieceAt(int x, int y) const;
 
 	/// <summary>
-	/// Returns a vector containing all possible new game states that can be created from this game state with one move.
+	/// Returns a vector containing all possible new game states that can be created from this game state with one move of the given color.
 	/// </summary>
 	/// <param name="isWhite"></param>
 	/// <returns></returns>
-	std::vector<GameState> possibleNewGameStates(bool isWhite);
+	std::vector<GameState> possibleNewGameStates(bool isWhite) const;
 
 	/// <summary>
 	/// Checks if the king of the given color is in check.
 	/// </summary>
 	/// <param name="isWhite"></param>
 	/// <returns>True if the king of the given color is in check</returns>
-	bool isCheck(bool isWhite);
+	bool isCheck(bool isWhite) const;
+
+	/// <summary>
+	/// Checks if the square is threatened by the given opponent.
+	/// </summary>
+	/// <param name="isWhite"></param>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <returns>True if the given square is threatened by the given opponent</returns>
+	bool isThreatened(bool isWhite, int x, int y) const;
 
 	// Castling
 	bool upperLeftCastlingPossible() const;

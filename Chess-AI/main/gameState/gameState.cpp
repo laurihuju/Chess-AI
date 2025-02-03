@@ -253,7 +253,7 @@ Piece* GameState::getPieceAt(int x, int y) const {
     return _board[y][x];
 }
 
-std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) {
+std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) const {
     std::vector<Move> moves;
 
     for (int i = 0; i < 8; i++) {
@@ -280,26 +280,27 @@ std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) {
     return newGameStates;
 }
 
-bool GameState::isCheck(bool isWhite) {
+bool GameState::isCheck(bool isWhite) const {
     int kingX;
     int kingY;
     findKing(isWhite, kingX, kingY);
 
-    std::vector<Move> otherMoves;
+    return isThreatened(isWhite, kingX, kingY);
+}
+
+bool GameState::isThreatened(bool isWhite, int x, int y) const {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (_board[i][j] == 0)
                 continue;
             if (_board[i][j]->isWhite() == isWhite)
                 continue;
+            if (!_board[i][j]->threatensSquare(j, i, x, y, *this))
+                continue;
 
-            _board[i][j]->possibleMoves(otherMoves, j, i, *this);
+            return true;
         }
     }
-
-    for (int i = 0; i < otherMoves.size(); i++)
-        if (otherMoves[i].x2() == kingX && otherMoves[i].y2() == kingY)
-            return true;
 
     return false;
 }

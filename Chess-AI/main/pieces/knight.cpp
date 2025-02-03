@@ -1,4 +1,5 @@
 #include <vector>
+#include <cmath>
 #include "knight.h"
 #include "../move.h"
 #include "../gameState/gameState.h"
@@ -19,4 +20,8 @@ void Knight::possibleMoves(std::vector<Move>& moves, int x, int y, const GameSta
 		}
 	}
 
+}
+
+bool Knight::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
+	return (std::abs(ownX - squareX) == 2 && std::abs(ownY - squareY) == 1) || std::abs(ownX - squareX) == 1 && std::abs(ownY - squareY) == 2;
 }

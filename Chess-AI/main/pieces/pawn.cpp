@@ -1,4 +1,5 @@
 #include <vector>
+#include <cmath>
 #include "pawn.h"
 #include "../move.h"
 #include "../piece.h"
@@ -106,4 +107,25 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 		moves.push_back(Move(x, y, x, y + 1, 'r'));
 	}
 
+}
+
+bool Pawn::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
+	if (std::abs(squareX - ownX) != 1) {
+		return false;
+	}
+
+	int movementDirection = isWhite() ? -1 : 1;
+
+	// Upper en passant
+	if (movementDirection == 1 && ownY == 3 && squareY == 3 && gameState.upperEnPassantColumn() == squareX) {
+		return true;
+	}
+
+	// Lower en passant
+	if (movementDirection == -1 && ownY == 4 && squareY == 4 && gameState.lowerEnPassantColumn() == squareX) {
+		return true;
+	}
+
+	// Capturing
+	return squareY == ownY + movementDirection;
 }
