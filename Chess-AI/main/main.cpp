@@ -177,6 +177,12 @@ int main() {
 
 		Move move(input);
 
+		if (gameState.getPieceAt(move.x1(), move.y1()) == 0) {
+			gameState.printBoard();
+			std::cout << "The given move is not valid!\n";
+			continue;
+		}
+
 		std::vector<GameState> possibleNewGameStates = gameState.possibleNewGameStates(gameState.getPieceAt(move.x1(), move.y1())->isWhite());
 		GameState newGameState(gameState);
 		newGameState.applyMove(move);
