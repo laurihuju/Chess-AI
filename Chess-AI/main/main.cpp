@@ -1,7 +1,8 @@
-#include <windows.h>
 #include <iostream>
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include "raylib.h"
 #include "gameState/gameState.h"
 #include "gameState/currentGameState.h"
 #include "pieces/bishop.h"
@@ -12,201 +13,163 @@
 #include "pieces/king.h"
 #include "move.h"
 
-// Helper function to convert coordinates to chess notation
+// Constants
+const int SCREEN_WIDTH = 1080;
+const int SCREEN_HEIGHT = 1080;
+const int SQUARE_SIZE = SCREEN_WIDTH / 8;
+
+// Helper function to convert indices to chess notation
 std::string indexToCoord(int x, int y) {
-	return std::string(1, char('a' + x)) + std::string(1, char('8' - y));
+    return std::string(1, char('a' + x)) + std::string(1, char('8' - y));
 }
 
-// Helper function to set console text color
-void setConsoleColor(WORD color) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+// Helper function to convert screen coordinates to board indices
+void screenToBoard(int mouseX, int mouseY, int& boardX, int& boardY, int squareSize) {
+    boardX = mouseX / squareSize;
+    boardY = mouseY / squareSize;
+}
+
+// Helper function to load textures (you'll need to provide actual image files)
+Texture2D loadPieceTexture(char pieceType, bool isWhite) {
+    std::string path = "main/resources/";
+    path += isWhite ? "white_" : "black_";
+
+    switch (toupper(pieceType)) {
+    case 'P': path += "pawn.png"; break;
+    case 'R': path += "rook.png"; break;
+    case 'N': path += "knight.png"; break;
+    case 'B': path += "bishop.png"; break;
+    case 'Q': path += "queen.png"; break;
+    case 'K': path += "king.png"; break;
+    }
+    return LoadTexture(path.c_str());
+}
+
+// Helper function to draw pieces
+void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures) {
+    if (!piece) return;
+
+    char pieceChar = ' ';
+    if (dynamic_cast<Pawn*>(piece)) pieceChar = 'P';
+    else if (dynamic_cast<Rook*>(piece)) pieceChar = 'R';
+    else if (dynamic_cast<Knight*>(piece)) pieceChar = 'N';
+    else if (dynamic_cast<Bishop*>(piece)) pieceChar = 'B';
+    else if (dynamic_cast<Queen*>(piece)) pieceChar = 'Q';
+    else if (dynamic_cast<King*>(piece)) pieceChar = 'K';
+
+    std::string key = std::string(1, pieceChar) + (piece->isWhite() ? "W" : "B");
+    Texture2D texture = textures.at(key);
+    DrawTexture(texture, x * SQUARE_SIZE, y * SQUARE_SIZE, WHITE);
 }
 
 int main() {
-	SetConsoleOutputCP(CP_UTF8);
-	CurrentGameState gameState;
-	gameState.printBoard();
+    // Raylib initialization
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chess Game");
+    SetTargetFPS(60);
 
-	while (true) {
-		// Piece tests go after this line <----------------------------------------------
+    CurrentGameState gameState;
+    Vector2 selectedSquare = { -1, -1 };
+    std::vector<Move> possibleMoves;
 
-		// Test for kings
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				King* kingTest = dynamic_cast<King*>(gameState.getPieceAt(i, j));
-				if (kingTest && kingTest->isWhite()) {
-					std::vector<Move> moves;
-					kingTest->possibleMoves(moves, i, j, gameState);
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_INTENSITY); // Set color for king
-					std::cout << "wK at: " << indexToCoord(i, j) << "; moves:";
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
-					if (moves.empty()) {
-						std::cout << " N/A";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << " " << indexToCoord(move.x2(), move.y2());
-						}
-					}
-					std::cout << "\n";
-				}
-			}
-		}
+    // Load textures once and store them in a map
+    std::unordered_map<std::string, Texture2D> textures;
+    textures["PW"] = loadPieceTexture('P', true);
+    textures["PB"] = loadPieceTexture('P', false);
+    textures["RW"] = loadPieceTexture('R', true);
+    textures["RB"] = loadPieceTexture('R', false);
+    textures["NW"] = loadPieceTexture('N', true);
+    textures["NB"] = loadPieceTexture('N', false);
+    textures["BW"] = loadPieceTexture('B', true);
+    textures["BB"] = loadPieceTexture('B', false);
+    textures["QW"] = loadPieceTexture('Q', true);
+    textures["QB"] = loadPieceTexture('Q', false);
+    textures["KW"] = loadPieceTexture('K', true);
+    textures["KB"] = loadPieceTexture('K', false);
 
-		// Test for queens
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Queen* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
-				if (queenTest && queenTest->isWhite()) {
-					std::vector<Move> moves;
-					queenTest->possibleMoves(moves, i, j, gameState);
-					setConsoleColor(FOREGROUND_BLUE | FOREGROUND_INTENSITY); // Set color for queen
-					std::cout << "wQ at: " << indexToCoord(i, j) << "; moves:";
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
-					if (moves.empty()) {
-						std::cout << " N/A";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << " " << indexToCoord(move.x2(), move.y2());
-						}
-					}
-					std::cout << "\n";
-				}
-			}
-		}
+    while (!WindowShouldClose()) {
+        // Input handling
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            Vector2 mousePos = GetMousePosition();
+            int file = mousePos.x / SQUARE_SIZE;
+            int rank = mousePos.y / SQUARE_SIZE;
 
-		// Test for bishops
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Bishop* bishopTest = dynamic_cast<Bishop*>(gameState.getPieceAt(i, j));
-				Bishop* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
-				if (queenTest == 0 && bishopTest && bishopTest->isWhite()) {
-					std::vector<Move> moves;
-					bishopTest->possibleMoves(moves, i, j, gameState);
-					setConsoleColor(FOREGROUND_GREEN | FOREGROUND_INTENSITY); // Set color for bishop
-					std::cout << "wB at: " << indexToCoord(i, j) << "; moves:";
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
-					if (moves.empty()) {
-						std::cout << " N/A";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << " " << indexToCoord(move.x2(), move.y2());
-						}
-					}
-					std::cout << "\n";
-				}
-			}
-		}
+            if (selectedSquare.x == -1) { // First click
+                Piece* selectedPiece = gameState.getPieceAt(file, rank);
+                if (selectedPiece) {
+                    selectedSquare = { (float)file, (float)rank };
+                    // Get possible moves
+                    selectedPiece->possibleMoves(possibleMoves, file, rank, gameState);
+                }
+            }
+            else { // Second click
+                Move move(selectedSquare.x, selectedSquare.y, file, rank);
 
-		// Test for rooks
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Rook* rookTest = dynamic_cast<Rook*>(gameState.getPieceAt(i, j));
-				Rook* queenTest = dynamic_cast<Queen*>(gameState.getPieceAt(i, j));
-				if (queenTest == 0 && rookTest && rookTest->isWhite()) {
-					std::vector<Move> moves;
-					rookTest->possibleMoves(moves, i, j, gameState);
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_INTENSITY); // Set color for rook
-					std::cout << "wR at: " << indexToCoord(i, j) << "; moves:";
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
-					if (moves.empty()) {
-						std::cout << " N/A";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << " " << indexToCoord(move.x2(), move.y2());
-						}
-					}
-					std::cout << "\n";
-				}
-			}
-		}
+                // Validate move
+                GameState newGameState(gameState);
+                newGameState.applyMove(move);
+                bool valid = false;
 
-		// Test for knights
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Knight* knightTest = dynamic_cast<Knight*>(gameState.getPieceAt(i, j));
-				if (knightTest && knightTest->isWhite()) {
-					std::vector<Move> moves;
-					knightTest->possibleMoves(moves, i, j, gameState);
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_INTENSITY); // Set color for knight
-					std::cout << "wN at: " << indexToCoord(i, j) << "; moves:";
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
-					if (moves.empty()) {
-						std::cout << " N/A";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << " " << indexToCoord(move.x2(), move.y2());
-						}
-					}
-					std::cout << "\n";
-				}
-			}
-		}
+                auto possibleStates = gameState.possibleNewGameStates(gameState.getPieceAt(selectedSquare.x, selectedSquare.y)->isWhite());
+                for (const auto& state : possibleStates) {
+                    if (state == newGameState) {
+                        valid = true;
+                        break;
+                    }
+                }
 
-		// Test for pawns
-		for (int i = 0; i < 8; ++i) {
-			for (int j = 0; j < 8; ++j) {
-				Pawn* pawnTest = dynamic_cast<Pawn*>(gameState.getPieceAt(i, j));
-				if (pawnTest && pawnTest->isWhite()) {
-					std::vector<Move> moves;
-					pawnTest->possibleMoves(moves, i, j, gameState);
-					setConsoleColor(FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY); // Set color for pawn
-					std::cout << "wP at: " << indexToCoord(i, j) << "; moves:";
-					setConsoleColor(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE); // Reset color
-					if (moves.empty()) {
-						std::cout << " N/A";
-					}
-					else {
-						for (const auto& move : moves) {
-							std::cout << " " << indexToCoord(move.x2(), move.y2());
-						}
-					}
-					std::cout << "\n";
-				}
-			}
-		}
+                if (valid) {
+                    gameState.applyMove(move);
+                }
 
-		// Piece tests go before this line <----------------------------------------------
+                // Reset selection
+                selectedSquare = { -1, -1 };
+                possibleMoves.clear();
+            }
+        }
 
-		std::string input;
-		std::cin >> input;
+        // Drawing
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-		Move move(input);
+        // Draw chess board
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Color color = (x + y) % 2 ? DARKGRAY : LIGHTGRAY;
+                DrawRectangle(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE, color);
+            }
+        }
 
-		if (gameState.getPieceAt(move.x1(), move.y1()) == 0) {
-			gameState.printBoard();
-			std::cout << "The given move is not valid!\n";
-			continue;
-		}
+        // Highlight possible moves
+        for (const auto& move : possibleMoves) {
+            int x = move.x2();
+            int y = move.y2();
+            DrawRectangle(x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE,
+                ColorAlpha(GREEN, 0.3f));
+        }
 
-		std::vector<GameState> possibleNewGameStates = gameState.possibleNewGameStates(gameState.getPieceAt(move.x1(), move.y1())->isWhite());
-		GameState newGameState(gameState);
-		newGameState.applyMove(move);
+        // Highlight selected square
+        if (selectedSquare.x != -1) {
+            DrawRectangle(selectedSquare.x * SQUARE_SIZE, selectedSquare.y * SQUARE_SIZE,
+                SQUARE_SIZE, SQUARE_SIZE, ColorAlpha(YELLOW, 0.3f));
+        }
 
-		bool gameStateValid = false;
-		for (int i = 0; i < possibleNewGameStates.size(); i++) {
-			if (possibleNewGameStates[i] == newGameState) {
-				gameStateValid = true;
-				break;
-			}
-		}
+        // Draw pieces
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                Piece* piece = gameState.getPieceAt(x, y);
+                drawPiece(piece, x, y, textures);
+            }
+        }
 
-		if (!gameStateValid) {
-			gameState.printBoard();
-			std::cout << "The given move is not valid!\n";
-			continue;
-		}
+        EndDrawing();
+    }
 
-		gameState.applyMove(move);
-		gameState.printBoard();
-	}
+    // Unload textures
+    for (auto& texture : textures) {
+        UnloadTexture(texture.second);
+    }
 
-	return 0;
+    CloseWindow();
+    return 0;
 }
-
-
 
