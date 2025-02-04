@@ -37,7 +37,7 @@ protected:
 
 public:
 	GameState& operator=(const GameState&) = delete;
-	bool operator==(const GameState& other);
+	bool operator==(const GameState& other) const;
 
 	/// <summary>
 	/// Creates a copy of the given GameState. Doesn't copy the vector of owned pieces.

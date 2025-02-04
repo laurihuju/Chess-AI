@@ -151,7 +151,79 @@
     <ClInclude Include="main\pieces\queen.h" />
     <ClInclude Include="main\pieces\rook.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="main\pieces\black_bishop.png" />
+    <Image Include="main\pieces\black_king.png" />
+    <Image Include="main\pieces\black_knight.png" />
+    <Image Include="main\pieces\black_pawn.png" />
+    <Image Include="main\pieces\black_queen.png" />
+    <Image Include="main\pieces\black_rook.png" />
+    <Image Include="main\pieces\white_bishop.png" />
+    <Image Include="main\pieces\white_king.png" />
+    <Image Include="main\pieces\white_knight.png" />
+    <Image Include="main\pieces\white_pawn.png" />
+    <Image Include="main\pieces\white_queen.png" />
+    <Image Include="main\pieces\white_rook.png" />
+    <Image Include="main\resources\black_bishop.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\black_king.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\black_knight.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\black_pawn.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\black_queen.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\black_rook.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\white_bishop.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\white_king.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\white_knight.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\white_pawn.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\white_queen.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+    <Image Include="main\resources\white_rook.png">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">False</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">True</DeploymentContent>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\raylib.5.5.0\build\native\raylib.targets" Condition="Exists('..\packages\raylib.5.5.0\build\native\raylib.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\raylib.5.5.0\build\native\raylib.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\raylib.5.5.0\build\native\raylib.targets'))" />
+  </Target>
 </Project>

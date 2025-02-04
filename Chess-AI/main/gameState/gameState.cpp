@@ -11,7 +11,7 @@
 #include "../pieces/king.h"
 #include "../pieces/pawn.h"
 
-bool GameState::operator==(const GameState& other) {
+bool GameState::operator==(const GameState& other) const {
     if (_upperLeftCastlingPossible != other._upperLeftCastlingPossible)
         return false;
     if (_upperRightCastlingPossible != other._upperRightCastlingPossible)

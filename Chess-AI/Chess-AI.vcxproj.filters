@@ -87,4 +87,81 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="main\resources\black_bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\black_king.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\black_knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\black_pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\black_queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\black_rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\white_bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\white_king.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\white_knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\white_pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\white_queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\resources\white_rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\black_bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\black_king.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\black_knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\black_pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\black_queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\black_rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\white_bishop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\white_king.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\white_knight.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\white_pawn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\white_queen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="main\pieces\white_rook.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>
