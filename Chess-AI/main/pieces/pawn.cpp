@@ -73,7 +73,7 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 			moves.push_back(Move(x, y, x - 1, y + 1));
 		}
 	}
-	if (x < 7 && gameState.getPieceAt(x + 1, y - 1)) {
+	if (x < 7 && gameState.getPieceAt(x + 1, y + 1)) {
 		Piece* piece = gameState.getPieceAt(x + 1, y + 1);
 		if (piece != 0 && piece->isWhite()) {
 			moves.push_back(Move(x, y, x + 1, y + 1));
