@@ -136,44 +136,53 @@ int main()
 				// Create move normally (without promotion letter)
 				Move move(selectedSquare.x, selectedSquare.y, file, rank);
 
-				 // If the pawn reaches the last row, prompt and recreate Move with promotion letter
-                if (dynamic_cast<Pawn*>(movingPiece) != nullptr &&
-                    ((movingPiece->isWhite() && rank == 0) ||
-                     (!movingPiece->isWhite() && rank == 7)))
-                {
-                    char promotion = 0;
-                    int key = 0;
-                    while (!key)
-                    {
-                        BeginDrawing();
-                            ClearBackground(RAYWHITE);
-                            DrawText("Promote pawn: Press Q, R, N, or B", SCREEN_WIDTH/4, SCREEN_HEIGHT/2, 40, BLACK);
-                        EndDrawing();
-                        key = GetKeyPressed();
-                        if (key != KEY_Q && key != KEY_R && key != KEY_N && key != KEY_B)
-                            key = 0;
-                    }
-                    switch(key)
-                    {
-                        case KEY_Q: promotion = 'q'; break;
-                        case KEY_R: promotion = 'r'; break;
-                        case KEY_N: promotion = 'n'; break;
-                        case KEY_B: promotion = 'b'; break;
-                    }
-                    move = Move(selectedSquare.x, selectedSquare.y, file, rank, promotion);
-                }
-				// Validate move
-				GameState newGameState(gameState);
-				newGameState.applyMove(move);
-				bool valid = false;
-				auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
-				for (const auto& state : possibleStates)
+				// If the pawn reaches the last row, prompt and recreate Move with promotion letter
+				bool isPromotionMove = false;
+				if (dynamic_cast<Pawn*>(movingPiece) != nullptr &&
+					((movingPiece->isWhite() && rank == 0) ||
+						(!movingPiece->isWhite() && rank == 7)))
 				{
-					if (state == newGameState)
+					char promotion = 0;
+					int key = 0;
+					while (!key)
 					{
-						valid = true;
-						break;
+						BeginDrawing();
+						ClearBackground(RAYWHITE);
+						DrawText("Promote pawn: Press Q, R, N, or B", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, 40, BLACK);
+						EndDrawing();
+						key = GetKeyPressed();
+						if (key != KEY_Q && key != KEY_R && key != KEY_N && key != KEY_B)
+							key = 0;
 					}
+					switch (key)
+					{
+					case KEY_Q: promotion = 'q'; break;
+					case KEY_R: promotion = 'r'; break;
+					case KEY_N: promotion = 'n'; break;
+					case KEY_B: promotion = 'b'; break;
+					}
+					move = Move(selectedSquare.x, selectedSquare.y, file, rank, promotion);
+					isPromotionMove = true;
+				}
+				// Validate move only if not a promotion move
+				bool valid = false;
+				if (!isPromotionMove)
+				{
+					GameState newGameState(gameState);
+					newGameState.applyMove(move);
+					auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
+					for (const auto& state : possibleStates)
+					{
+						if (state == newGameState)
+						{
+							valid = true;
+							break;
+						}
+					}
+				}
+				else
+				{
+					valid = true;
 				}
 				if (valid)
 				{
