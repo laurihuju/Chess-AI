@@ -92,3 +92,7 @@ bool Pawn::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 	// Capturing
 	return squareY == ownY + movementDirection;
 }
+
+Piece* Pawn::clone() const {
+	return new Pawn(isWhite());
+}
