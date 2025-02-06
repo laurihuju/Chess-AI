@@ -159,27 +159,39 @@ int main()
                     ((movingPiece->isWhite() && rank == 0) ||
                         (!movingPiece->isWhite() && rank == 7)))
                 {
-                    char promotion = 0;
-                    int key = 0;
-                    while (!key)
+                    // Check if the pawn is moving straight or diagonally
+                    bool isMovingStraight = (selectedSquare.x == file);
+
+                    // Only allow promotion if the pawn is actually moving to the last rank
+                    // and either moving diagonally (capture) or moving straight to an empty square
+                    if ((movingPiece->isWhite() && selectedSquare.y == 1 && rank == 0) ||
+                        (!movingPiece->isWhite() && selectedSquare.y == 6 && rank == 7))
                     {
-                        BeginDrawing();
-                        ClearBackground(RAYWHITE);
-                        DrawText("Promote pawn: Press Q, R, N, or B", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, 40, BLACK);
-                        EndDrawing();
-                        key = GetKeyPressed();
-                        if (key != KEY_Q && key != KEY_R && key != KEY_N && key != KEY_B)
-                            key = 0;
+                        if (!isMovingStraight || (isMovingStraight && gameState.getPieceAt(file, rank) == nullptr))
+                        {
+                            char promotion = 0;
+                            int key = 0;
+                            while (!key)
+                            {
+                                BeginDrawing();
+                                ClearBackground(RAYWHITE);
+                                DrawText("Promote pawn: Press Q, R, N, or B", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, 40, BLACK);
+                                EndDrawing();
+                                key = GetKeyPressed();
+                                if (key != KEY_Q && key != KEY_R && key != KEY_N && key != KEY_B)
+                                    key = 0;
+                            }
+                            switch (key)
+                            {
+                            case KEY_Q: promotion = 'q'; break;
+                            case KEY_R: promotion = 'r'; break;
+                            case KEY_N: promotion = 'n'; break;
+                            case KEY_B: promotion = 'b'; break;
+                            }
+                            move = Move(selectedSquare.x, selectedSquare.y, file, rank, promotion);
+                            isPromotionMove = true;
+                        }
                     }
-                    switch (key)
-                    {
-                    case KEY_Q: promotion = 'q'; break;
-                    case KEY_R: promotion = 'r'; break;
-                    case KEY_N: promotion = 'n'; break;
-                    case KEY_B: promotion = 'b'; break;
-                    }
-                    move = Move(selectedSquare.x, selectedSquare.y, file, rank, promotion);
-                    isPromotionMove = true;
                 }
                 // Validate move only if not a promotion move
                 bool valid = false;
