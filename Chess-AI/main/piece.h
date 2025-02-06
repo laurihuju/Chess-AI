@@ -19,6 +19,20 @@ private:
 
 public:
 	/// <summary>
+	/// Compares the other piece with this piece.
+	/// </summary>
+	/// <param name="other"></param>
+	/// <returns>True if the pieces are equal</returns>
+	bool operator==(const Piece& other) const;
+
+	/// <summary>
+	/// Compares the other piece with this piece.
+	/// </summary>
+	/// <param name="other"></param>
+	/// <returns>True if the pieces are not equal</returns>
+	bool operator!=(const Piece& other) const;
+
+	/// <summary>
 	/// Initializes the piece.
 	/// </summary>
 	/// <param name="isWhite">If the piece is white</param>
@@ -55,6 +69,11 @@ public:
 	/// <returns></returns>
 	virtual bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const = 0;
 
+	/// <summary>
+	/// Creates a copy of this piece.
+	/// </summary>
+	/// <returns>Pointer to the copied piece</returns>
+	virtual Piece* clone() const = 0;
 };
 
 #endif

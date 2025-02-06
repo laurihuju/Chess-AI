@@ -42,6 +42,12 @@ public:
     /// <returns></returns>
     bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const override;
 
+    /// <summary>
+    /// Creates a copy of this piece.
+    /// </summary>
+    /// <returns>Pointer to the copied piece</returns>
+    Piece* clone() const override;
+
 };
 
 #endif

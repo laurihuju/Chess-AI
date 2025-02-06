@@ -48,16 +48,6 @@ CurrentGameState::CurrentGameState() {
     _board[7][5] = new Bishop(true);
     _board[7][6] = new Knight(true);
     _board[7][7] = new Rook(true);
-
-    // Define the created pieces as the CurrentGameState's own pieces
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0)
-                continue;
-
-            ownPieces.push_back(_board[i][j]);
-        }
-    }
 }
 
 CurrentGameState* CurrentGameState::getInstance() {

@@ -57,3 +57,7 @@ bool Bishop::threatensSquare(int ownX, int ownY, int squareX, int squareY, const
 
 	return false;
 }
+
+Piece* Bishop::clone() const {
+	return new Bishop(isWhite());
+}

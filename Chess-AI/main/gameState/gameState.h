@@ -50,24 +50,26 @@ protected:
 	/// </summary>
 	int _lowerEnPassantColumn = -1;
 
-	/// <summary>
-	/// The pieces this GameState owns and is responsible to destroy.
-	/// </summary>
-	std::vector<Piece*> ownPieces;
-
-	/// <summary>
-	/// Deletes the given piece if it is owned by this GameState.
-	/// </summary>
-	/// <param name="piece">The piece to handle</param>
-	void handlePieceDelete(Piece* piece);
-
 public:
 	GameState& operator=(const GameState&) = delete;
+
+	/// <summary>
+	/// Compares the other game state with this game state.
+	/// </summary>
+	/// <param name="other"></param>
+	/// <returns>True if the game states are equal</returns>
 	bool operator==(const GameState& other) const;
 
 	/// <summary>
+	/// Compares the other game state with this game state.
+	/// </summary>
+	/// <param name="other"></param>
+	/// <returns>True if the game states are not equal</returns>
+	bool operator!=(const GameState& other) const;
+
+	/// <summary>
 	/// Creates a copy of the given GameState.
-	/// The copied GameState is guaranteed to be valid only as long as any of its parent GameStates are not modified.
+	/// Creates new piece copies for the new GameState.
 	/// </summary>
 	/// <param name="other">The GameState to copy</param>
 	GameState(const GameState& other);

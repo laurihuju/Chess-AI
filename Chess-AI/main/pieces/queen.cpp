@@ -16,3 +16,7 @@ void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameStat
 bool Queen::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
 	return Bishop::threatensSquare(ownX, ownY, squareX, squareY, gameState) || Rook::threatensSquare(ownX, ownY, squareX, squareY, gameState);
 }
+
+Piece* Queen::clone() const {
+	return new Queen(isWhite());
+}

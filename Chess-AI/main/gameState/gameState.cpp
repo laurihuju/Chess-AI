@@ -25,31 +25,42 @@ bool GameState::operator==(const GameState& other) const {
     if (_lowerEnPassantColumn != other._lowerEnPassantColumn)
         return false;
 
-    for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++)
-            if (_board[i][j] != other._board[i][j])
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (_board[i][j] == 0 && other._board[i][j] == 0)
+                continue;
+            if (_board[i][j] == 0 || other._board[i][j] == 0)
                 return false;
+            if (*_board[i][j] != *other._board[i][j])
+                return false;
+        }
+    }
 
     return true;
 }
 
-GameState::GameState(const GameState& other) {
-    // Board content
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            _board[i][j] = other._board[i][j];
-        }
-    }
+bool GameState::operator!=(const GameState& other) const {
+    return !(*this == other);
+}
 
-    // Castling flags
+GameState::GameState(const GameState& other) {
     _upperLeftCastlingPossible = other._upperLeftCastlingPossible;
     _upperRightCastlingPossible = other._upperRightCastlingPossible;
     _lowerLeftCastlingPossible = other._lowerLeftCastlingPossible;
     _lowerRightCastlingPossible = other._lowerRightCastlingPossible;
-
-    //En passant columns
     _upperEnPassantColumn = other._upperEnPassantColumn;
     _lowerEnPassantColumn = other._lowerEnPassantColumn;
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (other._board[i][j] == 0) {
+                _board[i][j] = 0;
+                continue;
+            }
+
+            _board[i][j] = other._board[i][j]->clone();
+        }
+    }
 
 }
 
@@ -64,51 +75,49 @@ GameState::GameState() {
 }
 
 GameState::~GameState() {
-    for (int i = 0; i < ownPieces.size(); i++) {
-        delete ownPieces[i];
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            delete _board[i][j];
+        }
     }
 
 }
 
 void GameState::applyMove(const Move& move) {
     // Handle the move and capturing
-    handlePieceDelete(_board[move.y2()][move.x2()]);
+    delete _board[move.y2()][move.x2()];
     _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
     _board[move.y1()][move.x1()] = 0;
 
     // Handle promotion
     if (move.promotionPiece() == 'q') {
         Queen* promotionPiece = new Queen(_board[move.y2()][move.x2()]->isWhite());
-        handlePieceDelete(_board[move.y2()][move.x2()]);
+        delete _board[move.y2()][move.x2()];
         _board[move.y2()][move.x2()] = promotionPiece;
-        ownPieces.push_back(promotionPiece);
     }
     else if (move.promotionPiece() == 'n') {
         Knight* promotionPiece = new Knight(_board[move.y2()][move.x2()]->isWhite());
-        handlePieceDelete(_board[move.y2()][move.x2()]);
+        delete _board[move.y2()][move.x2()];
         _board[move.y2()][move.x2()] = promotionPiece;
-        ownPieces.push_back(promotionPiece);
     }
     else if (move.promotionPiece() == 'b') {
         Bishop* promotionPiece = new Bishop(_board[move.y2()][move.x2()]->isWhite());
-        handlePieceDelete(_board[move.y2()][move.x2()]);
+        delete _board[move.y2()][move.x2()];
         _board[move.y2()][move.x2()] = promotionPiece;
-        ownPieces.push_back(promotionPiece);
     }
     else if (move.promotionPiece() == 'r') {
         Rook* promotionPiece = new Rook(_board[move.y2()][move.x2()]->isWhite());
-        handlePieceDelete(_board[move.y2()][move.x2()]);
+        delete _board[move.y2()][move.x2()];
         _board[move.y2()][move.x2()] = promotionPiece;
-        ownPieces.push_back(promotionPiece);
     }
 
     // Handle en passant move
     if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
-            handlePieceDelete(_board[3][move.x2()]);
+            delete _board[3][move.x2()];
             _board[3][move.x2()] = 0;
         } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
-            handlePieceDelete(_board[4][move.x2()]);
+            delete _board[4][move.x2()];
             _board[3][move.x2()] = 0;
         }
     }
@@ -196,22 +205,6 @@ King* GameState::findKing(bool isWhite, int& x, int& y) const {
 	}
 
 	return 0;
-}
-
-void GameState::handlePieceDelete(Piece* piece) {
-    bool isOwnPiece = false;
-    for (Piece* ownPiece : ownPieces) {
-        if (ownPiece == piece) {
-            isOwnPiece = true;
-            break;
-        }
-    }
-
-    if (!isOwnPiece) {
-        return;
-    }
-
-    delete piece;
 }
 
 void GameState::printBoard() const {
@@ -304,8 +297,7 @@ bool GameState::isThreatened(bool isWhite, int x, int y) const {
 
     return false;
 }
-  
-// Castling
+
 bool GameState::upperLeftCastlingPossible() const {
 	return _upperLeftCastlingPossible;
 }
@@ -319,7 +311,6 @@ bool GameState::lowerRightCastlingPossible() const {
 	return _lowerRightCastlingPossible;
 }
 
-//En passant
 int GameState::upperEnPassantColumn() const {
     return _upperEnPassantColumn;
 }

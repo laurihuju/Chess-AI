@@ -45,3 +45,7 @@ void King::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 bool King::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
 	return std::abs(ownX - squareX) <= 1 && std::abs(ownY - squareY) <= 1;
 }
+
+Piece* King::clone() const {
+	return new King(isWhite());
+}
