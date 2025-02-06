@@ -154,7 +154,6 @@ int main()
                 Move move(selectedSquare.x, selectedSquare.y, file, rank);
 
                 // If the pawn reaches the last row, prompt and recreate Move with promotion letter
-                bool isPromotionMove = false;
                 if (dynamic_cast<Pawn*>(movingPiece) != nullptr &&
                     ((movingPiece->isWhite() && rank == 0) ||
                         (!movingPiece->isWhite() && rank == 7)))
@@ -189,29 +188,21 @@ int main()
                             case KEY_B: promotion = 'b'; break;
                             }
                             move = Move(selectedSquare.x, selectedSquare.y, file, rank, promotion);
-                            isPromotionMove = true;
                         }
                     }
                 }
                 // Validate move only if not a promotion move
                 bool valid = false;
-                if (!isPromotionMove)
+                GameState newGameState(gameState);
+                newGameState.applyMove(move);
+                auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
+                for (const auto& state : possibleStates)
                 {
-                    GameState newGameState(gameState);
-                    newGameState.applyMove(move);
-                    auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
-                    for (const auto& state : possibleStates)
+                    if (state == newGameState)
                     {
-                        if (state == newGameState)
-                        {
-                            valid = true;
-                            break;
-                        }
+                        valid = true;
+                        break;
                     }
-                }
-                else
-                {
-                    valid = true;
                 }
                 if (valid)
                 {
