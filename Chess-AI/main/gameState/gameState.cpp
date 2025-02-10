@@ -164,16 +164,16 @@ void GameState::applyMove(const Move& move) {
     }
 
     // Update castling flags
-    if (move.x1() == 0 && move.y1() == 0) {
+    if ((move.x1() == 0 && move.y1() == 0) || (move.x2() == 0 && move.y2() == 0)) {
         _upperLeftCastlingPossible = false;
     }
-    else if (move.x1() == 7 && move.y1() == 0) {
+    else if ((move.x1() == 7 && move.y1() == 0) || (move.x2() == 7 && move.y2() == 0)) {
         _upperRightCastlingPossible = false;
     }
-    else if (move.x1() == 0 && move.y1() == 7) {
+    else if ((move.x1() == 0 && move.y1() == 7) || (move.x2() == 0 && move.y2() == 7)) {
         _lowerLeftCastlingPossible = false;
     }
-    else if (move.x1() == 7 && move.y1() == 7) {
+    else if ((move.x1() == 7 && move.y1() == 7) || (move.x2() == 7 && move.y2() == 7)) {
         _lowerRightCastlingPossible = false;
     }
 
