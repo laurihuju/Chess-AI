@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -16,7 +17,6 @@
 // Constants
 const int SCREEN_WIDTH = 1080;
 const int SCREEN_HEIGHT = 1080;
-const float ASPECT_RATIO = (float)SCREEN_WIDTH / SCREEN_HEIGHT;
 
 // Helper function to convert indices to chess notation
 std::string indexToCoord(int x, int y)
@@ -103,6 +103,8 @@ int main()
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chess Game");
     // Window configuration flags
     SetTargetFPS(60);
+    // Maximize the window
+    MaximizeWindow();
 
     CurrentGameState gameState;
     Vector2 selectedSquare = { -1, -1 };
@@ -128,7 +130,7 @@ int main()
         // Get current window size
         int currentWidth = GetScreenWidth();
         int currentHeight = GetScreenHeight();
-        int squareSize = currentWidth / 8;
+        int squareSize = std::min(currentWidth, currentHeight) / 8;
 
         // Input handling
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
@@ -137,7 +139,11 @@ int main()
             int file = mousePos.x / squareSize;
             int rank = mousePos.y / squareSize;
 
-            if (selectedSquare.x == -1)
+            if (file < 0 || file > 7 || rank < 0 || rank > 7) {
+                selectedSquare = { -1, -1 };
+                possibleMoves.clear();
+
+            } else if (selectedSquare.x == -1)
             { // First click
                 Piece* selectedPiece = gameState.getPieceAt(file, rank);
                 if (selectedPiece)
@@ -154,7 +160,6 @@ int main()
                 Move move(selectedSquare.x, selectedSquare.y, file, rank);
 
                 // If the pawn reaches the last row, prompt and recreate Move with promotion letter
-                bool isPromotionMove = false;
                 if (dynamic_cast<Pawn*>(movingPiece) != nullptr &&
                     ((movingPiece->isWhite() && rank == 0) ||
                         (!movingPiece->isWhite() && rank == 7)))
@@ -189,29 +194,21 @@ int main()
                             case KEY_B: promotion = 'b'; break;
                             }
                             move = Move(selectedSquare.x, selectedSquare.y, file, rank, promotion);
-                            isPromotionMove = true;
                         }
                     }
                 }
                 // Validate move only if not a promotion move
                 bool valid = false;
-                if (!isPromotionMove)
+                GameState newGameState(gameState);
+                newGameState.applyMove(move);
+                auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
+                for (const auto& state : possibleStates)
                 {
-                    GameState newGameState(gameState);
-                    newGameState.applyMove(move);
-                    auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
-                    for (const auto& state : possibleStates)
+                    if (state == newGameState)
                     {
-                        if (state == newGameState)
-                        {
-                            valid = true;
-                            break;
-                        }
+                        valid = true;
+                        break;
                     }
-                }
-                else
-                {
-                    valid = true;
                 }
                 if (valid)
                 {
