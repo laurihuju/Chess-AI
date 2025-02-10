@@ -118,7 +118,7 @@ void GameState::applyMove(const Move& move) {
             _board[3][move.x2()] = 0;
         } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
             delete _board[4][move.x2()];
-            _board[3][move.x2()] = 0;
+            _board[4][move.x2()] = 0;
         }
     }
 
