@@ -86,6 +86,8 @@ int main()
     MaximizeWindow();
 
     CurrentGameState gameState;
+    bool turn = true;
+
     Vector2 selectedSquare = { -1, -1 };
     std::vector<Move> possibleMoves;
 
@@ -132,7 +134,7 @@ int main()
             else if (selectedSquare.x == -1)
             { // First click
                 Piece* selectedPiece = gameState.getPieceAt(file, rank);
-                if (selectedPiece)
+                if (selectedPiece && selectedPiece->isWhite() == turn)
                 {
                     selectedSquare = { (float)file, (float)rank };
                     // Get possible moves
@@ -195,6 +197,7 @@ int main()
                 if (valid)
                 {
                     gameState.applyMove(move);
+                    turn = !turn;
                 }
                 // Reset selection
                 selectedSquare = { -1, -1 };
