@@ -18,20 +18,7 @@
 const int SCREEN_WIDTH = 1080;
 const int SCREEN_HEIGHT = 1080;
 
-// Helper function to convert indices to chess notation
-std::string indexToCoord(int x, int y)
-{
-    return std::string(1, char('a' + x)) + std::string(1, char('8' - y));
-}
-
-// Helper function to convert screen coordinates to board indices
-void screenToBoard(int mouseX, int mouseY, int& boardX, int& boardY, int squareSize)
-{
-    boardX = mouseX / squareSize;
-    boardY = mouseY / squareSize;
-}
-
-// Helper function to load textures (you'll need to provide actual image files)
+// Helper function to load textures
 Texture2D loadPieceTexture(char pieceType, bool isWhite)
 {
     std::string path = "main/resources/";
@@ -61,8 +48,8 @@ Texture2D loadPieceTexture(char pieceType, bool isWhite)
     return LoadTexture(path.c_str());
 }
 
-// Helper function to draw pieces
-void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures, int squareSize)
+// Modified drawPiece function to include offsetX and offsetY
+void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures, int squareSize, int offsetX, int offsetY)
 {
     if (!piece)
         return;
@@ -84,26 +71,18 @@ void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string,
     std::string key = std::string(1, pieceChar) + (piece->isWhite() ? "W" : "B");
     Texture2D texture = textures.at(key);
 
-    // Calculate the scale factor
-    float scaleFactor = (float)squareSize / texture.width;
-
-    // Define the source and destination rectangles
     Rectangle sourceRec = { 0, 0, (float)texture.width, (float)texture.height };
-    Rectangle destRec = { x * squareSize, y * squareSize, squareSize, squareSize };
+    Rectangle destRec = { offsetX + x * squareSize, offsetY + y * squareSize, squareSize, squareSize };
     Vector2 origin = { 0, 0 };
 
-    // Draw the texture with scaling
     DrawTexturePro(texture, sourceRec, destRec, origin, 0.0f, WHITE);
 }
 
 int main()
 {
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    // Raylib initialization
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chess Game");
-    // Window configuration flags
     SetTargetFPS(60);
-    // Maximize the window
     MaximizeWindow();
 
     CurrentGameState gameState;
@@ -132,18 +111,25 @@ int main()
         int currentHeight = GetScreenHeight();
         int squareSize = std::min(currentWidth, currentHeight) / 8;
 
+        int boardSize = squareSize * 8;
+        int offsetX = (currentWidth - boardSize) / 2;
+        int offsetY = (currentHeight - boardSize) / 2;
+
         // Input handling
         if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON))
         {
             Vector2 mousePos = GetMousePosition();
+            mousePos.x -= offsetX;
+            mousePos.y -= offsetY;
+
             int file = mousePos.x / squareSize;
             int rank = mousePos.y / squareSize;
 
             if (file < 0 || file > 7 || rank < 0 || rank > 7) {
                 selectedSquare = { -1, -1 };
                 possibleMoves.clear();
-
-            } else if (selectedSquare.x == -1)
+            }
+            else if (selectedSquare.x == -1)
             { // First click
                 Piece* selectedPiece = gameState.getPieceAt(file, rank);
                 if (selectedPiece)
@@ -156,19 +142,15 @@ int main()
             else
             { // Second click
                 Piece* movingPiece = gameState.getPieceAt(selectedSquare.x, selectedSquare.y);
-                // Create move normally (without promotion letter)
                 Move move(selectedSquare.x, selectedSquare.y, file, rank);
 
-                // If the pawn reaches the last row, prompt and recreate Move with promotion letter
+                // Handle promotion
                 if (dynamic_cast<Pawn*>(movingPiece) != nullptr &&
                     ((movingPiece->isWhite() && rank == 0) ||
                         (!movingPiece->isWhite() && rank == 7)))
                 {
-                    // Check if the pawn is moving straight or diagonally
                     bool isMovingStraight = (selectedSquare.x == file);
 
-                    // Only allow promotion if the pawn is actually moving to the last rank
-                    // and either moving diagonally (capture) or moving straight to an empty square
                     if ((movingPiece->isWhite() && selectedSquare.y == 1 && rank == 0) ||
                         (!movingPiece->isWhite() && selectedSquare.y == 6 && rank == 7))
                     {
@@ -179,8 +161,8 @@ int main()
                             while (!key)
                             {
                                 BeginDrawing();
-                                ClearBackground(RAYWHITE);
-                                DrawText("Promote pawn: Press Q, R, N, or B", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, 40, BLACK);
+                                ClearBackground(BLACK);
+                                DrawText("Promote pawn: Press Q, R, N, or B", SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2, 40, WHITE);
                                 EndDrawing();
                                 key = GetKeyPressed();
                                 if (key != KEY_Q && key != KEY_R && key != KEY_N && key != KEY_B)
@@ -197,7 +179,7 @@ int main()
                         }
                     }
                 }
-                // Validate move only if not a promotion move
+                // Validate move
                 bool valid = false;
                 GameState newGameState(gameState);
                 newGameState.applyMove(move);
@@ -222,7 +204,7 @@ int main()
 
         // Drawing
         BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(BLACK);
 
         // Draw chess board
         for (int y = 0; y < 8; y++)
@@ -230,14 +212,14 @@ int main()
             for (int x = 0; x < 8; x++)
             {
                 Color color = (x + y) % 2 ? DARKGRAY : LIGHTGRAY;
-                DrawRectangle(x * squareSize, y * squareSize, squareSize, squareSize, color);
+                DrawRectangle(offsetX + x * squareSize, offsetY + y * squareSize, squareSize, squareSize, color);
             }
         }
 
         // Draw coordinates on left (row numbers)
         for (int i = 0; i < 8; i++) {
             std::string rowNum = std::to_string(8 - i);
-            DrawText(rowNum.c_str(), 5, i * squareSize + squareSize / 2 - 10, 40, BLACK);
+            DrawText(rowNum.c_str(), offsetX - 20, offsetY + i * squareSize + squareSize / 2 - 10, 20, WHITE);
         }
 
         // Draw coordinates at the bottom (column letters)
@@ -245,7 +227,7 @@ int main()
             char letter = 'A' + i;
             std::string colLetter(1, letter);
             int textWidth = MeasureText(colLetter.c_str(), 20);
-            DrawText(colLetter.c_str(), i * squareSize + squareSize / 2 - textWidth / 2, currentHeight - 25, 40, BLACK);
+            DrawText(colLetter.c_str(), offsetX + i * squareSize + squareSize / 2 - textWidth / 2, offsetY + boardSize + 5, 20, WHITE);
         }
 
         // Highlight possible moves
@@ -253,14 +235,14 @@ int main()
         {
             int x = move.x2();
             int y = move.y2();
-            DrawRectangle(x * squareSize, y * squareSize, squareSize, squareSize,
+            DrawRectangle(offsetX + x * squareSize, offsetY + y * squareSize, squareSize, squareSize,
                 ColorAlpha(GREEN, 0.3f));
         }
 
         // Highlight selected square
         if (selectedSquare.x != -1)
         {
-            DrawRectangle(selectedSquare.x * squareSize, selectedSquare.y * squareSize,
+            DrawRectangle(offsetX + selectedSquare.x * squareSize, offsetY + selectedSquare.y * squareSize,
                 squareSize, squareSize, ColorAlpha(YELLOW, 0.3f));
         }
 
@@ -270,7 +252,7 @@ int main()
             for (int x = 0; x < 8; x++)
             {
                 Piece* piece = gameState.getPieceAt(x, y);
-                drawPiece(piece, x, y, textures, squareSize);
+                drawPiece(piece, x, y, textures, squareSize, offsetX, offsetY);
             }
         }
 
