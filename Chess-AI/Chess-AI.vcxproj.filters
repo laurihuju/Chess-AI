@@ -54,6 +54,9 @@
     <ClCompile Include="main\gameState\currentGameState.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main\gameUi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gameState\gameState.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\gameState\currentGameState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\gameUi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

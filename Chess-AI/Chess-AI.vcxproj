@@ -141,6 +141,7 @@
     <ClCompile Include="main\piece.cpp" />
     <ClCompile Include="main\pieces\queen.cpp" />
     <ClCompile Include="main\pieces\rook.cpp" />
+    <ClCompile Include="main\gameUi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gameState\currentGameState.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="main\piece.h" />
     <ClInclude Include="main\pieces\queen.h" />
     <ClInclude Include="main\pieces\rook.h" />
+    <ClInclude Include="main\gameUi.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="main\pieces\black_bishop.png" />
