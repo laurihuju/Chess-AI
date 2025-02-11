@@ -59,3 +59,7 @@ bool Rook::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 Piece* Rook::clone() const {
 	return new Rook(isWhite());
 }
+
+int Rook::evaluationValue(const GameState& gameState, int x, int y) const {
+	return 5;
+}

@@ -298,6 +298,21 @@ bool GameState::isThreatened(bool isWhite, int x, int y) const {
     return false;
 }
 
+int GameState::evaluate(bool isWhite) const {
+    int evaluationValue = 0;
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (_board[i][j] == 0)
+                continue;
+
+            evaluationValue += _board[i][j]->evaluationValue(*this, j, i) * (_board[i][j]->isWhite() == isWhite ? 1 : -1);
+        }
+    }
+
+    return evaluationValue;
+}
+
 bool GameState::upperLeftCastlingPossible() const {
 	return _upperLeftCastlingPossible;
 }

@@ -20,3 +20,7 @@ bool Queen::threatensSquare(int ownX, int ownY, int squareX, int squareY, const 
 Piece* Queen::clone() const {
 	return new Queen(isWhite());
 }
+
+int Queen::evaluationValue(const GameState& gameState, int x, int y) const {
+	return 9;
+}

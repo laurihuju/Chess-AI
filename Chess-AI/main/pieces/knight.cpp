@@ -29,3 +29,7 @@ bool Knight::threatensSquare(int ownX, int ownY, int squareX, int squareY, const
 Piece* Knight::clone() const {
 	return new Knight(isWhite());
 }
+
+int Knight::evaluationValue(const GameState& gameState, int x, int y) const {
+	return 3;
+}
