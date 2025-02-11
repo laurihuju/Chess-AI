@@ -43,9 +43,9 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 	}
 
 	// En passant
-	if (movementDirection == -1 && y == 3 && std::abs(gameState.upperEnPassantColumn() - x) == 1) {
+	if (gameState.upperEnPassantColumn() != -1 && movementDirection == -1 && y == 3 && std::abs(gameState.upperEnPassantColumn() - x) == 1) {
 		moves.push_back(Move(x, y, gameState.upperEnPassantColumn(), 2));
-	} else if (movementDirection == 1 && y == 4 && std::abs(gameState.lowerEnPassantColumn() - x) == 1) {
+	} else if (gameState.lowerEnPassantColumn() != -1 && movementDirection == 1 && y == 4 && std::abs(gameState.lowerEnPassantColumn() - x) == 1) {
 		moves.push_back(Move(x, y, gameState.lowerEnPassantColumn(), 5));
 	}
 
