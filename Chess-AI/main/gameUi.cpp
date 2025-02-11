@@ -14,6 +14,8 @@
 #include "pieces/queen.h"
 #include "pieces/rook.h"
 
+#include <iostream>
+
 /// <summary>
 /// Loads piece textures and adds them to the given unordered map.
 /// Sets the values of the following keys:
@@ -226,6 +228,8 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
     {
         gameState.applyMove(move);
         turn = !turn;
+
+        std::cout << "Evaluation value: " << gameState.evaluate(true) << "\n";
     }
 
     // Reset selection

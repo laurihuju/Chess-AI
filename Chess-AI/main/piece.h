@@ -74,6 +74,16 @@ public:
 	/// </summary>
 	/// <returns>Pointer to the copied piece</returns>
 	virtual Piece* clone() const = 0;
+
+	/// <summary>
+	/// The evaluation value of this piece at the given coordinates on the given GameState.
+	/// </summary>
+	/// <param name="gameState">The game state of evaluation</param>
+	/// <param name="x">The X coordinate of the piece</param>
+	/// <param name="y">The Y coordinate of the piece</param>
+	/// <returns></returns>
+	virtual int evaluationValue(const GameState& gameState, int x, int y) const = 0;
+
 };
 
 #endif

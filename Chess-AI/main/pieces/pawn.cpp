@@ -96,3 +96,7 @@ bool Pawn::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 Piece* Pawn::clone() const {
 	return new Pawn(isWhite());
 }
+
+int Pawn::evaluationValue(const GameState& gameState, int x, int y) const {
+	return 1;
+}

@@ -49,3 +49,7 @@ bool King::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 Piece* King::clone() const {
 	return new King(isWhite());
 }
+
+int King::evaluationValue(const GameState& gameState, int x, int y) const {
+	return 100;
+}
