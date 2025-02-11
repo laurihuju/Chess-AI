@@ -298,6 +298,10 @@ bool GameState::isThreatened(bool isWhite, int x, int y) const {
     return false;
 }
 
+int GameState::evaluate(bool isWhite) const {
+    return 0;
+}
+
 bool GameState::upperLeftCastlingPossible() const {
 	return _upperLeftCastlingPossible;
 }

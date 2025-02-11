@@ -144,6 +144,14 @@ public:
 	bool isThreatened(bool isWhite, int x, int y) const;
 
 	/// <summary>
+	/// Evaluates this GameState for the given color.
+	/// Higher evaluation value means this game state is better for the given color
+	/// and lower means this game state is worse for the given color.
+	/// </summary>If the function should evaluate from the perspective of white</param>
+	/// <returns>The evaluation value</returns>
+	int evaluate(bool isWhite) const;
+
+	/// <summary>
 	/// Checks if upper left castling is still possible in this game state.
 	/// Does not check if there is space for castling or if the squares are threatened.
 	/// </summary>
