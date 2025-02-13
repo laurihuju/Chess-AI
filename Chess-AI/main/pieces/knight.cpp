@@ -4,6 +4,21 @@
 #include "../move.h"
 #include "../gameState/gameState.h"
 
+/// <summary>
+/// The additions and reductions of the value of white knight at different positions.
+/// </summary>
+int knightValueAdditions[8][8] =
+{
+	{-50, -40, -30, -30, -30, -30, -40, -50},
+	{-40, -20, 0, 0, 0, 0, -20, -40},
+	{-30, 0, 10, 15, 15, 10, 0, -30},
+	{-30, 5, 15, 20, 20, 15, 5, -30},
+	{-30, 0, 15, 20, 20, 15, 0, -30},
+	{-30, 5, 10, 15, 15, 10, 5, -30},
+	{-40, -20, 0, 5, 5, 0, -20, -40},
+	{-50, -40, -30, -30, -30, -30, -40, -50}
+};
+
 Knight::Knight(bool isWhite) : Piece(isWhite) {}
 
 void Knight::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
@@ -31,5 +46,5 @@ Piece* Knight::clone() const {
 }
 
 int Knight::evaluationValue(const GameState& gameState, int x, int y) const {
-	return 3;
+	return 300 + knightValueAdditions[isWhite() ? y : 7 - y][x];
 }

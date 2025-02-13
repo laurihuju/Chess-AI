@@ -3,6 +3,21 @@
 #include "../move.h"
 #include "../gameState/gameState.h"
 
+/// <summary>
+/// The additions and reductions of the value of white rook at different positions.
+/// </summary>
+int rookValueAdditions[8][8] =
+{
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{5, 10, 10, 10, 10, 10, 10, 5},
+	{-5, 0, 0, 0, 0, 0, 0, -5},
+	{-5, 0, 0, 0, 0, 0, 0, -5},
+	{-5, 0, 0, 0, 0, 0, 0, -5},
+	{-5, 0, 0, 0, 0, 0, 0, -5},
+	{-5, 0, 0, 0, 0, 0, 0, -5},
+	{0, 0, 0, 5, 5, 0, 0, 0}
+};
+
 Rook::Rook(bool isWhite) : Piece(isWhite) {}
 
 void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
@@ -61,5 +76,5 @@ Piece* Rook::clone() const {
 }
 
 int Rook::evaluationValue(const GameState& gameState, int x, int y) const {
-	return 5;
+	return 500 + rookValueAdditions[isWhite() ? y : 7 - y][x];
 }

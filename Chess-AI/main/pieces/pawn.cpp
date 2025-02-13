@@ -5,6 +5,21 @@
 #include "../piece.h"
 #include "../gameState/gameState.h"
 
+/// <summary>
+/// The additions and reductions of the value of white pawn at different positions.
+/// </summary>
+int pawnValueAdditions[8][8] =
+{
+	{0, 0, 0, 0, 0, 0, 0, 0},
+	{50, 50, 50, 50, 50, 50, 50, 50},
+	{10, 10, 20, 30, 30, 20, 10, 10},
+	{5, 5, 10, 25, 25, 10, 5, 5},
+	{0, 0, 0, 20, 20, 0, 0, 0},
+	{5, -5, -10, 0, 0, -10, -5, 5},
+	{5, 10, 10, -20, -20, 10, 10, 5},
+	{0, 0, 0, 0, 0, 0, 0, 0}
+};
+
 Pawn::Pawn(bool isWhite) : Piece(isWhite) {}
 
 void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
@@ -98,5 +113,5 @@ Piece* Pawn::clone() const {
 }
 
 int Pawn::evaluationValue(const GameState& gameState, int x, int y) const {
-	return 1;
+	return 100 + pawnValueAdditions[isWhite() ? y : 7 - y][x];
 }

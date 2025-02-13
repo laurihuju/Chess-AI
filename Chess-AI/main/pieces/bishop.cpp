@@ -4,6 +4,21 @@
 #include "../move.h"
 #include "../gameState/gameState.h"
 
+/// <summary>
+/// The additions and reductions of the value of white bishop at different positions.
+/// </summary>
+int bishopValueAdditions[8][8] =
+{
+	{-20, -10, -10, -10, -10, -10, -10, -20},
+	{-10, 0, 0, 0, 0, 0, 0, -10},
+	{-10, 0, 5, 10, 10, 5, 0, -10},
+	{-10, 5, 5, 10, 10, 5, 5, -10},
+	{-10, 0, 10, 10, 10, 10, 0, -10},
+	{-10, 10, 10, 10, 10, 10, 10, -10},
+	{-10, 5, 0, 0, 0, 0, 5, -10},
+	{-20, -10, -10, -10, -10, -10, -10, -20}
+};
+
 Bishop::Bishop(bool isWhite) : Piece(isWhite) {}
 
 void Bishop::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
@@ -63,5 +78,5 @@ Piece* Bishop::clone() const {
 }
 
 int Bishop::evaluationValue(const GameState& gameState, int x, int y) const {
-	return 3;
+	return 300 + bishopValueAdditions[isWhite() ? y : 7 - y][x];
 }

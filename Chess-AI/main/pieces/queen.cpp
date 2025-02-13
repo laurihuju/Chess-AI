@@ -3,6 +3,21 @@
 #include "../move.h"
 #include "../gameState/gameState.h"
 
+/// <summary>
+/// The additions and reductions of the value of white queen at different positions.
+/// </summary>
+int queenValueAdditions[8][8] =
+{
+	{-20, -10, -10, -5, -5, -10, -10, -20},
+	{-10, 0, 0, 0, 0, 0, 0, -10},
+	{-10, 0, 5, 5, 5, 5, 0, -10},
+	{-5, 0, 5, 5, 5, 5, 0, -5},
+	{0, 0, 5, 5, 5, 5, 0, -5},
+	{-10, 5, 5, 5, 5, 5, 0, -10},
+	{-10, 0, 5, 0, 0, 0, 0, -10},
+	{-20, -10, -10, -5, -5, -10, -10, -20}
+};
+
 Queen::Queen(bool isWhite) : Bishop(isWhite), Rook(isWhite), Piece(isWhite) {}
 
 void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
@@ -22,5 +37,5 @@ Piece* Queen::clone() const {
 }
 
 int Queen::evaluationValue(const GameState& gameState, int x, int y) const {
-	return 9;
+	return 900 + queenValueAdditions[isWhite() ? y : 7 - y][x];
 }
