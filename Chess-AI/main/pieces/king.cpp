@@ -3,6 +3,40 @@
 #include "king.h"
 #include "../move.h"
 #include "../gameState/gameState.h"
+#include "queen.h"
+#include "pawn.h"
+#include "bishop.h"
+#include "knight.h"
+
+/// <summary>
+/// The additions and reductions of the value of white king at different positions in the middle game.
+/// </summary>
+int middleKingValueAdditions[8][8] =
+{
+	{-30, -40, -40, -50, -50, -40, -40, -30},
+	{-30, -40, -40, -50, -50, -40, -40, -30},
+	{-30, -40, -40, -50, -50, -40, -40, -30},
+	{-30, -40, -40, -50, -50, -40, -40, -30},
+	{-20, -30, -30, -40, -40, -30, -30, -20},
+	{-10, -20, -20, -20, -20, -20, -20, -10},
+	{20, 20, 0, 0, 0, 0, 20, 20},
+	{20, 30, 10, 0, 0, 10, 30, 20}
+};
+
+/// <summary>
+/// The additions and reductions of the value of white king at different positions in the end game.
+/// </summary>
+int endKingValueAdditions[8][8] =
+{
+	{-50, -40, -30, -20, -20, -30, -40, -50},
+	{-30, -20, -10, 0, 0, -10, -20, -30},
+	{-30, -10, 20, 30, 30, 20, -10, -30},
+	{-30, -10, 30, 40, 40, 30, -10, -30},
+	{-30, -10, 30, 40, 40, 30, -10, -30},
+	{-30, -10, 20, 30, 30, 20, -10, -30},
+	{-30, -30, 0, 0, 0, 0, -30, -30},
+	{-50, -30, -30, -30, -30, -30, -30, -50}
+};
 
 King::King(bool isWhite) : Piece(isWhite) {}
 
@@ -51,5 +85,48 @@ Piece* King::clone() const {
 }
 
 int King::evaluationValue(const GameState& gameState, int x, int y) const {
-	return 100;
+	int whitePieces = 0; // White pieces (other than pawns)
+	int whiteMinorPieces = 0; // White minor pieces
+	bool whiteQueenExists = false; // If white queen exists
+	int blackPieces = 0; // Black pieces (other than pawns)
+	int blackMinorPieces = 0; // Black minor pieces
+	bool blackQueenExists = false; // If black queen exists
+
+	for (int i = 0; i < 8; i++) {
+		for (int j = 0; j < 8; j++) {
+			Piece* currentPiece = gameState.getPieceAt(i, j);
+			if (currentPiece == 0 || dynamic_cast<Pawn*>(currentPiece) != 0) {
+				continue;
+			}
+
+			bool isQueen = dynamic_cast<Queen*>(currentPiece) != 0;
+			bool isMinorPiece = dynamic_cast<Bishop*>(currentPiece) != 0 || dynamic_cast<Knight*>(currentPiece) != 0;
+
+			if (currentPiece->isWhite()) {
+				if (isQueen) {
+					whiteQueenExists = true;
+				}
+				else if (isMinorPiece) {
+					whiteMinorPieces++;
+				}
+
+				whitePieces++;
+			}
+			else {
+				if (isQueen) {
+					blackQueenExists = true;
+				}
+				else if (isMinorPiece) {
+					blackMinorPieces++;
+				}
+
+				blackPieces++;
+			}
+
+		}
+	}
+
+	bool endGame = (!whiteQueenExists || whitePieces == 0 || (whitePieces == 1 && whiteMinorPieces == 1)) && (!blackQueenExists || blackPieces == 0 || (blackPieces == 1 && blackMinorPieces == 1));
+
+	return !endGame ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
 }
