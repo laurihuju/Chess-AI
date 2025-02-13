@@ -13,6 +13,7 @@
 #include "pieces/pawn.h"
 #include "pieces/queen.h"
 #include "pieces/rook.h"
+#include "chessAI.h"
 
 #include <iostream>
 
@@ -126,6 +127,15 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
 }
 
 void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
+    // AI's turn (black)
+    if (!turn) {
+        Move aiMove = ChessAI::findBestMove(gameState, false, 4); // Depth 3 is the best that has an acceptable runtime.
+        gameState.applyMove(aiMove);
+        turn = !turn;
+        std::cout << "Evaluation value: " << gameState.evaluate(true) << "\n";
+        return;
+    }
+
     if (!IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         return;
     }

@@ -57,6 +57,9 @@
     <ClCompile Include="main\gameUi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main\chessAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gameState\gameState.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\gameUi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\chessAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
