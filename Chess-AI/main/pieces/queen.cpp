@@ -20,6 +20,10 @@ int queenValueAdditions[8][8] =
 
 Queen::Queen(bool isWhite) : Bishop(isWhite), Rook(isWhite), Piece(isWhite) {}
 
+PieceType Queen::getType() const {
+	return PieceType::Queen;
+}
+
 void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Get diagonal moves from Bishop
 	Bishop::possibleMoves(moves, x, y, gameState);

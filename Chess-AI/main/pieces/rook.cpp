@@ -20,6 +20,10 @@ int rookValueAdditions[8][8] =
 
 Rook::Rook(bool isWhite) : Piece(isWhite) {}
 
+PieceType Rook::getType() const {
+	return PieceType::Rook;
+}
+
 void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Directions: up, down, left, right
 	int directions[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };

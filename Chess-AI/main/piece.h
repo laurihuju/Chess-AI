@@ -7,6 +7,19 @@ class Move;
 class GameState;
 
 /// <summary>
+/// Enum class describing piece types.
+/// These are used for efficient type checking without RTTI.
+/// </summary>
+enum class PieceType {
+	Bishop,
+	King,
+	Knight,
+	Pawn,
+	Queen,
+	Rook
+};
+
+/// <summary>
 /// An abstract class that describes a basic chess piece with only color.
 /// </summary>
 class Piece {
@@ -48,6 +61,12 @@ public:
 	/// </summary>
 	/// <returns>True if the piece is white</returns>
 	bool isWhite() const;
+
+	/// <summary>
+	/// The PieceType of this piece.
+	/// </summary>
+	/// <returns></returns>
+	virtual PieceType getType() const = 0;
 
 	/// <summary>
 	/// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.

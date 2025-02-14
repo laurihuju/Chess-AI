@@ -21,6 +21,10 @@ int bishopValueAdditions[8][8] =
 
 Bishop::Bishop(bool isWhite) : Piece(isWhite) {}
 
+PieceType Bishop::getType() const {
+	return PieceType::Bishop;
+}
+
 void Bishop::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Directions: top-right, top-left, bottom-right, bottom-left
 	int directions[4][2] = { {-1,1}, {-1,-1}, {1,1}, {1,-1} };
