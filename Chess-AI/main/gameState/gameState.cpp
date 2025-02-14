@@ -261,12 +261,13 @@ std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) const {
     }
 
     std::vector<GameState> newGameStates;
+    newGameStates.reserve(moves.size());
     for (int i = 0; i < moves.size(); i++) {
-        GameState newGameState(*this);
-        newGameState.applyMove(moves[i]);
+        newGameStates.emplace_back(*this);
+        newGameStates.back().applyMove(moves[i]);
 
-        if (!newGameState.isCheck(isWhite)) {
-            newGameStates.push_back(newGameState);
+        if (newGameStates.back().isCheck(isWhite)) {
+            newGameStates.pop_back();
         }
     }
     
