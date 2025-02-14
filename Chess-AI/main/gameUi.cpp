@@ -1,6 +1,8 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <chrono>
+#include <iostream>
 
 #include "raylib.h"
 
@@ -14,8 +16,6 @@
 #include "pieces/queen.h"
 #include "pieces/rook.h"
 #include "chessAI.h"
-
-#include <iostream>
 
 /// <summary>
 /// Loads piece textures and adds them to the given unordered map.
@@ -127,12 +127,17 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
 }
 
 void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
-    // AI's turn (black)
-    if (!turn) {
-        Move aiMove = ChessAI::findBestMove(gameState, false, 4); // Depth 3 is the best that has an acceptable runtime.
+    // Use AI to complete the move when pressing space
+    if (IsKeyPressed(KEY_SPACE)) {
+        auto startTime = std::chrono::high_resolution_clock::now();
+        Move aiMove = ChessAI::findBestMove(gameState, turn, 4); // Depth 4 is the best that has an acceptable runtime.
+        auto endTime = std::chrono::high_resolution_clock::now();
+        
+        std::cout << "Calculation time: " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms\n";
+        std::cout << (turn ? "White" : "Black") << ": (" << aiMove.x1() << "; " << aiMove.y1() << ") -> (" << aiMove.x2() << "; " << aiMove.y2() << ")" << "\n"; // Print the move for debugging
+
         gameState.applyMove(aiMove);
         turn = !turn;
-        std::cout << "Evaluation value: " << gameState.evaluate(true) << "\n";
         return;
     }
 
