@@ -3,10 +3,6 @@
 #include "king.h"
 #include "../move.h"
 #include "../gameState/gameState.h"
-#include "queen.h"
-#include "pawn.h"
-#include "bishop.h"
-#include "knight.h"
 
 /// <summary>
 /// The additions and reductions of the value of white king at different positions in the middle game.
@@ -39,6 +35,10 @@ int endKingValueAdditions[8][8] =
 };
 
 King::King(bool isWhite) : Piece(isWhite) {}
+
+PieceType King::getType() const {
+	return PieceType::King;
+}
 
 void King::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Directions: up, down, left, right
@@ -95,12 +95,12 @@ int King::evaluationValue(const GameState& gameState, int x, int y) const {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			Piece* currentPiece = gameState.getPieceAt(i, j);
-			if (currentPiece == 0 || dynamic_cast<Pawn*>(currentPiece) != 0) {
+			if (currentPiece == 0 || currentPiece->getType() == PieceType::Pawn) {
 				continue;
 			}
 
-			bool isQueen = dynamic_cast<Queen*>(currentPiece) != 0;
-			bool isMinorPiece = dynamic_cast<Bishop*>(currentPiece) != 0 || dynamic_cast<Knight*>(currentPiece) != 0;
+			bool isQueen = currentPiece->getType() == PieceType::Queen;
+			bool isMinorPiece = currentPiece->getType() == PieceType::Bishop || currentPiece->getType() == PieceType::Knight;
 
 			if (currentPiece->isWhite()) {
 				if (isQueen) {

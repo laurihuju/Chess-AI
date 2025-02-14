@@ -100,8 +100,7 @@ public:
 	/// <param name="isWhite">Information about if the king to find is white</param>
 	/// <param name="x">The variable where the X coordinate of the king will be set</param>
 	/// <param name="y">The variable where the Y coordinate of the king will be set</param>
-	/// <returns>The pointer to the king, or nullptr if the king was not found.</returns>
-	King* findKing(bool isWhite, int& x, int& y) const;
+	void findKing(bool isWhite, int& x, int& y) const;
 
 	/// <summary>
 	/// Prints the board content to the console.

@@ -21,6 +21,10 @@ int knightValueAdditions[8][8] =
 
 Knight::Knight(bool isWhite) : Piece(isWhite) {}
 
+PieceType Knight::getType() const {
+	return PieceType::Knight;
+}
+
 void Knight::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Possible moves for a knight
 	int directions[8][2] = { {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1} };
