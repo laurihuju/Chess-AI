@@ -24,6 +24,10 @@ PieceType Rook::getType() const {
 	return PieceType::Rook;
 }
 
+char Rook::gamePhaseInfluence() const {
+	return 2;
+}
+
 void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Directions: up, down, left, right
 	int directions[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
@@ -73,10 +77,6 @@ bool Rook::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 	}
 
 	return false;
-}
-
-Piece* Rook::clone() const {
-	return new Rook(isWhite());
 }
 
 int Rook::evaluationValue(const GameState& gameState, int x, int y) const {

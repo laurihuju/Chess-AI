@@ -24,6 +24,10 @@ PieceType Queen::getType() const {
 	return PieceType::Queen;
 }
 
+char Queen::gamePhaseInfluence() const {
+	return 4;
+}
+
 void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Get diagonal moves from Bishop
 	Bishop::possibleMoves(moves, x, y, gameState);
@@ -34,10 +38,6 @@ void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameStat
 
 bool Queen::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
 	return Bishop::threatensSquare(ownX, ownY, squareX, squareY, gameState) || Rook::threatensSquare(ownX, ownY, squareX, squareY, gameState);
-}
-
-Piece* Queen::clone() const {
-	return new Queen(isWhite());
 }
 
 int Queen::evaluationValue(const GameState& gameState, int x, int y) const {

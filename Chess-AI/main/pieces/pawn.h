@@ -9,6 +9,7 @@ class GameState;
 
 /// <summary>
 /// A class that describes a pawn piece.
+/// The class is immutable, and any child class should be immutable.
 /// </summary>
 class Pawn : public Piece {
 
@@ -24,6 +25,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	PieceType getType() const override;
+
+	/// <summary>
+	/// The influence of this piece to the game phase.
+	/// </summary>
+	/// <returns></returns>
+	char gamePhaseInfluence() const override;
 
 	/// <summary>
 	/// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.
@@ -44,12 +51,6 @@ public:
 	/// <param name="gameState"></param>
 	/// <returns></returns>
 	bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const override;
-
-	/// <summary>
-	/// Creates a copy of this piece.
-	/// </summary>
-	/// <returns>Pointer to the copied piece</returns>
-	Piece* clone() const override;
 
 	/// <summary>
 	/// The evaluation value of this piece at the given coordinates on the given GameState.

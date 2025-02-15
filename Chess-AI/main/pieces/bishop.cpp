@@ -25,6 +25,10 @@ PieceType Bishop::getType() const {
 	return PieceType::Bishop;
 }
 
+char Bishop::gamePhaseInfluence() const {
+	return 1;
+}
+
 void Bishop::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Directions: top-right, top-left, bottom-right, bottom-left
 	int directions[4][2] = { {-1,1}, {-1,-1}, {1,1}, {1,-1} };
@@ -75,10 +79,6 @@ bool Bishop::threatensSquare(int ownX, int ownY, int squareX, int squareY, const
 	}
 
 	return false;
-}
-
-Piece* Bishop::clone() const {
-	return new Bishop(isWhite());
 }
 
 int Bishop::evaluationValue(const GameState& gameState, int x, int y) const {

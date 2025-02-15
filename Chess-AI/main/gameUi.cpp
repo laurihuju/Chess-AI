@@ -129,18 +129,26 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
 void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
     // Use AI to complete the move when pressing space
     if (IsKeyPressed(KEY_SPACE)) {
+        // Find the best move and calculate the calculation time
         auto startTime = std::chrono::high_resolution_clock::now();
         Move aiMove = ChessAI::findBestMove(gameState, turn, 4); // Depth 4 is the best that has an acceptable runtime.
         auto endTime = std::chrono::high_resolution_clock::now();
-        
+
+        // Print debugging data
         std::cout << "Calculation time: " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms\n";
-        std::cout << (turn ? "White" : "Black") << ": (" << aiMove.x1() << "; " << aiMove.y1() << ") -> (" << aiMove.x2() << "; " << aiMove.y2() << ")" << "\n"; // Print the move for debugging
+        std::cout << (turn ? "White" : "Black") << ": (" << aiMove.x1() << "; " << aiMove.y1() << ") -> (" << aiMove.x2() << "; " << aiMove.y2() << ")" << "\n";
+
+        // If AI returned an empty move, there are no moves available
+        if (aiMove == Move(0, 0, 0, 0)) {
+            return;
+        }
 
         gameState.applyMove(aiMove);
         turn = !turn;
         return;
     }
 
+    // Handle mouse left click input
     if (!IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
         return;
     }
@@ -173,6 +181,17 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
             // There are no possible moves if moving piece at wrong turn
             if (selectedPiece->isWhite() == turn) {
                 selectedPiece->possibleMoves(possibleMoves, file, rank, gameState);
+
+                // Do not show moves that would lead the player to check
+                for (int i = 0; i < possibleMoves.size(); i++) {
+                    GameState testState(gameState);
+                    testState.applyMove(possibleMoves[i]);
+
+                    if (testState.isCheck(turn)) {
+                        possibleMoves.erase(possibleMoves.begin() + i);
+                        i--;
+                    }
+                }
             }
         }
 
@@ -228,17 +247,14 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
 
     // Validate move
     bool valid = false;
-    GameState newGameState(gameState);
-    newGameState.applyMove(move);
-    auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
-    for (const auto& state : possibleStates)
-    {
-        if (state == newGameState)
-        {
+
+    for (int i = 0; i < possibleMoves.size(); i++) {
+        if (possibleMoves[i] == move) {
             valid = true;
             break;
         }
     }
+
     if (valid)
     {
         gameState.applyMove(move);

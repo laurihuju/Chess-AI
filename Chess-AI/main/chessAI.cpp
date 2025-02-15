@@ -9,7 +9,8 @@ int ChessAI::bestValue;
 int ChessAI::bestValueGameStateIndex;
 
 Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
-	std::vector<GameState> possibleStates = state.possibleNewGameStates(isWhite);
+	std::vector<GameState> possibleStates;
+	state.possibleNewGameStates(possibleStates, isWhite);
 	if (possibleStates.empty()) {
 		return Move(0, 0, 0, 0); // Return empty move as there are no moves available
 	}
@@ -76,7 +77,8 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
 		return state.evaluate(playerIsWhite);
 	}
 
-	std::vector<GameState> possibleStates = state.possibleNewGameStates(isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
+	std::vector<GameState> possibleStates;
+	state.possibleNewGameStates(possibleStates, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
 
 	// If no moves are available, this might be checkmate or stalemate
 	if (possibleStates.empty()) {

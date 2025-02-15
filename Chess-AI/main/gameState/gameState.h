@@ -50,6 +50,11 @@ protected:
 	/// </summary>
 	int _lowerEnPassantColumn = -1;
 
+	/// <summary>
+	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
+	/// </summary>
+	char _gamePhase;
+
 public:
 	GameState& operator=(const GameState&) = delete;
 
@@ -68,13 +73,6 @@ public:
 	bool operator!=(const GameState& other) const;
 
 	/// <summary>
-	/// Creates a copy of the given GameState.
-	/// Creates new piece copies for the new GameState.
-	/// </summary>
-	/// <param name="other">The GameState to copy</param>
-	GameState(const GameState& other);
-
-	/// <summary>
 	/// Creates a new GameState with empty board.
 	/// </summary>
 	GameState();
@@ -87,8 +85,7 @@ public:
 	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.
 	/// Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically.
-	/// Handles piece promotion if the move has specified the promotion piece.
-	/// The new promoted pieces are owned by this GameState.
+	/// Handles piece promotion if the move has specified the promotion piece (the promotion piece instance will be searched from the CurrentGameState instance).
 	/// Does not check if the move is valid!
 	/// </summary>
 	/// <param name="move">The move to apply</param>
@@ -123,7 +120,15 @@ public:
 	/// </summary>
 	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
 	/// <returns>A vector containing all possible new game states with one move of the given color</returns>
-	std::vector<GameState> possibleNewGameStates(bool isWhite) const;
+	
+
+	/// <summary>
+	/// Generates all possible new game states that can be created from this game state with one
+	/// move of the given color, and adds them to the newGameStates vector.
+	/// </summary>
+	/// <param name="newGameStates">The vector where the new game states will be added</param>
+	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
+	void possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const;
 
 	/// <summary>
 	/// Checks if the king of the given color is in check.
@@ -194,6 +199,12 @@ public:
 	/// </summary>
 	/// <returns>The column where lower en passant move is possible to do at, or -1 if lower en passant is not possible</returns>
 	int lowerEnPassantColumn() const;
+
+	/// <summary>
+	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
+	/// </summary>
+	/// <returns></returns>
+	char gamePhase() const;
 
 };
 
