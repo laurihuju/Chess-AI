@@ -57,6 +57,20 @@ private:
 
 public:
 	/// <summary>
+	/// Checks if the other move is the same as this move.
+	/// </summary>
+	/// <param name="other">The other move</param>
+	/// <returns>True if the other move is the same as this move</returns>
+	bool operator==(const Move& other) const;
+
+	/// <summary>
+	/// Checks if the other move is the same as this move.
+	/// </summary>
+	/// <param name="other">The other move</param>
+	/// <returns>True if the other move is not the same as this move</returns>
+	bool operator!=(const Move& other) const;
+
+	/// <summary>
 	/// Creates a new move with 'from' and 'to' coordinates.
 	/// All coordinates are given as internal index coordinates.
 	/// </summary>

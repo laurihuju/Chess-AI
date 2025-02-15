@@ -1,6 +1,14 @@
 #include <string>
 #include "move.h"
 
+bool Move::operator==(const Move& other) const {
+	return x1() == other.x1() && x2() == other.x2() && y1() == other.y1() && y2() == other.y2() && promotionPiece() == other.promotionPiece();
+}
+
+bool Move::operator!=(const Move& other) const {
+	return !(*this == other);
+}
+
 Move::Move(int x1, int y1, int x2, int y2) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), _promotionPiece(-1) {}
 
 Move::Move(int x1, int y1, int x2, int y2, char promotionPiece) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), _promotionPiece(promotionPiece) {}
