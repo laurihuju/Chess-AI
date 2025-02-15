@@ -79,6 +79,15 @@ CurrentGameState::CurrentGameState() {
     _board[7][5] = whiteBishop;
     _board[7][6] = whiteKnight;
     _board[7][7] = whiteRook;
+
+    // Calculate the game phase value
+	_gamePhase = whiteBishop->gamePhaseInfluence() * 2 + blackBishop->gamePhaseInfluence() * 2
+		+ whiteKing->gamePhaseInfluence() + blackKing->gamePhaseInfluence()
+		+ whiteKnight->gamePhaseInfluence() * 2 + blackKnight->gamePhaseInfluence() * 2
+		+ whitePawn->gamePhaseInfluence() * 8 + blackPawn->gamePhaseInfluence() * 8
+		+ whiteQueen->gamePhaseInfluence() + blackQueen->gamePhaseInfluence()
+		+ whiteRook->gamePhaseInfluence() * 2 + blackRook->gamePhaseInfluence() * 2;
+
 }
 
 CurrentGameState::~CurrentGameState() {

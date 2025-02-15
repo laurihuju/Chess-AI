@@ -50,6 +50,11 @@ protected:
 	/// </summary>
 	int _lowerEnPassantColumn = -1;
 
+	/// <summary>
+	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
+	/// </summary>
+	char _gamePhase;
+
 public:
 	GameState& operator=(const GameState&) = delete;
 
@@ -194,6 +199,12 @@ public:
 	/// </summary>
 	/// <returns>The column where lower en passant move is possible to do at, or -1 if lower en passant is not possible</returns>
 	int lowerEnPassantColumn() const;
+
+	/// <summary>
+	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
+	/// </summary>
+	/// <returns></returns>
+	char gamePhase() const;
 
 };
 

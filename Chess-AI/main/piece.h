@@ -70,6 +70,12 @@ public:
 	virtual PieceType getType() const = 0;
 
 	/// <summary>
+	/// The influence of this piece to the game phase.
+	/// </summary>
+	/// <returns></returns>
+	virtual char gamePhaseInfluence() const = 0;
+
+	/// <summary>
 	/// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.
 	/// </summary>
 	/// <param name="moves"></param>

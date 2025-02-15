@@ -25,6 +25,10 @@ PieceType Knight::getType() const {
 	return PieceType::Knight;
 }
 
+char Knight::gamePhaseInfluence() const {
+	return 1;
+}
+
 void Knight::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Possible moves for a knight
 	int directions[8][2] = { {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1} };

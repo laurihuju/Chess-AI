@@ -52,12 +52,17 @@ GameState::GameState() {
         }
     }
 
+    // Game phase
+    _gamePhase = 0;
+
 }
 
 GameState::~GameState() {}
 
 void GameState::applyMove(const Move& move) {
     // Handle the move and capturing
+    if (_board[move.y2()][move.x2()] != 0)
+        _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
     _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
     _board[move.y1()][move.x1()] = 0;
 
@@ -80,14 +85,20 @@ void GameState::applyMove(const Move& move) {
 		}
 
         Piece* promotionPiece = CurrentGameState::getInstance()->getPieceInstance(promotionPieceType, _board[move.y2()][move.x2()]->isWhite());
+        _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
         _board[move.y2()][move.x2()] = promotionPiece;
+        _gamePhase += _board[move.y2()][move.x2()]->gamePhaseInfluence();
     }
 
     // Handle en passant move
     if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
+            if (_board[3][move.x2()] != 0)
+                _gamePhase -= _board[3][move.x2()]->gamePhaseInfluence();
             _board[3][move.x2()] = 0;
         } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
+            if (_board[4][move.x2()] != 0)
+                _gamePhase -= _board[4][move.x2()]->gamePhaseInfluence();
             _board[4][move.x2()] = 0;
         }
     }
@@ -95,21 +106,33 @@ void GameState::applyMove(const Move& move) {
     // Handle castling move
     if (dynamic_cast<King*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
+            if (_board[0][3] != 0)
+                _gamePhase -= _board[0][3]->gamePhaseInfluence();
+
             _board[0][3] = _board[0][0];
             _board[0][0] = 0;
 
         }
         else if (move.x2() == 6 && move.y2() == 0 && upperRightCastlingPossible()) {
+            if (_board[0][5] != 0)
+                _gamePhase -= _board[0][5]->gamePhaseInfluence();
+
             _board[0][5] = _board[0][7];
             _board[0][7] = 0;
 
         }
         else if (move.x2() == 2 && move.y2() == 7 && lowerLeftCastlingPossible()) {
+            if (_board[7][3] != 0)
+                _gamePhase -= _board[7][3]->gamePhaseInfluence();
+
             _board[7][3] = _board[7][0];
             _board[7][0] = 0;
 
         }
         else if (move.x2() == 6 && move.y2() == 7 && lowerRightCastlingPossible()) {
+            if (_board[7][5] != 0)
+                _gamePhase -= _board[7][5]->gamePhaseInfluence();
+
             _board[7][5] = _board[7][7];
             _board[7][7] = 0;
 
@@ -297,4 +320,8 @@ int GameState::upperEnPassantColumn() const {
 
 int GameState::lowerEnPassantColumn() const {
     return _lowerEnPassantColumn;
+}
+
+char GameState::gamePhase() const {
+    return _gamePhase;
 }

@@ -24,6 +24,10 @@ PieceType Queen::getType() const {
 	return PieceType::Queen;
 }
 
+char Queen::gamePhaseInfluence() const {
+	return 4;
+}
+
 void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Get diagonal moves from Bishop
 	Bishop::possibleMoves(moves, x, y, gameState);

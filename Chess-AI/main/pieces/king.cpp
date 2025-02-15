@@ -40,6 +40,10 @@ PieceType King::getType() const {
 	return PieceType::King;
 }
 
+char King::gamePhaseInfluence() const {
+	return 0;
+}
+
 void King::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// Directions: up, down, left, right
 	int directions[8][2] = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 },{ -1,-1 },{ -1,1 },{ 1,-1 },{ 1,1 } };
@@ -81,48 +85,5 @@ bool King::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 }
 
 int King::evaluationValue(const GameState& gameState, int x, int y) const {
-	int whitePieces = 0; // White pieces (other than pawns)
-	int whiteMinorPieces = 0; // White minor pieces
-	bool whiteQueenExists = false; // If white queen exists
-	int blackPieces = 0; // Black pieces (other than pawns)
-	int blackMinorPieces = 0; // Black minor pieces
-	bool blackQueenExists = false; // If black queen exists
-
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-			Piece* currentPiece = gameState.getPieceAt(i, j);
-			if (currentPiece == 0 || currentPiece->getType() == PieceType::Pawn) {
-				continue;
-			}
-
-			bool isQueen = currentPiece->getType() == PieceType::Queen;
-			bool isMinorPiece = currentPiece->getType() == PieceType::Bishop || currentPiece->getType() == PieceType::Knight;
-
-			if (currentPiece->isWhite()) {
-				if (isQueen) {
-					whiteQueenExists = true;
-				}
-				else if (isMinorPiece) {
-					whiteMinorPieces++;
-				}
-
-				whitePieces++;
-			}
-			else {
-				if (isQueen) {
-					blackQueenExists = true;
-				}
-				else if (isMinorPiece) {
-					blackMinorPieces++;
-				}
-
-				blackPieces++;
-			}
-
-		}
-	}
-
-	bool endGame = (!whiteQueenExists || whitePieces == 0 || (whitePieces == 1 && whiteMinorPieces == 1)) && (!blackQueenExists || blackPieces == 0 || (blackPieces == 1 && blackMinorPieces == 1));
-
-	return !endGame ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
+	return gameState.gamePhase() > 10 ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
 }

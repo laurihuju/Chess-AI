@@ -30,6 +30,12 @@ public:
     PieceType getType() const override;
 
     /// <summary>
+    /// The influence of this piece to the game phase.
+    /// </summary>
+    /// <returns></returns>
+    char gamePhaseInfluence() const override;
+
+    /// <summary>
     /// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.
     /// </summary>
     /// <param name="moves"></param>

@@ -26,6 +26,10 @@ PieceType Pawn::getType() const {
 	return PieceType::Pawn;
 }
 
+char Pawn::gamePhaseInfluence() const {
+	return 0;
+}
+
 void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
 	// There are no possible moves when the pawn is at the top or bottom row
 	if (y == 0 || y == 7) {
