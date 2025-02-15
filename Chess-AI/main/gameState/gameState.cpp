@@ -91,7 +91,7 @@ void GameState::applyMove(const Move& move) {
     }
 
     // Handle en passant move
-    if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
+    if (_board[move.y2()][move.x2()]->getType() == PieceType::Pawn) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
             if (_board[3][move.x2()] != 0)
                 _gamePhase -= _board[3][move.x2()]->gamePhaseInfluence();
@@ -104,7 +104,7 @@ void GameState::applyMove(const Move& move) {
     }
 
     // Handle castling move
-    if (dynamic_cast<King*>(_board[move.y2()][move.x2()]) != 0) {
+    if (_board[move.y2()][move.x2()]->getType() == PieceType::King) {
         if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
             if (_board[0][3] != 0)
                 _gamePhase -= _board[0][3]->gamePhaseInfluence();
@@ -143,7 +143,7 @@ void GameState::applyMove(const Move& move) {
     _upperEnPassantColumn = -1;
     _lowerEnPassantColumn = -1;
 
-    if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
+    if (_board[move.y2()][move.x2()]->getType() == PieceType::Pawn) {
         if (move.y2() == 3 && move.y2() - move.y1() == 2) {
             _upperEnPassantColumn = move.x2();
         }
