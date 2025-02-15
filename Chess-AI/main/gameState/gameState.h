@@ -68,13 +68,6 @@ public:
 	bool operator!=(const GameState& other) const;
 
 	/// <summary>
-	/// Creates a copy of the given GameState.
-	/// Creates new piece copies for the new GameState.
-	/// </summary>
-	/// <param name="other">The GameState to copy</param>
-	GameState(const GameState& other);
-
-	/// <summary>
 	/// Creates a new GameState with empty board.
 	/// </summary>
 	GameState();
@@ -87,8 +80,7 @@ public:
 	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.
 	/// Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically.
-	/// Handles piece promotion if the move has specified the promotion piece.
-	/// The new promoted pieces are owned by this GameState.
+	/// Handles piece promotion if the move has specified the promotion piece (the promotion piece instance will be searched from the CurrentGameState instance).
 	/// Does not check if the move is valid!
 	/// </summary>
 	/// <param name="move">The move to apply</param>

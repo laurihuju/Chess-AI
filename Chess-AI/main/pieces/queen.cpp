@@ -36,10 +36,6 @@ bool Queen::threatensSquare(int ownX, int ownY, int squareX, int squareY, const 
 	return Bishop::threatensSquare(ownX, ownY, squareX, squareY, gameState) || Rook::threatensSquare(ownX, ownY, squareX, squareY, gameState);
 }
 
-Piece* Queen::clone() const {
-	return new Queen(isWhite());
-}
-
 int Queen::evaluationValue(const GameState& gameState, int x, int y) const {
 	return 900 + queenValueAdditions[isWhite() ? y : 7 - y][x];
 }

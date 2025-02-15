@@ -45,10 +45,6 @@ bool Knight::threatensSquare(int ownX, int ownY, int squareX, int squareY, const
 	return (std::abs(ownX - squareX) == 2 && std::abs(ownY - squareY) == 1) || std::abs(ownX - squareX) == 1 && std::abs(ownY - squareY) == 2;
 }
 
-Piece* Knight::clone() const {
-	return new Knight(isWhite());
-}
-
 int Knight::evaluationValue(const GameState& gameState, int x, int y) const {
 	return 300 + knightValueAdditions[isWhite() ? y : 7 - y][x];
 }

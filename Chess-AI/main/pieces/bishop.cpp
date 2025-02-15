@@ -77,10 +77,6 @@ bool Bishop::threatensSquare(int ownX, int ownY, int squareX, int squareY, const
 	return false;
 }
 
-Piece* Bishop::clone() const {
-	return new Bishop(isWhite());
-}
-
 int Bishop::evaluationValue(const GameState& gameState, int x, int y) const {
 	return 300 + bishopValueAdditions[isWhite() ? y : 7 - y][x];
 }

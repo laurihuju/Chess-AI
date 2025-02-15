@@ -2,6 +2,7 @@
 #include <codecvt>
 #include <iostream>
 #include "gameState.h"
+#include "currentGameState.h"
 #include "../move.h"
 
 #include "../pieces/rook.h"
@@ -43,27 +44,6 @@ bool GameState::operator!=(const GameState& other) const {
     return !(*this == other);
 }
 
-GameState::GameState(const GameState& other) {
-    _upperLeftCastlingPossible = other._upperLeftCastlingPossible;
-    _upperRightCastlingPossible = other._upperRightCastlingPossible;
-    _lowerLeftCastlingPossible = other._lowerLeftCastlingPossible;
-    _lowerRightCastlingPossible = other._lowerRightCastlingPossible;
-    _upperEnPassantColumn = other._upperEnPassantColumn;
-    _lowerEnPassantColumn = other._lowerEnPassantColumn;
-
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (other._board[i][j] == 0) {
-                _board[i][j] = 0;
-                continue;
-            }
-
-            _board[i][j] = other._board[i][j]->clone();
-        }
-    }
-
-}
-
 GameState::GameState() {
     // Board content
     for (int i = 0; i < 8; i++) {
@@ -74,50 +54,40 @@ GameState::GameState() {
 
 }
 
-GameState::~GameState() {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            delete _board[i][j];
-        }
-    }
-
-}
+GameState::~GameState() {}
 
 void GameState::applyMove(const Move& move) {
     // Handle the move and capturing
-    delete _board[move.y2()][move.x2()];
     _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
     _board[move.y1()][move.x1()] = 0;
 
     // Handle promotion
-    if (move.promotionPiece() == 'q') {
-        Queen* promotionPiece = new Queen(_board[move.y2()][move.x2()]->isWhite());
-        delete _board[move.y2()][move.x2()];
-        _board[move.y2()][move.x2()] = promotionPiece;
-    }
-    else if (move.promotionPiece() == 'n') {
-        Knight* promotionPiece = new Knight(_board[move.y2()][move.x2()]->isWhite());
-        delete _board[move.y2()][move.x2()];
-        _board[move.y2()][move.x2()] = promotionPiece;
-    }
-    else if (move.promotionPiece() == 'b') {
-        Bishop* promotionPiece = new Bishop(_board[move.y2()][move.x2()]->isWhite());
-        delete _board[move.y2()][move.x2()];
-        _board[move.y2()][move.x2()] = promotionPiece;
-    }
-    else if (move.promotionPiece() == 'r') {
-        Rook* promotionPiece = new Rook(_board[move.y2()][move.x2()]->isWhite());
-        delete _board[move.y2()][move.x2()];
+    if (move.promotionPiece() != -1) {
+        PieceType promotionPieceType;
+		switch (move.promotionPiece()) {
+		case 'n':
+			promotionPieceType = PieceType::Knight;
+			break;
+        case 'b':
+            promotionPieceType = PieceType::Bishop;
+            break;
+        case 'r':
+            promotionPieceType = PieceType::Rook;
+            break;
+        default:
+            promotionPieceType = PieceType::Queen;
+            break;
+		}
+
+        Piece* promotionPiece = CurrentGameState::getInstance()->getPieceInstance(promotionPieceType, _board[move.y2()][move.x2()]->isWhite());
         _board[move.y2()][move.x2()] = promotionPiece;
     }
 
     // Handle en passant move
     if (dynamic_cast<Pawn*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
-            delete _board[3][move.x2()];
             _board[3][move.x2()] = 0;
         } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
-            delete _board[4][move.x2()];
             _board[4][move.x2()] = 0;
         }
     }
@@ -125,25 +95,21 @@ void GameState::applyMove(const Move& move) {
     // Handle castling move
     if (dynamic_cast<King*>(_board[move.y2()][move.x2()]) != 0) {
         if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
-            delete _board[0][3];
             _board[0][3] = _board[0][0];
             _board[0][0] = 0;
 
         }
         else if (move.x2() == 6 && move.y2() == 0 && upperRightCastlingPossible()) {
-            delete _board[0][5];
             _board[0][5] = _board[0][7];
             _board[0][7] = 0;
 
         }
         else if (move.x2() == 2 && move.y2() == 7 && lowerLeftCastlingPossible()) {
-            delete _board[7][3];
             _board[7][3] = _board[7][0];
             _board[7][0] = 0;
 
         }
         else if (move.x2() == 6 && move.y2() == 7 && lowerRightCastlingPossible()) {
-            delete _board[7][5];
             _board[7][5] = _board[7][7];
             _board[7][7] = 0;
 

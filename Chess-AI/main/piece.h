@@ -21,6 +21,7 @@ enum class PieceType {
 
 /// <summary>
 /// An abstract class that describes a basic chess piece with only color.
+/// The class is immutable, and any child class should be immutable.
 /// </summary>
 class Piece {
 
@@ -28,7 +29,7 @@ private:
 	/// <summary>
 	/// Information about if the piece is white.
 	/// </summary>
-	bool _isWhite;
+	const bool _isWhite;
 
 public:
 	/// <summary>
@@ -87,12 +88,6 @@ public:
 	/// <param name="gameState"></param>
 	/// <returns></returns>
 	virtual bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const = 0;
-
-	/// <summary>
-	/// Creates a copy of this piece.
-	/// </summary>
-	/// <returns>Pointer to the copied piece</returns>
-	virtual Piece* clone() const = 0;
 
 	/// <summary>
 	/// The evaluation value of this piece at the given coordinates on the given GameState.

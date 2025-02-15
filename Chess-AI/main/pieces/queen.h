@@ -12,6 +12,7 @@ class GameState;
 /// <summary>
 /// A class that describes a queen piece.
 /// Queen is inherited from bishop and rook as it has the moves of the both piece types.
+/// The class is immutable, and any child class should be immutable.
 /// </summary>
 class Queen : public Bishop, public Rook {
 
@@ -47,12 +48,6 @@ public:
     /// <param name="gameState"></param>
     /// <returns></returns>
     bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const override;
-
-    /// <summary>
-    /// Creates a copy of this piece.
-    /// </summary>
-    /// <returns>Pointer to the copied piece</returns>
-    Piece* clone() const override;
 
     /// <summary>
     /// The evaluation value of this piece at the given coordinates on the given GameState.

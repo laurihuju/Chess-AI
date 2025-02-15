@@ -80,10 +80,6 @@ bool King::threatensSquare(int ownX, int ownY, int squareX, int squareY, const G
 	return std::abs(ownX - squareX) <= 1 && std::abs(ownY - squareY) <= 1;
 }
 
-Piece* King::clone() const {
-	return new King(isWhite());
-}
-
 int King::evaluationValue(const GameState& gameState, int x, int y) const {
 	int whitePieces = 0; // White pieces (other than pawns)
 	int whiteMinorPieces = 0; // White minor pieces

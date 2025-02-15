@@ -9,6 +9,7 @@ class GameState;
 
 /// <summary>
 /// A class that describes a king piece.
+/// The class is immutable, and any child class should be immutable.
 /// </summary>
 class King : public Piece {
 
@@ -44,13 +45,6 @@ public:
 	/// <param name="gameState"></param>
 	/// <returns></returns>
 	bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const override;
-
-
-	/// <summary>
-	/// Creates a copy of this piece.
-	/// </summary>
-	/// <returns>Pointer to the copied piece</returns>
-	Piece* clone() const override;
 
 	/// <summary>
 	/// The evaluation value of this piece at the given coordinates on the given GameState.
