@@ -123,7 +123,15 @@ public:
 	/// </summary>
 	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
 	/// <returns>A vector containing all possible new game states with one move of the given color</returns>
-	std::vector<GameState> possibleNewGameStates(bool isWhite) const;
+	
+
+	/// <summary>
+	/// Generates all possible new game states that can be created from this game state with one
+	/// move of the given color, and adds them to the newGameStates vector.
+	/// </summary>
+	/// <param name="newGameStates">The vector where the new game states will be added</param>
+	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
+	void possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const;
 
 	/// <summary>
 	/// Checks if the king of the given color is in check.

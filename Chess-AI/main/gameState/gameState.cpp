@@ -246,7 +246,7 @@ Piece* GameState::getPieceAt(int x, int y) const {
     return _board[y][x];
 }
 
-std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) const {
+void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const {
     std::vector<Move> moves;
 
     for (int i = 0; i < 8; i++) {
@@ -260,7 +260,6 @@ std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) const {
         }
     }
 
-    std::vector<GameState> newGameStates;
     newGameStates.reserve(moves.size());
     for (int i = 0; i < moves.size(); i++) {
         newGameStates.emplace_back(*this);
@@ -271,7 +270,6 @@ std::vector<GameState> GameState::possibleNewGameStates(bool isWhite) const {
         }
     }
     
-    return newGameStates;
 }
 
 bool GameState::isCheck(bool isWhite) const {

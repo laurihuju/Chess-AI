@@ -228,9 +228,13 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
 
     // Validate move
     bool valid = false;
+
     GameState newGameState(gameState);
     newGameState.applyMove(move);
-    auto possibleStates = gameState.possibleNewGameStates(movingPiece->isWhite());
+
+    std::vector<GameState> possibleStates;
+    gameState.possibleNewGameStates(possibleStates, movingPiece->isWhite());
+
     for (const auto& state : possibleStates)
     {
         if (state == newGameState)
