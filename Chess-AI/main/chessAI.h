@@ -46,14 +46,16 @@ private:
     static void runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite);
     
     /// <summary>
-    /// Recursive implementation of the Minimax algorithm.
+    /// Recursive implementation of the Minimax algorithm with Alpha-Beta pruning.
     /// </summary>
-    /// <param name="state"></param>
-    /// <param name="depth"></param>
-    /// <param name="isMaximizingPlayer"></param>
-    /// <param name="playerIsWhite"></param>
-    /// <returns></returns>
-    static int minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite);
+    /// <param name="state">Current game state</param>
+    /// <param name="depth">Current depth in the search tree</param>
+    /// <param name="isMaximizingPlayer">Whether current player is maximizing</param>
+    /// <param name="playerIsWhite">Whether the evaluating player is white</param>
+    /// <param name="alpha">Alpha value for pruning</param>
+    /// <param name="beta">Beta value for pruning</param>
+    /// <returns>Evaluation score for the current state</returns>
+    static int minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha = std::numeric_limits<int>::min(), int beta = std::numeric_limits<int>::max());
 };
 
 #endif
