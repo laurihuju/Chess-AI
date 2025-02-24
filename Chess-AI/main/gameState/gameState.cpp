@@ -26,15 +26,13 @@ bool GameState::operator==(const GameState& other) const {
     if (_lowerEnPassantColumn != other._lowerEnPassantColumn)
         return false;
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0 && other._board[i][j] == 0)
-                continue;
-            if (_board[i][j] == 0 || other._board[i][j] == 0)
-                return false;
-            if (*_board[i][j] != *other._board[i][j])
-                return false;
-        }
+    for (int i = 0; i < 64; i++) {
+        if (_board[i] == 0 && other._board[i] == 0)
+            continue;
+        if (_board[i] == 0 || other._board[i] == 0)
+            return false;
+        if (*_board[i] != *other._board[i])
+            return false;
     }
 
     return true;
@@ -46,10 +44,8 @@ bool GameState::operator!=(const GameState& other) const {
 
 GameState::GameState() {
     // Board content
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            _board[i][j] = 0;
-        }
+    for (int i = 0; i < 64; i++) {
+        _board[i] = 0;
     }
 
     // Game phase
@@ -60,11 +56,14 @@ GameState::GameState() {
 GameState::~GameState() {}
 
 void GameState::applyMove(const Move& move) {
+    int startSquareIndex = (move.y1() * 8) + move.x1();
+    int endSquareIndex = (move.y2() * 8) + move.x2();
+
     // Handle the move and capturing
-    if (_board[move.y2()][move.x2()] != 0)
-        _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
-    _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
-    _board[move.y1()][move.x1()] = 0;
+    if (_board[endSquareIndex] != 0)
+        _gamePhase -= _board[endSquareIndex]->gamePhaseInfluence();
+    _board[endSquareIndex] = _board[startSquareIndex];
+    _board[startSquareIndex] = 0;
 
     // Handle promotion
     if (move.promotionPiece() != -1) {
@@ -84,57 +83,57 @@ void GameState::applyMove(const Move& move) {
             break;
 		}
 
-        Piece* promotionPiece = CurrentGameState::getInstance()->getPieceInstance(promotionPieceType, _board[move.y2()][move.x2()]->isWhite());
-        _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
-        _board[move.y2()][move.x2()] = promotionPiece;
-        _gamePhase += _board[move.y2()][move.x2()]->gamePhaseInfluence();
+        Piece* promotionPiece = CurrentGameState::getInstance()->getPieceInstance(promotionPieceType, _board[endSquareIndex]->isWhite());
+        _gamePhase -= _board[endSquareIndex]->gamePhaseInfluence();
+        _board[endSquareIndex] = promotionPiece;
+        _gamePhase += _board[endSquareIndex]->gamePhaseInfluence();
     }
 
     // Handle en passant move
-    if (_board[move.y2()][move.x2()]->getType() == PieceType::Pawn) {
+    if (_board[endSquareIndex]->getType() == PieceType::Pawn) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
-            if (_board[3][move.x2()] != 0)
-                _gamePhase -= _board[3][move.x2()]->gamePhaseInfluence();
-            _board[3][move.x2()] = 0;
+            if (_board[24 + move.x2()] != 0)
+                _gamePhase -= _board[24 + move.x2()]->gamePhaseInfluence();
+            _board[24 + move.x2()] = 0;
         } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
-            if (_board[4][move.x2()] != 0)
-                _gamePhase -= _board[4][move.x2()]->gamePhaseInfluence();
-            _board[4][move.x2()] = 0;
+            if (_board[32 + move.x2()] != 0)
+                _gamePhase -= _board[32 + move.x2()]->gamePhaseInfluence();
+            _board[32 + move.x2()] = 0;
         }
     }
 
     // Handle castling move
-    if (_board[move.y2()][move.x2()]->getType() == PieceType::King) {
+    if (_board[endSquareIndex]->getType() == PieceType::King) {
         if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
-            if (_board[0][3] != 0)
-                _gamePhase -= _board[0][3]->gamePhaseInfluence();
+            if (_board[3] != 0)
+                _gamePhase -= _board[3]->gamePhaseInfluence();
 
-            _board[0][3] = _board[0][0];
-            _board[0][0] = 0;
+            _board[3] = _board[0];
+            _board[0] = 0;
 
         }
         else if (move.x2() == 6 && move.y2() == 0 && upperRightCastlingPossible()) {
-            if (_board[0][5] != 0)
-                _gamePhase -= _board[0][5]->gamePhaseInfluence();
+            if (_board[5] != 0)
+                _gamePhase -= _board[5]->gamePhaseInfluence();
 
-            _board[0][5] = _board[0][7];
-            _board[0][7] = 0;
+            _board[5] = _board[7];
+            _board[7] = 0;
 
         }
         else if (move.x2() == 2 && move.y2() == 7 && lowerLeftCastlingPossible()) {
-            if (_board[7][3] != 0)
-                _gamePhase -= _board[7][3]->gamePhaseInfluence();
+            if (_board[59] != 0)
+                _gamePhase -= _board[59]->gamePhaseInfluence();
 
-            _board[7][3] = _board[7][0];
-            _board[7][0] = 0;
+            _board[59] = _board[56];
+            _board[56] = 0;
 
         }
         else if (move.x2() == 6 && move.y2() == 7 && lowerRightCastlingPossible()) {
-            if (_board[7][5] != 0)
-                _gamePhase -= _board[7][5]->gamePhaseInfluence();
+            if (_board[61] != 0)
+                _gamePhase -= _board[61]->gamePhaseInfluence();
 
-            _board[7][5] = _board[7][7];
-            _board[7][7] = 0;
+            _board[61] = _board[63];
+            _board[63] = 0;
 
         }
     }
@@ -143,7 +142,7 @@ void GameState::applyMove(const Move& move) {
     _upperEnPassantColumn = -1;
     _lowerEnPassantColumn = -1;
 
-    if (_board[move.y2()][move.x2()]->getType() == PieceType::Pawn) {
+    if (_board[endSquareIndex]->getType() == PieceType::Pawn) {
         if (move.y2() == 3 && move.y2() - move.y1() == 2) {
             _upperEnPassantColumn = move.x2();
         }
@@ -178,75 +177,36 @@ void GameState::applyMove(const Move& move) {
 }
 
 void GameState::findKing(bool isWhite, int& x, int& y) const {
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
-            if (_board[j][i] == 0)
-                continue;
-            if (_board[j][i]->getType() != PieceType::King)
-                continue;
-			if (_board[j][i]->isWhite() != isWhite)
-				continue;
+    for (int i = 0; i < 64; i++) {
+        if (_board[i] == 0)
+            continue;
+        if (_board[i]->getType() != PieceType::King)
+            continue;
+        if (_board[i]->isWhite() != isWhite)
+            continue;
 
-			x = i;
-			y = j;
+        x = i - ((i / 8) * 8);
+        y = i / 8;
 
-			return;
-		}
-	}
-
-}
-
-void GameState::printBoard() const {
-    // Set the locale to support Unicode
-    std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
-
-    std::wcout << L"    0   1   2   3   4   5   6   7" << std::endl;
-    std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
-    for (int i = 0; i < 8; ++i) {
-        std::wcout << 8 - i << L" |";
-        for (int j = 0; j < 8; ++j) {
-            wchar_t pieceChar = L' ';
-            if (_board[i][j] != nullptr) {
-                if (dynamic_cast<Queen*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u265B' : L'\u2655';
-                else if (dynamic_cast<Knight*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u265E' : L'\u2658';
-                else if (dynamic_cast<Bishop*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u265D' : L'\u2657';
-                else if (dynamic_cast<Rook*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u265C' : L'\u2656';
-                else if (dynamic_cast<King*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u265A' : L'\u2654';
-                else if (dynamic_cast<Pawn*>(_board[i][j])) pieceChar = _board[i][j]->isWhite() ? L'\u265F' : L'\u2659';
-            }
-            else {
-                // Determine if the square is white or black
-                if ((i + j) % 2 == 0) {
-                    pieceChar = L'\u25A0'; // Black square
-                }
-                else {
-                    pieceChar = L'\u25A1'; // White square
-                }
-            }
-            std::wcout << L" " << pieceChar << L" |";
-        }
-        std::wcout << L" " << i << std::endl;
-        std::wcout << L"  +---+---+---+---+---+---+---+---+" << std::endl;
+        return;
     }
-    std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
+
 }
 
 Piece* GameState::getPieceAt(int x, int y) const {
-    return _board[y][x];
+    return _board[(y * 8) + x];
 }
 
 void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const {
     std::vector<Move> moves;
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0)
-                continue;
-            if (_board[i][j]->isWhite() != isWhite)
-                continue;
+    for (int i = 0; i < 64; i++) {
+        if (_board[i] == 0)
+            continue;
+        if (_board[i]->isWhite() != isWhite)
+            continue;
 
-            _board[i][j]->possibleMoves(moves, j, i, *this);
-        }
+        _board[i]->possibleMoves(moves, i - ((i / 8) * 8), i / 8, *this);
     }
 
     newGameStates.reserve(moves.size());
@@ -270,17 +230,15 @@ bool GameState::isCheck(bool isWhite) const {
 }
 
 bool GameState::isThreatened(bool isWhite, int x, int y) const {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0)
-                continue;
-            if (_board[i][j]->isWhite() == isWhite)
-                continue;
-            if (!_board[i][j]->threatensSquare(j, i, x, y, *this))
-                continue;
+    for (int i = 0; i < 64; i++) {
+        if (_board[i] == 0)
+            continue;
+        if (_board[i]->isWhite() == isWhite)
+            continue;
+        if (!_board[i]->threatensSquare(i - ((i / 8) * 8), i / 8, x, y, *this))
+            continue;
 
-            return true;
-        }
+        return true;
     }
 
     return false;
@@ -289,13 +247,11 @@ bool GameState::isThreatened(bool isWhite, int x, int y) const {
 int GameState::evaluate(bool isWhite) const {
     int evaluationValue = 0;
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0)
-                continue;
+    for (int i = 0; i < 64; i++) {
+        if (_board[i] == 0)
+            continue;
 
-            evaluationValue += _board[i][j]->evaluationValue(*this, j, i) * (_board[i][j]->isWhite() == isWhite ? 1 : -1);
-        }
+        evaluationValue += _board[i]->evaluationValue(*this, i - ((i / 8) * 8), i / 8) * (_board[i]->isWhite() == isWhite ? 1 : -1);
     }
 
     return evaluationValue;

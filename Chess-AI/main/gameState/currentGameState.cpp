@@ -43,42 +43,42 @@ CurrentGameState::CurrentGameState() {
     Pawn* whitePawn = new Pawn(true);
     _pieces.push_back(whitePawn);
 
-    // Initialize board row 1 (index 0)
-    _board[0][0] = blackRook;
-    _board[0][1] = blackKnight;
-    _board[0][2] = blackBishop;
-    _board[0][3] = blackQueen;
-    _board[0][4] = blackKing;
-    _board[0][5] = blackBishop;
-    _board[0][6] = blackKnight;
-    _board[0][7] = blackRook;
+    // Initialize board row 1
+    _board[0] = blackRook;
+    _board[1] = blackKnight;
+    _board[2] = blackBishop;
+    _board[3] = blackQueen;
+    _board[4] = blackKing;
+    _board[5] = blackBishop;
+    _board[6] = blackKnight;
+    _board[7] = blackRook;
 
-    // Initialize board row 2 (index 1)
+    // Initialize board row 2
     for (int x = 0; x < 8; x++) {
-        _board[1][x] = blackPawn;
+        _board[8 + x] = blackPawn;
     }
 
-    // Initialize board rows 3-6 (index 2-5)
+    // Initialize board rows 3-6
     for (int y = 2; y < 6; y++) {
         for (int x = 0; x < 8; x++) {
-            _board[y][x] = 0;
+            _board[(y * 8) + x] = 0;
         }
     }
 
-    // Initialize board row 7 (index 6)
+    // Initialize board row 7
     for (int x = 0; x < 8; x++) {
-        _board[6][x] = whitePawn;
+        _board[48 + x] = whitePawn;
     }
 
-    // Initialize board row 8 (index 7)
-    _board[7][0] = whiteRook;
-    _board[7][1] = whiteKnight;
-    _board[7][2] = whiteBishop;
-    _board[7][3] = whiteQueen;
-    _board[7][4] = whiteKing;
-    _board[7][5] = whiteBishop;
-    _board[7][6] = whiteKnight;
-    _board[7][7] = whiteRook;
+    // Initialize board row 8
+    _board[56] = whiteRook;
+    _board[57] = whiteKnight;
+    _board[58] = whiteBishop;
+    _board[59] = whiteQueen;
+    _board[60] = whiteKing;
+    _board[61] = whiteBishop;
+    _board[62] = whiteKnight;
+    _board[63] = whiteRook;
 
     // Calculate the game phase value
 	_gamePhase = whiteBishop->gamePhaseInfluence() * 2 + blackBishop->gamePhaseInfluence() * 2

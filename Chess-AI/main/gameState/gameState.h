@@ -16,7 +16,7 @@ protected:
 	/// <summary>
 	/// The current board content.
 	/// </summary>
-	Piece* _board[8][8];
+	Piece* _board[64];
 
 	/// <summary>
 	/// Flag for checking if upper left castling is still possible during the game.
@@ -98,11 +98,6 @@ public:
 	/// <param name="x">The variable where the X coordinate of the king will be set</param>
 	/// <param name="y">The variable where the Y coordinate of the king will be set</param>
 	void findKing(bool isWhite, int& x, int& y) const;
-
-	/// <summary>
-	/// Prints the board content to the console.
-	/// </summary>
-	void printBoard() const;
 
 	/// <summary>
 	/// Returns the piece at the given coordinates.
