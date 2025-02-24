@@ -79,12 +79,15 @@ Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
 void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite) {
     int value = minimax(state, depth, false, isWhite);
     
-    mutex.lock();
     if (value > bestValue || bestValueGameStateIndex == -1) {
+        mutex.lock();
+
         bestValue = value;
         bestValueGameStateIndex = stateIndex;
+
+        mutex.unlock();
     }
-    mutex.unlock();
+
 }
 
 int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha, int beta) {
