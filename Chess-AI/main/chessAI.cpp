@@ -115,12 +115,12 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
             alpha = std::max(alpha, eval);
             
             // Early exit for clearly winning positions
-            if (eval >= 5000) {
+            if (eval >= 900) {
                 return eval;
             }
             
             // More aggressive pruning
-            if (beta <= alpha || eval >= 2000) {
+            if (beta <= alpha || eval >= 400) {
                 break;
             }
         }
@@ -133,12 +133,12 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
             beta = std::min(beta, eval);
             
             // Early exit for clearly losing positions
-            if (eval <= -5000) {
+            if (eval <= -900) {
                 return eval;
             }
             
             // More aggressive pruning
-            if (beta <= alpha || eval <= -2000) {
+            if (beta <= alpha || eval <= -400) {
                 break;
             }
         }
