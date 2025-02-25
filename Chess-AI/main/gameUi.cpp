@@ -272,28 +272,26 @@ void drawBoard(const GameState& gameState, const bool& turn, const std::vector<M
     BeginDrawing();
     ClearBackground(BLACK);
 
+    // Define new colors
+    Color brown = { 168, 126, 98, 255 }; // Brown color
+    Color offWhite = { 244, 222, 203, 255 }; // Off-white color
+    Color textColor = BLACK; // Coordinate text color
+
+    // Calculate text size based on board size
+    int textSize = boardSize / 40;
+
     // Draw chess board
     for (int y = 0; y < 8; y++)
     {
         for (int x = 0; x < 8; x++)
         {
-            Color color = (x + y) % 2 ? DARKGRAY : LIGHTGRAY;
+            Color color = (x + y) % 2 ? brown : offWhite;
             DrawRectangle(boardOffsetX + x * (boardSize / 8), boardOffsetY + y * (boardSize / 8), (boardSize / 8), (boardSize / 8), color);
+
+            // Draw coordinates inside the squares
+            std::string coordinate = std::string(1, 'A' + x) + std::to_string(8 - y);
+            DrawText(coordinate.c_str(), boardOffsetX + x * (boardSize / 8) + 5, boardOffsetY + (y + 1) * (boardSize / 8) - textSize - 5, textSize, textColor);
         }
-    }
-
-    // Draw coordinates on left (row numbers)
-    for (int i = 0; i < 8; i++) {
-        std::string rowNum = std::to_string(8 - i);
-        DrawText(rowNum.c_str(), boardOffsetX - 20, boardOffsetY + i * (boardSize / 8) + (boardSize / 8) / 2 - 10, 20, WHITE);
-    }
-
-    // Draw coordinates at the bottom (column letters)
-    for (int i = 0; i < 8; i++) {
-        char letter = 'A' + i;
-        std::string colLetter(1, letter);
-        int textWidth = MeasureText(colLetter.c_str(), 20);
-        DrawText(colLetter.c_str(), boardOffsetX + i * (boardSize / 8) + (boardSize / 8) / 2 - textWidth / 2, boardOffsetY + boardSize + 5, 20, WHITE);
     }
 
     // Highlight possible moves
