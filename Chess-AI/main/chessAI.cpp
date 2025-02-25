@@ -3,6 +3,7 @@
 #include <limits>  
 #include <thread>
 #include <vector>
+#include <algorithm>
 
 std::mutex ChessAI::mutex;
 int ChessAI::bestValue;
@@ -14,6 +15,9 @@ Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
     if (possibleStates.empty()) {
         return Move(0, 0, 0, 0); // Return empty move as there are no moves available
     }
+
+    // Order moves before evaluation
+    orderMoves(possibleStates, isWhite);
 
     // Reset the best value
     bestValue = std::numeric_limits<int>::min();
@@ -90,8 +94,27 @@ void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool
 
 }
 
+void ChessAI::orderMoves(std::vector<GameState>& states, bool isWhite) {
+    // Create pairs of (evaluation, index) for stable sorting
+    std::vector<std::pair<int, int>> evaluations;
+    for (int i = 0; i < states.size(); i++) {
+        evaluations.push_back({states[i].evaluate(isWhite), i});
+    }
+
+    // Sort evaluations in descending order
+    std::stable_sort(evaluations.begin(), evaluations.end(), 
+        [](const auto& a, const auto& b) { return a.first > b.first; });
+
+    // Reorder states based on sorted evaluations
+    std::vector<GameState> orderedStates;
+    orderedStates.reserve(states.size());
+    for (const auto& eval : evaluations) {
+        orderedStates.push_back(std::move(states[eval.second]));
+    }
+    states = std::move(orderedStates);
+}
+
 int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha, int beta) {
-    // If we've reached the maximum depth or game is over
     if (depth == 0) {
         return state.evaluate(playerIsWhite);
     }
@@ -99,7 +122,6 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     std::vector<GameState> possibleStates;
     state.possibleNewGameStates(possibleStates, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
 
-    // If no moves are available, this might be checkmate or stalemate
     if (possibleStates.empty()) {
         if (state.isCheck(isMaximizingPlayer ? playerIsWhite : !playerIsWhite)) {
             return isMaximizingPlayer ? -10000 + depth : 10000 - depth;
@@ -107,20 +129,16 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
         return 0; // Stalemate
     }
 
+    // Order moves before evaluation
+    orderMoves(possibleStates, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
+
     if (isMaximizingPlayer) {
         int maxEval = std::numeric_limits<int>::min();
         for (const auto& newState : possibleStates) {
             int eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, beta);
             maxEval = std::max(maxEval, eval);
             alpha = std::max(alpha, eval);
-            
-            // Early exit for clearly winning positions
-            if (eval >= 900) {
-                return eval;
-            }
-            
-            // More aggressive pruning
-            if (beta <= alpha || eval >= 400) {
+            if (beta <= alpha) {
                 break;
             }
         }
@@ -131,14 +149,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
             int eval = minimax(newState, depth - 1, true, playerIsWhite, alpha, beta);
             minEval = std::min(minEval, eval);
             beta = std::min(beta, eval);
-            
-            // Early exit for clearly losing positions
-            if (eval <= -900) {
-                return eval;
-            }
-            
-            // More aggressive pruning
-            if (beta <= alpha || eval <= -400) {
+            if (beta <= alpha) {
                 break;
             }
         }

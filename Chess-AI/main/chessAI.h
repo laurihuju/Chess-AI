@@ -56,6 +56,13 @@ private:
     /// <param name="beta">Beta value for pruning</param>
     /// <returns>Evaluation score for the current state</returns>
     static int minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha = std::numeric_limits<int>::min(), int beta = std::numeric_limits<int>::max());
+
+    /// <summary>
+    /// Orders game states by their initial evaluation.
+    /// </summary>
+    /// <param name="states">Vector of game states to order</param>
+    /// <param name="isWhite">If evaluation should be done from perspective of white</param>
+    static void orderMoves(std::vector<GameState>& states, bool isWhite);
 };
 
 #endif
