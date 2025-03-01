@@ -51,9 +51,6 @@
     <ClCompile Include="main\move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main\gameState\currentGameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main\gameUi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -93,9 +90,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\move.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="main\gameState\currentGameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\gameUi.h">

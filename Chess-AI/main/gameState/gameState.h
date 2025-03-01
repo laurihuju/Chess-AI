@@ -12,7 +12,7 @@ class King;
 /// </summary>
 class GameState {
 
-protected:
+private:
 	/// <summary>
 	/// The current board content.
 	/// </summary>
@@ -58,12 +58,12 @@ protected:
 	/// <summary>
 	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
 	/// </summary>
-	char _gamePhase;
+	char _gamePhase = 0;
 
 	/// <summary>
 	/// The zobrist hash value of this GameState.
 	/// </summary>
-	uint64_t _hash;
+	uint64_t _hash = 0;
 
 public:
 	/// <summary>
@@ -84,11 +84,6 @@ public:
 	/// Creates a new GameState with empty board.
 	/// </summary>
 	GameState();
-
-	/// <summary>
-	/// Deletes all pieces owned by this GameState.
-	/// </summary>
-	virtual ~GameState();
 
 	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.

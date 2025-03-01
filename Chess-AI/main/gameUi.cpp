@@ -7,7 +7,6 @@
 #include "raylib.h"
 
 #include "gameState/gameState.h"
-#include "gameState/currentGameState.h"
 #include "gameState/gameInfo.h"
 #include "move.h"
 #include "pieces/bishop.h"
@@ -74,7 +73,7 @@ void startGameUi()
 
     // The current game state and turn
     GameInfo gameInfo;
-    CurrentGameState gameState;
+    GameState gameState;
     bool turn = true;
 
     // The selected square and possible moves

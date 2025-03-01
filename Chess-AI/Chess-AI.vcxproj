@@ -131,7 +131,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main\chessAI.cpp" />
-    <ClCompile Include="main\gameState\currentGameState.cpp" />
     <ClCompile Include="main\gameState\gameInfo.cpp" />
     <ClCompile Include="main\transpositionTable.cpp" />
     <ClCompile Include="main\move.cpp" />
@@ -148,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\chessAI.h" />
-    <ClInclude Include="main\gameState\currentGameState.h" />
     <ClInclude Include="main\gameState\gameInfo.h" />
     <ClInclude Include="main\transpositionTable.h" />
     <ClInclude Include="main\move.h" />
