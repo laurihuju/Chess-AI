@@ -4,6 +4,7 @@
 #include <mutex>
 #include "gameState/gameState.h"
 #include "move.h"
+#include "transpositionTable.h"
 
 class ChessAI {
 public:
@@ -18,21 +19,21 @@ public:
 
 private:
     /// <summary>
-    /// The mutex used for writing the value of bestValue and bestValueGameStateIndex.
-    /// </summary>
-    static std::mutex mutex;
-
-    /// <summary>
     /// The currently best value found by the runMinimax function.
     /// The value is reseted when starting a new best move search.
     /// </summary>
-    static int bestValue;
+    static std::atomic<int> bestValue;
 
     /// <summary>
     /// The index of the game state with the currently best value found by the runMinimax function.
     /// The value is reseted when starting a new best move search.
     /// </summary>
-    static int bestValueGameStateIndex;
+    static std::atomic<int> bestValueGameStateIndex;
+
+    /// <summary>
+    /// The transposition table.
+    /// </summary>
+    static TranspositionTable<20000000> transpositionTable;
 
     /// <summary>
     /// Thread safe function that evaluates the given GameState with the minimax function.

@@ -60,6 +60,12 @@
     <ClCompile Include="main\chessAI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="main\transpositionTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\gameState\gameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main\gameState\gameState.h">
@@ -96,6 +102,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\chessAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\transpositionTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\gameState\gameInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

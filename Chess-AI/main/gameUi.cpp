@@ -8,6 +8,7 @@
 
 #include "gameState/gameState.h"
 #include "gameState/currentGameState.h"
+#include "gameState/gameInfo.h"
 #include "move.h"
 #include "pieces/bishop.h"
 #include "pieces/king.h"
@@ -72,6 +73,7 @@ void startGameUi()
     MaximizeWindow();
 
     // The current game state and turn
+    GameInfo gameInfo;
     CurrentGameState gameState;
     bool turn = true;
 

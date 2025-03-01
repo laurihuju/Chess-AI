@@ -19,6 +19,11 @@ protected:
 	Piece* _board[8][8];
 
 	/// <summary>
+	/// Information if it is white's side to move.
+	/// </summary>
+	bool _isWhiteSideToMove = true;
+
+	/// <summary>
 	/// Flag for checking if upper left castling is still possible during the game.
 	/// </summary>
 	bool _upperLeftCastlingPossible = true;
@@ -55,9 +60,12 @@ protected:
 	/// </summary>
 	char _gamePhase;
 
-public:
-	GameState& operator=(const GameState&) = delete;
+	/// <summary>
+	/// The zobrist hash value of this GameState.
+	/// </summary>
+	uint64_t _hash;
 
+public:
 	/// <summary>
 	/// Compares the other game state with this game state.
 	/// </summary>
@@ -157,6 +165,12 @@ public:
 	int evaluate(bool isWhite) const;
 
 	/// <summary>
+	/// Checks if the side to move is white.
+	/// </summary>
+	/// <returns>True if the side to move is white</returns>
+	bool isWhiteSideToMove() const;
+
+	/// <summary>
 	/// Checks if upper left castling is still possible in this game state.
 	/// Does not check if there is space for castling or if the squares are threatened.
 	/// </summary>
@@ -205,6 +219,12 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	char gamePhase() const;
+
+	/// <summary>
+	/// Gets the zobrist hash value of this GameState.
+	/// </summary>
+	/// <returns>The zobrist hash value</returns>
+	uint64_t hash() const;
 
 };
 

@@ -2,7 +2,7 @@
 #include <codecvt>
 #include <iostream>
 #include "gameState.h"
-#include "currentGameState.h"
+#include "gameInfo.h"
 #include "../move.h"
 
 #include "../pieces/rook.h"
@@ -13,6 +13,8 @@
 #include "../pieces/pawn.h"
 
 bool GameState::operator==(const GameState& other) const {
+    if (_isWhiteSideToMove != other._isWhiteSideToMove)
+        return false;
     if (_upperLeftCastlingPossible != other._upperLeftCastlingPossible)
         return false;
     if (_upperRightCastlingPossible != other._upperRightCastlingPossible)
@@ -54,17 +56,29 @@ GameState::GameState() {
 
     // Game phase
     _gamePhase = 0;
-
+    
+    // Hash
+    _hash = 0;
 }
 
 GameState::~GameState() {}
 
 void GameState::applyMove(const Move& move) {
+    // Change the side to move
+    _isWhiteSideToMove = !_isWhiteSideToMove;
+    _hash = _hash xor GameInfo::getInstance()->whiteSideToMoveZobristValue();
+
     // Handle the move and capturing
-    if (_board[move.y2()][move.x2()] != 0)
+    if (_board[move.y2()][move.x2()] != 0) {
         _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
+        _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
+    }
+
     _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
     _board[move.y1()][move.x1()] = 0;
+
+    _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x1(), move.y1());
+    _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
 
     // Handle promotion
     if (move.promotionPiece() != -1) {
@@ -84,97 +98,127 @@ void GameState::applyMove(const Move& move) {
             break;
 		}
 
-        Piece* promotionPiece = CurrentGameState::getInstance()->getPieceInstance(promotionPieceType, _board[move.y2()][move.x2()]->isWhite());
+        Piece* promotionPiece = GameInfo::getInstance()->getPieceInstance(promotionPieceType, _board[move.y2()][move.x2()]->isWhite());
+
         _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
+        _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
+
         _board[move.y2()][move.x2()] = promotionPiece;
+
         _gamePhase += _board[move.y2()][move.x2()]->gamePhaseInfluence();
+        _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
     }
 
     // Handle en passant move
     if (_board[move.y2()][move.x2()]->getType() == PieceType::Pawn) {
         if (move.y2() == 2 && upperEnPassantColumn() == move.x2()) {
-            if (_board[3][move.x2()] != 0)
+            if (_board[3][move.x2()] != 0) {
                 _gamePhase -= _board[3][move.x2()]->gamePhaseInfluence();
-            _board[3][move.x2()] = 0;
+                _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[3][move.x2()]->getType(), _board[3][move.x2()]->isWhite(), move.x2(), 3);
+
+                _board[3][move.x2()] = 0;
+            }
         } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
-            if (_board[4][move.x2()] != 0)
+            if (_board[4][move.x2()] != 0) {
                 _gamePhase -= _board[4][move.x2()]->gamePhaseInfluence();
-            _board[4][move.x2()] = 0;
+                _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[4][move.x2()]->getType(), _board[4][move.x2()]->isWhite(), move.x2(), 4);
+
+                _board[4][move.x2()] = 0;
+            }
         }
     }
 
     // Handle castling move
     if (_board[move.y2()][move.x2()]->getType() == PieceType::King) {
         if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
-            if (_board[0][3] != 0)
+            if (_board[0][3] != 0) {
                 _gamePhase -= _board[0][3]->gamePhaseInfluence();
+                _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][3]->getType(), _board[0][3]->isWhite(), 3, 0);
+            }
 
             _board[0][3] = _board[0][0];
             _board[0][0] = 0;
 
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][3]->getType(), _board[0][3]->isWhite(), 0, 0);
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][3]->getType(), _board[0][3]->isWhite(), 3, 0);
         }
         else if (move.x2() == 6 && move.y2() == 0 && upperRightCastlingPossible()) {
-            if (_board[0][5] != 0)
+            if (_board[0][5] != 0) {
                 _gamePhase -= _board[0][5]->gamePhaseInfluence();
+                _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][5]->getType(), _board[0][5]->isWhite(), 5, 0);
+            }
 
             _board[0][5] = _board[0][7];
             _board[0][7] = 0;
 
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][5]->getType(), _board[0][5]->isWhite(), 7, 0);
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][5]->getType(), _board[0][5]->isWhite(), 5, 0);
         }
         else if (move.x2() == 2 && move.y2() == 7 && lowerLeftCastlingPossible()) {
-            if (_board[7][3] != 0)
+            if (_board[7][3] != 0) {
                 _gamePhase -= _board[7][3]->gamePhaseInfluence();
+                _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][3]->getType(), _board[7][3]->isWhite(), 3, 7);
+            }
 
             _board[7][3] = _board[7][0];
             _board[7][0] = 0;
 
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][3]->getType(), _board[7][3]->isWhite(), 0, 7);
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][3]->getType(), _board[7][3]->isWhite(), 3, 7);
         }
         else if (move.x2() == 6 && move.y2() == 7 && lowerRightCastlingPossible()) {
-            if (_board[7][5] != 0)
+            if (_board[7][5] != 0) {
                 _gamePhase -= _board[7][5]->gamePhaseInfluence();
+                _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][5]->getType(), _board[7][5]->isWhite(), 5, 7);
+            }
 
             _board[7][5] = _board[7][7];
             _board[7][7] = 0;
-
+            
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][5]->getType(), _board[7][5]->isWhite(), 7, 7);
+            _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][5]->getType(), _board[7][5]->isWhite(), 5, 7);
         }
     }
 
     // Update en passant flags
-    _upperEnPassantColumn = -1;
-    _lowerEnPassantColumn = -1;
+    if (_upperEnPassantColumn != -1) {
+        _hash = _hash xor GameInfo::getInstance()->upperEnPassantZobristValue(_upperEnPassantColumn);
+        _upperEnPassantColumn = -1;
+    }
+
+    if (_lowerEnPassantColumn != -1) {
+        _hash = _hash xor GameInfo::getInstance()->lowerEnPassantZobristValue(_lowerEnPassantColumn);
+        _lowerEnPassantColumn = -1;
+    }
 
     if (_board[move.y2()][move.x2()]->getType() == PieceType::Pawn) {
         if (move.y2() == 3 && move.y2() - move.y1() == 2) {
             _upperEnPassantColumn = move.x2();
+            _hash = _hash xor GameInfo::getInstance()->upperEnPassantZobristValue(_upperEnPassantColumn);
         }
         else if (move.y2() == 4 && move.y2() - move.y1() == -2) {
             _lowerEnPassantColumn = move.x2();
+            _hash = _hash xor GameInfo::getInstance()->lowerEnPassantZobristValue(_lowerEnPassantColumn);
         }
     }
 
     // Update castling flags
-    if ((move.x1() == 0 && move.y1() == 0) || (move.x2() == 0 && move.y2() == 0)) {
+    if (_upperLeftCastlingPossible && (((move.x1() == 4 && move.y1() == 0) || move.x1() == 0 && move.y1() == 0) || (move.x2() == 0 && move.y2() == 0))) {
         _upperLeftCastlingPossible = false;
+        _hash = _hash xor GameInfo::getInstance()->upperLeftCastlingZobristValue();
     }
-    else if ((move.x1() == 7 && move.y1() == 0) || (move.x2() == 7 && move.y2() == 0)) {
+    if (_upperRightCastlingPossible && ((move.x1() == 4 && move.y1() == 0) || (move.x1() == 7 && move.y1() == 0) || (move.x2() == 7 && move.y2() == 0))) {
         _upperRightCastlingPossible = false;
+        _hash = _hash xor GameInfo::getInstance()->upperRightCastlingZobristValue();
     }
-    else if ((move.x1() == 0 && move.y1() == 7) || (move.x2() == 0 && move.y2() == 7)) {
+    if (_lowerLeftCastlingPossible && ((move.x1() == 4 && move.y1() == 7) || (move.x1() == 0 && move.y1() == 7) || (move.x2() == 0 && move.y2() == 7))) {
         _lowerLeftCastlingPossible = false;
+        _hash = _hash xor GameInfo::getInstance()->lowerLeftCastlingZobristValue();
     }
-    else if ((move.x1() == 7 && move.y1() == 7) || (move.x2() == 7 && move.y2() == 7)) {
+    if (_lowerRightCastlingPossible && ((move.x1() == 4 && move.y1() == 7) || (move.x1() == 7 && move.y1() == 7) || (move.x2() == 7 && move.y2() == 7))) {
         _lowerRightCastlingPossible = false;
+        _hash = _hash xor GameInfo::getInstance()->lowerRightCastlingZobristValue();
     }
-
-    if (move.x1() == 4 && move.y1() == 0) {
-        _upperLeftCastlingPossible = false;
-        _upperRightCastlingPossible = false;
-    }
-    else if (move.x1() == 4 && move.y1() == 7) {
-        _lowerLeftCastlingPossible = false;
-        _lowerRightCastlingPossible = false;
-    }
-
 }
 
 void GameState::findKing(bool isWhite, int& x, int& y) const {
@@ -301,6 +345,10 @@ int GameState::evaluate(bool isWhite) const {
     return evaluationValue;
 }
 
+bool GameState::isWhiteSideToMove() const {
+    return _isWhiteSideToMove;
+}
+
 bool GameState::upperLeftCastlingPossible() const {
 	return _upperLeftCastlingPossible;
 }
@@ -324,4 +372,8 @@ int GameState::lowerEnPassantColumn() const {
 
 char GameState::gamePhase() const {
     return _gamePhase;
+}
+
+uint64_t GameState::hash() const {
+    return _hash;
 }
