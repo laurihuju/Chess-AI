@@ -63,6 +63,26 @@ private:
     /// <param name="states">Vector of game states to order</param>
     /// <param name="isWhite">If evaluation should be done from perspective of white</param>
     static void orderMoves(std::vector<GameState>& states, bool isWhite);
+
+    /// <summary>
+    /// Quiescence search to evaluate tactical positions more accurately.
+    /// Only considers capturing moves to reach a "quiet" position.
+    /// </summary>
+    /// <param name="state">Current game state</param>
+    /// <param name="playerIsWhite">Whether the evaluating player is white</param>
+    /// <param name="alpha">Alpha value for pruning</param>
+    /// <param name="beta">Beta value for pruning</param>
+    /// <param name="depth">Current quiescence search depth</param>
+    /// <returns>Evaluation score for the quiet position</returns>
+    static int quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth = 4);
+
+    /// <summary>
+    /// Gets only the capturing moves from a state.
+    /// </summary>
+    /// <param name="state">The game state to analyze</param>
+    /// <param name="isWhite">Whether to get moves for white</param>
+    /// <param name="capturingStates">Vector to store states after capturing moves</param>
+    static void getCapturingMoves(const GameState& state, bool isWhite, std::vector<GameState>& capturingStates);
 };
 
 #endif
