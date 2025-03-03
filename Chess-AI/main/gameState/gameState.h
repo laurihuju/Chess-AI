@@ -2,9 +2,9 @@
 #define GAMESTATE_H
 
 #include <vector>
+#include "../move.h"
 
 class Piece;
-class Move;
 class King;
 
 /// <summary>
@@ -17,6 +17,12 @@ private:
 	/// The current board content.
 	/// </summary>
 	Piece* _board[8][8];
+
+	/// <summary>
+	/// The evaluation value of this game state for white.
+	/// Higher value means better position for white.
+	/// </summary>
+	mutable int _evaluationValue = 0;
 
 	/// <summary>
 	/// Information if it is white's side to move.
@@ -54,6 +60,12 @@ private:
 	/// the en passant move). Has value -1 if lower en passant is not possible.
 	/// </summary>
 	int _lowerEnPassantColumn = -1;
+
+	/// <summary>
+	/// The last move that was made in this game state.
+	/// If the last move is not available, the move will be Move(0, 0, 0, 0).
+	/// </summary>
+	Move _lastMove = Move(0, 0, 0, 0);
 
 	/// <summary>
 	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
@@ -118,20 +130,12 @@ public:
 	Piece* getPieceAt(int x, int y) const;
 
 	/// <summary>
-	/// Returns a vector containing all possible new game states that can be created
-	/// from this game state with one move of the given color.
+	/// Adds all possible new game states that can be created from this game state with
+	/// one move to the newGameStates vector. The game states are fully validated to not
+	/// contain moves that would put the king of the given color in check.
 	/// </summary>
-	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
-	/// <returns>A vector containing all possible new game states with one move of the given color</returns>
-	
-
-	/// <summary>
-	/// Generates all possible new game states that can be created from this game state with one
-	/// move of the given color, and adds them to the newGameStates vector.
-	/// </summary>
-	/// <param name="newGameStates">The vector where the new game states will be added</param>
-	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
-	void possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const;
+	/// <param name="gameStates">The vector where the new game states will be added</param>
+	void possibleNewGameStates(std::vector<GameState>& gameStates) const;
 
 	/// <summary>
 	/// Checks if the king of the given color is in check.
@@ -151,13 +155,12 @@ public:
 	bool isThreatened(bool isWhite, int x, int y) const;
 
 	/// <summary>
-	/// Evaluates this GameState for the given color.
-	/// Higher evaluation value means this game state is better for the given color
-	/// and lower means this game state is worse for the given color.
+	/// Returns the evaluation value for the given player.
+	/// Higher value means better position for the player.
 	/// </summary>
-	/// <param>If the function should evaluate from the perspective of white</param>
+	/// <param name="isWhite">If to evaluate for white</param>
 	/// <returns>The evaluation value</returns>
-	int evaluate(bool isWhite) const;
+	int evaluationValue(bool isWhite) const;
 
 	/// <summary>
 	/// Checks if the side to move is white.
@@ -208,6 +211,13 @@ public:
 	/// </summary>
 	/// <returns>The column where lower en passant move is possible to do at, or -1 if lower en passant is not possible</returns>
 	int lowerEnPassantColumn() const;
+
+	/// <summary>
+	/// The last move that was made in this game state.
+	/// If the last move is not available, the move will be Move(0, 0, 0, 0).
+	/// </summary>
+	/// <returns>The last move that was made</returns>
+	Move lastMove() const;
 
 	/// <summary>
 	/// The game phase value which is sum of the game phase influence value of all pieces on the board.

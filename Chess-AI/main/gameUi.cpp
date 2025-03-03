@@ -261,7 +261,7 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
         gameState.applyMove(move);
         turn = !turn;
 
-        std::cout << "Evaluation value: " << gameState.evaluate(true) << "\n";
+        std::cout << "Evaluation value: " << gameState.evaluationValue(true) << "\n";
     }
 
     // Reset selection

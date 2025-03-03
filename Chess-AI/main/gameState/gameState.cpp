@@ -103,9 +103,23 @@ GameState::GameState() {
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[j][i]->getType(), _board[j][i]->isWhite(), i, j);
         }
     }
+
+	// Calculate evaluation value
+    _evaluationValue = 0;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (_board[i][j] == 0)
+                continue;
+
+            _evaluationValue += _board[i][j]->evaluationValue(*this, j, i) * (_board[i][j]->isWhite() ? 1 : -1);
+        }
+    }
 }
 
 void GameState::applyMove(const Move& move) {
+    // Update the last move
+	_lastMove = move;
+
     // Change the side to move
     _isWhiteSideToMove = !_isWhiteSideToMove;
     _hash = _hash xor GameInfo::getInstance()->whiteSideToMoveZobristValue();
@@ -114,6 +128,7 @@ void GameState::applyMove(const Move& move) {
     if (_board[move.y2()][move.x2()] != 0) {
         _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
         _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
+        _evaluationValue -= _board[move.y2()][move.x2()]->evaluationValue(*this, move.x2(), move.y2()) * (_board[move.y2()][move.x2()]->isWhite() ? 1 : -1);
     }
 
     _board[move.y2()][move.x2()] = _board[move.y1()][move.x1()];
@@ -121,6 +136,8 @@ void GameState::applyMove(const Move& move) {
 
     _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x1(), move.y1());
     _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
+    _evaluationValue -= _board[move.y2()][move.x2()]->evaluationValue(*this, move.x1(), move.y1()) * (_board[move.y2()][move.x2()]->isWhite() ? 1 : -1);
+    _evaluationValue += _board[move.y2()][move.x2()]->evaluationValue(*this, move.x2(), move.y2()) * (_board[move.y2()][move.x2()]->isWhite() ? 1 : -1);
 
     // Handle promotion
     if (move.promotionPiece() != -1) {
@@ -144,11 +161,13 @@ void GameState::applyMove(const Move& move) {
 
         _gamePhase -= _board[move.y2()][move.x2()]->gamePhaseInfluence();
         _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
+        _evaluationValue -= _board[move.y2()][move.x2()]->evaluationValue(*this, move.x2(), move.y2()) * (_board[move.y2()][move.x2()]->isWhite() ? 1 : -1);
 
         _board[move.y2()][move.x2()] = promotionPiece;
 
         _gamePhase += _board[move.y2()][move.x2()]->gamePhaseInfluence();
         _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[move.y2()][move.x2()]->getType(), _board[move.y2()][move.x2()]->isWhite(), move.x2(), move.y2());
+        _evaluationValue += _board[move.y2()][move.x2()]->evaluationValue(*this, move.x2(), move.y2()) * (_board[move.y2()][move.x2()]->isWhite() ? 1 : -1);
     }
 
     // Handle en passant move
@@ -157,6 +176,7 @@ void GameState::applyMove(const Move& move) {
             if (_board[3][move.x2()] != 0) {
                 _gamePhase -= _board[3][move.x2()]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[3][move.x2()]->getType(), _board[3][move.x2()]->isWhite(), move.x2(), 3);
+                _evaluationValue -= _board[3][move.x2()]->evaluationValue(*this, move.x2(), 3) * (_board[3][move.x2()]->isWhite() ? 1 : -1);
 
                 _board[3][move.x2()] = 0;
             }
@@ -164,6 +184,7 @@ void GameState::applyMove(const Move& move) {
             if (_board[4][move.x2()] != 0) {
                 _gamePhase -= _board[4][move.x2()]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[4][move.x2()]->getType(), _board[4][move.x2()]->isWhite(), move.x2(), 4);
+                _evaluationValue -= _board[4][move.x2()]->evaluationValue(*this, move.x2(), 4) * (_board[4][move.x2()]->isWhite() ? 1 : -1);
 
                 _board[4][move.x2()] = 0;
             }
@@ -176,6 +197,7 @@ void GameState::applyMove(const Move& move) {
             if (_board[0][3] != 0) {
                 _gamePhase -= _board[0][3]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][3]->getType(), _board[0][3]->isWhite(), 3, 0);
+                _evaluationValue -= _board[0][3]->evaluationValue(*this, 3, 0) * (_board[0][3]->isWhite() ? 1 : -1);
             }
 
             _board[0][3] = _board[0][0];
@@ -183,11 +205,14 @@ void GameState::applyMove(const Move& move) {
 
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][3]->getType(), _board[0][3]->isWhite(), 0, 0);
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][3]->getType(), _board[0][3]->isWhite(), 3, 0);
+            _evaluationValue -= _board[0][3]->evaluationValue(*this, 0, 0) * (_board[0][3]->isWhite() ? 1 : -1);
+            _evaluationValue += _board[0][3]->evaluationValue(*this, 3, 0) * (_board[0][3]->isWhite() ? 1 : -1);
         }
         else if (move.x2() == 6 && move.y2() == 0 && upperRightCastlingPossible()) {
             if (_board[0][5] != 0) {
                 _gamePhase -= _board[0][5]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][5]->getType(), _board[0][5]->isWhite(), 5, 0);
+                _evaluationValue -= _board[0][5]->evaluationValue(*this, 5, 0) * (_board[0][5]->isWhite() ? 1 : -1);
             }
 
             _board[0][5] = _board[0][7];
@@ -195,11 +220,14 @@ void GameState::applyMove(const Move& move) {
 
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][5]->getType(), _board[0][5]->isWhite(), 7, 0);
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[0][5]->getType(), _board[0][5]->isWhite(), 5, 0);
+            _evaluationValue -= _board[0][5]->evaluationValue(*this, 7, 0) * (_board[0][5]->isWhite() ? 1 : -1);
+            _evaluationValue += _board[0][5]->evaluationValue(*this, 5, 0) * (_board[0][5]->isWhite() ? 1 : -1);
         }
         else if (move.x2() == 2 && move.y2() == 7 && lowerLeftCastlingPossible()) {
             if (_board[7][3] != 0) {
                 _gamePhase -= _board[7][3]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][3]->getType(), _board[7][3]->isWhite(), 3, 7);
+                _evaluationValue -= _board[7][3]->evaluationValue(*this, 3, 7) * (_board[7][3]->isWhite() ? 1 : -1);
             }
 
             _board[7][3] = _board[7][0];
@@ -207,11 +235,14 @@ void GameState::applyMove(const Move& move) {
 
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][3]->getType(), _board[7][3]->isWhite(), 0, 7);
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][3]->getType(), _board[7][3]->isWhite(), 3, 7);
+            _evaluationValue -= _board[7][3]->evaluationValue(*this, 0, 7) * (_board[7][3]->isWhite() ? 1 : -1);
+            _evaluationValue += _board[7][3]->evaluationValue(*this, 3, 7) * (_board[7][3]->isWhite() ? 1 : -1);
         }
         else if (move.x2() == 6 && move.y2() == 7 && lowerRightCastlingPossible()) {
             if (_board[7][5] != 0) {
                 _gamePhase -= _board[7][5]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][5]->getType(), _board[7][5]->isWhite(), 5, 7);
+                _evaluationValue -= _board[7][5]->evaluationValue(*this, 5, 7) * (_board[7][5]->isWhite() ? 1 : -1);
             }
 
             _board[7][5] = _board[7][7];
@@ -219,6 +250,8 @@ void GameState::applyMove(const Move& move) {
             
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][5]->getType(), _board[7][5]->isWhite(), 7, 7);
             _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[7][5]->getType(), _board[7][5]->isWhite(), 5, 7);
+            _evaluationValue -= _board[7][5]->evaluationValue(*this, 7, 7) * (_board[7][5]->isWhite() ? 1 : -1);
+            _evaluationValue += _board[7][5]->evaluationValue(*this, 5, 7) * (_board[7][5]->isWhite() ? 1 : -1);
         }
     }
 
@@ -321,14 +354,14 @@ Piece* GameState::getPieceAt(int x, int y) const {
     return _board[y][x];
 }
 
-void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const {
+void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates) const {
     std::vector<Move> moves;
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (_board[i][j] == 0)
                 continue;
-            if (_board[i][j]->isWhite() != isWhite)
+            if (_board[i][j]->isWhite() != _isWhiteSideToMove)
                 continue;
 
             _board[i][j]->possibleMoves(moves, j, i, *this);
@@ -340,7 +373,7 @@ void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates, boo
         newGameStates.emplace_back(*this);
         newGameStates.back().applyMove(moves[i]);
 
-        if (newGameStates.back().isCheck(isWhite)) {
+        if (newGameStates.back().isCheck(_isWhiteSideToMove)) {
             newGameStates.pop_back();
         }
     }
@@ -372,19 +405,8 @@ bool GameState::isThreatened(bool isWhite, int x, int y) const {
     return false;
 }
 
-int GameState::evaluate(bool isWhite) const {
-    int evaluationValue = 0;
-
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0)
-                continue;
-
-            evaluationValue += _board[i][j]->evaluationValue(*this, j, i) * (_board[i][j]->isWhite() == isWhite ? 1 : -1);
-        }
-    }
-
-    return evaluationValue;
+int GameState::evaluationValue(bool isWhite) const {
+    return isWhite ? _evaluationValue : -_evaluationValue;
 }
 
 bool GameState::isWhiteSideToMove() const {
@@ -410,6 +432,10 @@ int GameState::upperEnPassantColumn() const {
 
 int GameState::lowerEnPassantColumn() const {
     return _lowerEnPassantColumn;
+}
+
+Move GameState::lastMove() const {
+    return _lastMove;
 }
 
 char GameState::gamePhase() const {

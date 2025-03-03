@@ -33,7 +33,7 @@ private:
     /// <summary>
     /// The transposition table.
     /// </summary>
-    static TranspositionTable<60000000> transpositionTable;
+    static TranspositionTable<30000000> transpositionTable;
 
     /// <summary>
     /// Thread safe function that evaluates the given GameState with the minimax function.
@@ -62,8 +62,9 @@ private:
     /// Orders game states by their initial evaluation.
     /// </summary>
     /// <param name="states">Vector of game states to order</param>
+    /// <param name="transpositionTableMove">The best move stored in the transposition table, give Move(0, 0, 0, 0) if not available</param>
     /// <param name="isWhite">If evaluation should be done from perspective of white</param>
-    static void orderMoves(std::vector<GameState>& states, bool isWhite);
+    static void orderMoves(std::vector<GameState>& states, const Move& transpositionTableMove, bool isWhite);
 };
 
 #endif

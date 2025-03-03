@@ -2,6 +2,7 @@
 #define TRANSPOSITIONTABLE_H
 
 #include <mutex>
+#include "move.h"
 #include "gameState/gameState.h"
 
 /// <summary>
@@ -51,6 +52,11 @@ struct TranspositionTableItem {
 	/// The evaluation depth of the item.
 	/// </summary>
 	std::atomic<int> evaluationDepth = 0;
+
+	/// <summary>
+	/// The best move of the item.
+	/// </summary>
+	std::atomic<Move> bestMove = Move(0, 0, 0, 0);
 };
 
 /// <summary>
@@ -76,8 +82,9 @@ public:
 	/// <param name="state">The game state to store</param>
 	/// <param name="evaluationValue">The evaluation value</param>
 	/// <param name="evaluationDepth">The evaluation depth</param>
+	/// <param name="bestMove">The best move</param>
 	/// <param name="itemType">The item type</param>
-	void store(const GameState& state, int evaluationValue, int evaluationDepth, TranspositionTableItemType itemType);
+	void store(const GameState& state, int evaluationValue, int evaluationDepth, const Move& bestMove, TranspositionTableItemType itemType);
 
 	/// <summary>
 	/// Performs a table lookup with the given game state and minimum depth.
@@ -88,9 +95,10 @@ public:
 	/// <param name="state">The game state to lookup</param>
 	/// <param name="minDepth">The minumum depth to lookup</param>
 	/// <param name="evaluationValue">Reference parameter that gets the evaluation value if an item is found</param>
+	/// <param name="bestMove">Reference parameter that gets the best move if an item is found</param>
 	/// <param name="itemType">Reference parameter that gets the item type if an item is found</param>
 	/// <returns>True if an item was found and the reference parameters were updated</returns>
-	bool lookup(const GameState& state, int minDepth, int& evaluationValue, TranspositionTableItemType& itemType);
+	bool lookup(const GameState& state, int minDepth, int& evaluationValue, Move& bestMove, TranspositionTableItemType& itemType);
 
 };
 

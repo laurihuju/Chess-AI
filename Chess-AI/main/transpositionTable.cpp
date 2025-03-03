@@ -1,7 +1,7 @@
 #include "transpositionTable.h"
 
 template<size_t Size>
-inline void TranspositionTable<Size>::store(const GameState& state, int evaluationValue, int evaluationDepth, TranspositionTableItemType itemType) {
+inline void TranspositionTable<Size>::store(const GameState& state, int evaluationValue, int evaluationDepth, const Move& bestMove, TranspositionTableItemType itemType) {
 	// Calculate the transposition table slot of the game state
 	int index = state.hash() % Size;
 
@@ -16,10 +16,11 @@ inline void TranspositionTable<Size>::store(const GameState& state, int evaluati
 
 	_items[index].evaluationValue = evaluationValue;
 	_items[index].evaluationDepth = evaluationDepth;
+	_items[index].bestMove = bestMove;
 }
 
 template<size_t Size>
-bool TranspositionTable<Size>::lookup(const GameState& state, int minDepth, int& evaluationValue, TranspositionTableItemType& itemType) {
+bool TranspositionTable<Size>::lookup(const GameState& state, int minDepth, int& evaluationValue, Move& bestMove, TranspositionTableItemType& itemType) {
 	// Calculate the transposition table slot of the game state
 	int index = state.hash() % Size;
 
@@ -28,12 +29,13 @@ bool TranspositionTable<Size>::lookup(const GameState& state, int minDepth, int&
 		return false;
 	}
 
-	// Set the evaluation value and item type reference parameters to the values of the table item
+	// Set the evaluation value, best value, and item type reference parameters to the values of the table item
 	evaluationValue = _items[index].evaluationValue;
+	bestMove = _items[index].bestMove;
 	itemType = _items[index].itemType;
 
 	// Return true as correct result was found
 	return true;
 }
 
-template class TranspositionTable<60000000>;
+template class TranspositionTable<30000000>;
