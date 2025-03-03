@@ -117,6 +117,10 @@ void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool
 }
 
 int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha, int beta) {
+    // The alpha and beta before the changes made to them in this function
+    int alphaOrig = alpha;
+    int betaOrig = beta;
+    
     // Look up the transposition table
     int transpositionTableEvaluationValue;
     TranspositionTableItemType transpositionTableItemType;
@@ -160,9 +164,8 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     // Order moves before evaluation
     orderMoves(possibleStates, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
 
-    // The best evaluation value found for the game state and transposition table item type of that value
+    // The best evaluation value found for the game state
     int bestEval;
-    TranspositionTableItemType transpositionItemType = TranspositionTableItemType::Exact;
 
     // Handle the maximizer's turn
     if (isMaximizingPlayer) {
@@ -172,10 +175,8 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
             bestEval = std::max(bestEval, eval);
             alpha = std::max(alpha, eval);
             
-            // Alpha-beta pruning; Stop evaluating this game state and set the transposition table item type
-            // to lower bound (the exact value is not known due to pruning but the value is at least the stored value)
+            // Alpha-beta pruning
             if (beta <= alpha) {
-                transpositionItemType = TranspositionTableItemType::LowerBound;
                 break;
             }
         }
@@ -187,13 +188,23 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
             bestEval = std::min(bestEval, eval);
             beta = std::min(beta, eval);
 
-            // Alpha-beta pruning; Stop evaluating this game state and set the transposition table item type
-            // to upper bound (the exact value is not known due to pruning but the value is at most the stored value)
+            // Alpha-beta pruning
             if (beta <= alpha) {
-                transpositionItemType = TranspositionTableItemType::UpperBound;
                 break;
             }
         }
+    }
+
+    // Calculate the transposition table item type of this node
+    TranspositionTableItemType transpositionItemType;
+    if (bestEval <= alphaOrig) {
+        transpositionItemType = TranspositionTableItemType::UpperBound;
+    }
+    else if (bestEval >= betaOrig) {
+        transpositionItemType = TranspositionTableItemType::LowerBound;
+    }
+    else {
+        transpositionItemType = TranspositionTableItemType::Exact;
     }
 
     // Store the result of the evaluation of this game state to the transposition table
