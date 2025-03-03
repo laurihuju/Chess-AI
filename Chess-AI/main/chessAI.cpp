@@ -8,7 +8,7 @@
 std::atomic<int> ChessAI::bestValue;
 std::atomic<int> ChessAI::bestValueGameStateIndex;
 
-TranspositionTable<20000000> ChessAI::transpositionTable;
+TranspositionTable<60000000> ChessAI::transpositionTable;
 
 Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
     std::vector<GameState> possibleStates;

@@ -33,7 +33,7 @@ private:
     /// <summary>
     /// The transposition table.
     /// </summary>
-    static TranspositionTable<20000000> transpositionTable;
+    static TranspositionTable<60000000> transpositionTable;
 
     /// <summary>
     /// Thread safe function that evaluates the given GameState with the minimax function.

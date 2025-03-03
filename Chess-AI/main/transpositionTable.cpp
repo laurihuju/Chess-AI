@@ -36,4 +36,4 @@ bool TranspositionTable<Size>::lookup(const GameState& state, int minDepth, int&
 	return true;
 }
 
-template class TranspositionTable<20000000>;
+template class TranspositionTable<60000000>;
