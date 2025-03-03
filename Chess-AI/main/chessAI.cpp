@@ -142,7 +142,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     
     // If we've reached the maximum depth or game is over
     if (depth == 0) {
-        return state.evaluationValue(playerIsWhite);
+        return quiescenceSearch(state, playerIsWhite, alpha, beta);
     }
 
     // Fetch the possible new game states that can be made from the current evaluation game state with one move
@@ -215,4 +215,59 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
 
     // Return the evaluation value of this game state
     return bestEval;
+}
+
+void ChessAI::getCapturingMoves(const GameState& state, bool isWhite, std::vector<GameState>& capturingStates) {
+    std::vector<GameState> allStates;
+    state.possibleNewGameStates(allStates);
+    
+    // Filter for capturing moves only
+    for (const auto& newState : allStates) {
+        int materialDiff = newState.evaluationValue(isWhite) - state.evaluationValue(isWhite);
+        // Only include if material difference indicates a capture occurred
+        if (std::abs(materialDiff) >= 100) { // 100 is minimum piece value (pawn)
+            capturingStates.push_back(newState);
+        }
+    }
+}
+
+int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth) {
+    // Base evaluation
+    int standPat = state.evaluationValue(playerIsWhite);
+    
+    // Return if maximum depth or checkmate
+    if (depth == 0) {
+        return standPat;
+    }
+
+    // Beta cutoff
+    if (standPat >= beta) {
+        return beta;
+    }
+
+    // Update alpha if standing pat is better
+    if (standPat > alpha) {
+        alpha = standPat;
+    }
+
+    // Get capturing moves only
+    std::vector<GameState> capturingStates;
+    getCapturingMoves(state, playerIsWhite, capturingStates);
+
+    // Order moves for better pruning
+    orderMoves(capturingStates, Move(0, 0, 0, 0), playerIsWhite);
+
+    // Search capturing moves
+    for (const auto& newState : capturingStates) {
+        int score = -quiescenceSearch(newState, !playerIsWhite, -beta, -alpha, depth - 1);
+        
+        if (score >= beta) {
+            return beta;
+        }
+        if (score > alpha) {
+            alpha = score;
+        }
+    }
+
+    return alpha;
 }
