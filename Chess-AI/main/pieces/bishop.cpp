@@ -29,7 +29,7 @@ char Bishop::gamePhaseInfluence() const {
 	return 1;
 }
 
-void Bishop::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const {
+void Bishop::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// Directions: top-right, top-left, bottom-right, bottom-left
 	char directions[4][2] = { {-1,1}, {-1,-1}, {1,1}, {1,-1} };
 	for (auto& dir : directions) {
@@ -49,7 +49,9 @@ void Bishop::possibleMoves(std::vector<Move>& moves, char x, char y, const GameS
                 break;
             }
 
-            moves.push_back(Move(x, y, dx, dy));
+			if (!captureOnly) {
+				moves.push_back(Move(x, y, dx, dy));
+			}
         }
     }
 

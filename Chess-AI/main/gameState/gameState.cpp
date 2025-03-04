@@ -354,8 +354,9 @@ Piece* GameState::getPieceAt(char x, char y) const {
     return _board[y][x];
 }
 
-void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates) const {
+void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates, bool captureOnly) const {
     std::vector<Move> moves;
+	moves.reserve(32);
 
     for (char i = 0; i < 8; i++) {
         for (char j = 0; j < 8; j++) {
@@ -364,7 +365,7 @@ void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates) con
             if (_board[i][j]->isWhite() != _isWhiteSideToMove)
                 continue;
 
-            _board[i][j]->possibleMoves(moves, j, i, *this);
+            _board[i][j]->possibleMoves(moves, j, i, *this, captureOnly);
         }
     }
 

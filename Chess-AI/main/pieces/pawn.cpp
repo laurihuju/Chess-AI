@@ -30,7 +30,7 @@ char Pawn::gamePhaseInfluence() const {
 	return 0;
 }
 
-void Pawn::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const {
+void Pawn::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// There are no possible moves when the pawn is at the top or bottom row
 	if (y == 0 || y == 7) {
 		return;
@@ -70,6 +70,11 @@ void Pawn::possibleMoves(std::vector<Move>& moves, char x, char y, const GameSta
 		moves.push_back(Move(x, y, gameState.upperEnPassantColumn(), 2));
 	} else if (gameState.lowerEnPassantColumn() != -1 && movementDirection == 1 && y == 4 && std::abs(gameState.lowerEnPassantColumn() - x) == 1) {
 		moves.push_back(Move(x, y, gameState.lowerEnPassantColumn(), 5));
+	}
+
+	// Don't generate normal moves if only capture moves are needed
+	if (captureOnly) {
+		return;
 	}
 
 	// Prevent moving forward when there is an obstacle

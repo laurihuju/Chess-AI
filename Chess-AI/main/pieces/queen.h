@@ -36,13 +36,16 @@ public:
     char gamePhaseInfluence() const override;
 
     /// <summary>
-    /// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.
+    /// Adds the possible moves of this piece to the moves vector.
+    /// Does not take into account if the king is threatened.
+    /// You can generate only capture moves by setting the captureOnly parameter to true.
     /// </summary>
-    /// <param name="moves"></param>
+    /// <param name="moves">The vector where the moves will be added</param>
     /// <param name="x">The x coordinate of this piece</param>
     /// <param name="y">The y coordinate of this piece</param>
     /// <param name="gameState">The game state from which the possible moves are generated</param>
-    void possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const override;
+    /// <param name="captureOnly">If to generate only capture moves</param>
+    void possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly = false) const override;
 
 	/// <summary>
     /// Checks if this piece at the given location threatens the given square.

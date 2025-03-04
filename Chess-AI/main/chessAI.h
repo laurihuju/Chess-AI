@@ -78,13 +78,6 @@ private:
     /// <returns>Evaluation score for the quiet position</returns>
     static int quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth = 4);
 
-    /// <summary>
-    /// Gets only the capturing moves from a state.
-    /// </summary>
-    /// <param name="state">The game state to analyze</param>
-    /// <param name="isWhite">Whether to get moves for white</param>
-    /// <param name="capturingStates">Vector to store states after capturing moves</param>
-    static void getCapturingMoves(const GameState& state, bool isWhite, std::vector<GameState>& capturingStates);
 };
 
 #endif

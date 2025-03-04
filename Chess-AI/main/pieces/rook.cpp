@@ -28,7 +28,7 @@ char Rook::gamePhaseInfluence() const {
 	return 2;
 }
 
-void Rook::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const {
+void Rook::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// Directions: up, down, left, right
 	char directions[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
 	for (auto& dir : directions) {
@@ -48,7 +48,9 @@ void Rook::possibleMoves(std::vector<Move>& moves, char x, char y, const GameSta
 				break;
 			}
 			
-			moves.push_back(Move(x, y, dx, dy));
+			if (!captureOnly) {
+				moves.push_back(Move(x, y, dx, dy));
+			}
 		}
 	}
 }

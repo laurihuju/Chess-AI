@@ -29,17 +29,25 @@ char Knight::gamePhaseInfluence() const {
 	return 1;
 }
 
-void Knight::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const {
+void Knight::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// Possible moves for a knight
 	char directions[8][2] = { {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1} };
 	for (auto& dir : directions) {
 		char dx = x + dir[0];
 		char dy = y + dir[1];
-		if (dx >= 0 && dx <= 7 && dy >= 0 && dy <= 7) {
-			Piece* p = gameState.getPieceAt(dx, dy);
-			if (!p || p->isWhite() != this->isWhite()) {
+		if (dx < 0 || dx > 7 || dy < 0 || dy > 7)
+			continue;
+
+		Piece* p = gameState.getPieceAt(dx, dy);
+		if (p) {
+			if (p->isWhite() != this->isWhite()) {
 				moves.push_back(Move(x, y, dx, dy));
 			}
+			continue;
+		}
+
+		if (!captureOnly) {
+			moves.push_back(Move(x, y, dx, dy));
 		}
 	}
 

@@ -133,9 +133,11 @@ public:
 	/// Adds all possible new game states that can be created from this game state with
 	/// one move to the newGameStates vector. The game states are fully validated to not
 	/// contain moves that would put the king of the given color in check.
+	/// You can generate only capture moves by setting the captureOnly parameter to true.
 	/// </summary>
 	/// <param name="gameStates">The vector where the new game states will be added</param>
-	void possibleNewGameStates(std::vector<GameState>& gameStates) const;
+	/// <param name="captureOnly">If to generate only capture moves</param>
+	void possibleNewGameStates(std::vector<GameState>& gameStates, bool captureOnly = false) const;
 
 	/// <summary>
 	/// Checks if the king of the given color is in check.

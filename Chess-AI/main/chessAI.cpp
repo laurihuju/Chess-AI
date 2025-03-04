@@ -217,21 +217,6 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     return bestEval;
 }
 
-void ChessAI::getCapturingMoves(const GameState& state, bool isWhite, std::vector<GameState>& capturingStates) {
-	state.possibleNewGameStates(capturingStates);
-
-	// Filter for capturing moves only
-	for (int i = 0; i < capturingStates.size(); i++) {
-		int materialDiff = capturingStates[i].evaluationValue(isWhite) - state.evaluationValue(isWhite);
-
-		// Only include if material difference indicates a capture occurred
-		if (std::abs(materialDiff) < 100) { // 100 is minimum piece value (pawn)
-			capturingStates.erase(capturingStates.begin() + i);
-			i--;
-		}
-	}
-}
-
 int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth) {
     // Base evaluation
     int standPat = state.evaluationValue(playerIsWhite);
@@ -253,7 +238,7 @@ int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int al
 
     // Get capturing moves only
     std::vector<GameState> capturingStates;
-    getCapturingMoves(state, playerIsWhite, capturingStates);
+    state.possibleNewGameStates(capturingStates, true);
 
     // Order moves for better pruning
     orderMoves(capturingStates, Move(0, 0, 0, 0), playerIsWhite);
