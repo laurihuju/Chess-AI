@@ -28,8 +28,8 @@ bool GameState::operator==(const GameState& other) const {
     if (_lowerEnPassantColumn != other._lowerEnPassantColumn)
         return false;
 
-    for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++)
+    for (char i = 0; i < 8; i++)
+        for (char j = 0; j < 8; j++)
             if (_board[i][j] != other._board[i][j])
                 return false;
 
@@ -52,19 +52,19 @@ GameState::GameState() {
     _board[0][7] = GameInfo::getInstance()->getPieceInstance(PieceType::Rook, false);
 
     // Initialize board row 2 (index 1)
-    for (int x = 0; x < 8; x++) {
+    for (char x = 0; x < 8; x++) {
         _board[1][x] = GameInfo::getInstance()->getPieceInstance(PieceType::Pawn, false);
     }
 
     // Initialize board rows 3-6 (index 2-5)
-    for (int y = 2; y < 6; y++) {
-        for (int x = 0; x < 8; x++) {
+    for (char y = 2; y < 6; y++) {
+        for (char x = 0; x < 8; x++) {
             _board[y][x] = 0;
         }
     }
 
     // Initialize board row 7 (index 6)
-    for (int x = 0; x < 8; x++) {
+    for (char x = 0; x < 8; x++) {
         _board[6][x] = GameInfo::getInstance()->getPieceInstance(PieceType::Pawn, true);
     }
 
@@ -79,8 +79,8 @@ GameState::GameState() {
     _board[7][7] = GameInfo::getInstance()->getPieceInstance(PieceType::Rook, true);
 
     // Calculate the game phase value
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (char i = 0; i < 8; i++) {
+        for (char j = 0; j < 8; j++) {
             if (_board[j][i] == 0)
                 continue;
 
@@ -95,8 +95,8 @@ GameState::GameState() {
     _hash = _hash xor GameInfo::getInstance()->lowerLeftCastlingZobristValue();
     _hash = _hash xor GameInfo::getInstance()->lowerRightCastlingZobristValue();
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (char i = 0; i < 8; i++) {
+        for (char j = 0; j < 8; j++) {
             if (_board[j][i] == 0)
                 continue;
 
@@ -106,8 +106,8 @@ GameState::GameState() {
 
 	// Calculate evaluation value
     _evaluationValue = 0;
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (char i = 0; i < 8; i++) {
+        for (char j = 0; j < 8; j++) {
             if (_board[i][j] == 0)
                 continue;
 
@@ -296,9 +296,9 @@ void GameState::applyMove(const Move& move) {
     }
 }
 
-void GameState::findKing(bool isWhite, int& x, int& y) const {
-	for (int i = 0; i < 8; i++) {
-		for (int j = 0; j < 8; j++) {
+void GameState::findKing(bool isWhite, char& x, char& y) const {
+	for (char i = 0; i < 8; i++) {
+		for (char j = 0; j < 8; j++) {
             if (_board[j][i] == 0)
                 continue;
             if (_board[j][i]->getType() != PieceType::King)
@@ -350,15 +350,15 @@ void GameState::printBoard() const {
     std::wcout << L"    a   b   c   d   e   f   g   h" << std::endl;
 }
 
-Piece* GameState::getPieceAt(int x, int y) const {
+Piece* GameState::getPieceAt(char x, char y) const {
     return _board[y][x];
 }
 
 void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates) const {
     std::vector<Move> moves;
 
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (char i = 0; i < 8; i++) {
+        for (char j = 0; j < 8; j++) {
             if (_board[i][j] == 0)
                 continue;
             if (_board[i][j]->isWhite() != _isWhiteSideToMove)
@@ -369,7 +369,7 @@ void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates) con
     }
 
     newGameStates.reserve(moves.size());
-    for (int i = 0; i < moves.size(); i++) {
+    for (char i = 0; i < moves.size(); i++) {
         newGameStates.emplace_back(*this);
         newGameStates.back().applyMove(moves[i]);
 
@@ -381,14 +381,14 @@ void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates) con
 }
 
 bool GameState::isCheck(bool isWhite) const {
-    int kingX;
-    int kingY;
+    char kingX;
+    char kingY;
     findKing(isWhite, kingX, kingY);
 
     return isThreatened(isWhite, kingX, kingY);
 }
 
-bool GameState::isThreatened(bool isWhite, int x, int y) const {
+bool GameState::isThreatened(bool isWhite, char x, char y) const {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if (_board[i][j] == 0)
@@ -426,11 +426,11 @@ bool GameState::lowerRightCastlingPossible() const {
 	return _lowerRightCastlingPossible;
 }
 
-int GameState::upperEnPassantColumn() const {
+char GameState::upperEnPassantColumn() const {
     return _upperEnPassantColumn;
 }
 
-int GameState::lowerEnPassantColumn() const {
+char GameState::lowerEnPassantColumn() const {
     return _lowerEnPassantColumn;
 }
 

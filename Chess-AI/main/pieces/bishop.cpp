@@ -29,12 +29,12 @@ char Bishop::gamePhaseInfluence() const {
 	return 1;
 }
 
-void Bishop::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
+void Bishop::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const {
 	// Directions: top-right, top-left, bottom-right, bottom-left
-	int directions[4][2] = { {-1,1}, {-1,-1}, {1,1}, {1,-1} };
+	char directions[4][2] = { {-1,1}, {-1,-1}, {1,1}, {1,-1} };
 	for (auto& dir : directions) {
-		int dx = x;
-		int dy = y;
+		char dx = x;
+		char dy = y;
 		while (true) {
 			dx += dir[0];
 			dy += dir[1];
@@ -55,16 +55,16 @@ void Bishop::possibleMoves(std::vector<Move>& moves, int x, int y, const GameSta
 
 }
 
-bool Bishop::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
+bool Bishop::threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const {
 	if (std::abs(ownX - squareX) != std::abs(ownY - squareY)) {
 		return false;
 	}
 
-	int directionX = squareX > ownX ? 1 : (squareX < ownX ? -1 : 0);
-	int directionY = squareY > ownY ? 1 : (squareY < ownY ? -1 : 0);
+	char directionX = squareX > ownX ? 1 : (squareX < ownX ? -1 : 0);
+	char directionY = squareY > ownY ? 1 : (squareY < ownY ? -1 : 0);
 
-	int currentX = ownX + directionX;
-	int currentY = ownY + directionY;
+	char currentX = ownX + directionX;
+	char currentY = ownY + directionY;
 
 	while (currentX < 8 && currentX > -1 && currentY < 8 && currentY > -1) {
 		if (currentX == squareX && currentY == squareY) {
@@ -81,6 +81,6 @@ bool Bishop::threatensSquare(int ownX, int ownY, int squareX, int squareY, const
 	return false;
 }
 
-int Bishop::evaluationValue(const GameState& gameState, int x, int y) const {
+int Bishop::evaluationValue(const GameState& gameState, char x, char y) const {
 	return 300 + bishopValueAdditions[isWhite() ? y : 7 - y][x];
 }

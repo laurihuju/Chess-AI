@@ -85,7 +85,7 @@ Piece* GameInfo::getPieceInstance(PieceType type, bool isWhite) const {
     return 0;
 }
 
-uint64_t GameInfo::pieceZobristValue(PieceType type, bool isWhite, int x, int y) {
+uint64_t GameInfo::pieceZobristValue(PieceType type, bool isWhite, char x, char y) {
     return _pieceZobristValues[(isWhite ? 0 : 6) + static_cast<int>(type)][y][x];
 }
 

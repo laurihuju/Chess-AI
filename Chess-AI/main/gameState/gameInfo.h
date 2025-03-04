@@ -90,7 +90,7 @@ public:
 	/// <param name="x">The X coordinate of the square</param>
 	/// <param name="y">The Y coordinate of the square</param>
 	/// <returns>The zobrist value of the given piece type at the given square</returns>
-	uint64_t pieceZobristValue(PieceType type, bool isWhite, int x, int y);
+	uint64_t pieceZobristValue(PieceType type, bool isWhite, char x, char y);
 
 	/// <summary>
 	/// 

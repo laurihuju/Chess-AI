@@ -137,7 +137,7 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
 
         // Print debugging data
         std::cout << "Calculation time: " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms\n";
-        std::cout << (turn ? "White" : "Black") << ": (" << aiMove.x1() << "; " << aiMove.y1() << ") -> (" << aiMove.x2() << "; " << aiMove.y2() << ")" << "\n";
+        std::cout << (turn ? "White" : "Black") << ": (" << (int)aiMove.x1() << "; " << (int)aiMove.y1() << ") -> (" << (int)aiMove.x2() << "; " << (int)aiMove.y2() << ")" << "\n";
 
         // If AI returned an empty move, there are no moves available
         if (aiMove == Move(0, 0, 0, 0)) {

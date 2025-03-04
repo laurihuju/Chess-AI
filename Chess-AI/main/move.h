@@ -15,25 +15,25 @@ private:
 	/// The 'from' X coordinate of this move.
 	/// The coordinate is stored as internal index coordinate.
 	/// </summary>
-	int _x1;
+	char _x1;
 
 	/// <summary>
 	/// The 'from' Y coordinate of this move.
 	/// The coordinate is stored as internal index coordinate.
 	/// </summary>
-	int _y1;
+	char _y1;
 
 	/// <summary>
 	/// The 'to' X coordinate of this move.
 	/// The coordinate is stored as internal index coordinate.
 	/// </summary>
-	int _x2;
+	char _x2;
 
 	/// <summary>
 	/// The 'to' Y coordinate of this move.
 	/// The coordinate is stored as internal index coordinate.
 	/// </summary>
-	int _y2;
+	char _y2;
 
 	/// <summary>
 	/// The piece this move promotes to.
@@ -46,14 +46,14 @@ private:
 	/// </summary>
 	/// <param name="coordinateInputChar">The display coordinate char</param>
 	/// <returns>The internal index coordinate</returns>
-	int convertXCoordinateFromInput(char coordinateInputChar) const;
+	char convertXCoordinateFromInput(char coordinateInputChar) const;
 
 	/// <summary>
 	/// Converts the given display X coordinate char to internal index coordinate.
 	/// </summary>
 	/// <param name="coordinateInputChar">The display coordinate char</param>
 	/// <returns>The internal index coordinate</returns>
-	int convertYCoordinateFromInput(char coordinateInputChar) const;
+	char convertYCoordinateFromInput(char coordinateInputChar) const;
 
 public:
 	/// <summary>
@@ -78,7 +78,7 @@ public:
 	/// <param name="y1">The 'from' Y coordinate</param>
 	/// <param name="x2">The 'to' X coordinate</param>
 	/// <param name="y2">The 'to' Y coordinate</param>
-	Move(int x1, int y1, int x2, int y2);
+	Move(char x1, char y1, char x2, char y2);
 
 	/// <summary>
 	/// Creates a new move with 'from' and 'to' coordinates and promotion.
@@ -90,7 +90,7 @@ public:
 	/// <param name="x2">The 'to' X coordinate</param>
 	/// <param name="y2">The 'to' Y coordinate</param>
 	/// <param name="promotionPiece">The char of the promotion piece (see summary)</param>
-	Move(int x1, int y1, int x2, int y2, char promotionPiece);
+	Move(char x1, char y1, char x2, char y2, char promotionPiece);
 
 	/// <summary>
 	/// Creates a new move from string input.
@@ -107,28 +107,28 @@ public:
 	/// The coordinate is given as internal index coordinate.
 	/// </summary>
 	/// <returns>The 'from' X coordinate of this move.</returns>
-	int x1() const;
+	char x1() const;
 
 	/// <summary>
 	/// The 'from' Y coordinate of this move.
 	/// The coordinate is given as internal index coordinate.
 	/// </summary>
 	/// <returns>The 'from' Y coordinate of this move.</returns>
-	int y1() const;
+	char y1() const;
 
 	/// <summary>
 	/// The 'to' X coordinate of this move.
 	/// The coordinate is given as internal index coordinate.
 	/// </summary>
 	/// <returns>The 'to' X coordinate of this move.</returns>
-	int x2() const;
+	char x2() const;
 
 	/// <summary>
 	/// The 'to' Y coordinate of this move.
 	/// The coordinate is given as internal index coordinate.
 	/// </summary>
 	/// <returns>The 'to' Y coordinate of this move</returns>
-	int y2() const;
+	char y2() const;
 
 	/// <summary>
 	/// The promotion piece of the move. ('q' = queen; 'n' = knight; 'b' = bishop; 'r' = rook; -1 = no promotion)

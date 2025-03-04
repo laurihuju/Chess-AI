@@ -39,7 +39,7 @@ public:
 	/// <param name="x">The x coordinate of this piece</param>
 	/// <param name="y">The y coordinate of this piece</param>
 	/// <param name="gameState">The game state from which the possible moves are generated</param>
-	void possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const override;
+	void possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState) const override;
 
 	/// <summary>
 	/// Checks if this piece at the given location threatens the given square.
@@ -50,7 +50,7 @@ public:
 	/// <param name="squareY"></param>
 	/// <param name="gameState"></param>
 	/// <returns></returns>
-	bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const override;
+	bool threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const override;
 
 	/// <summary>
 	/// The evaluation value of this piece at the given coordinates on the given GameState.
@@ -59,7 +59,7 @@ public:
 	/// <param name="x">The X coordinate of the piece</param>
 	/// <param name="y">The Y coordinate of the piece</param>
 	/// <returns></returns>
-	int evaluationValue(const GameState& gameState, int x, int y) const override;
+	int evaluationValue(const GameState& gameState, char x, char y) const override;
 
 };
 

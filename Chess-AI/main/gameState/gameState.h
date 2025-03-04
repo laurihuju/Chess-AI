@@ -22,7 +22,7 @@ private:
 	/// The evaluation value of this game state for white.
 	/// Higher value means better position for white.
 	/// </summary>
-	mutable int _evaluationValue = 0;
+	int _evaluationValue = 0;
 
 	/// <summary>
 	/// Information if it is white's side to move.
@@ -53,13 +53,13 @@ private:
 	/// The column which upper en passant is possible to do to (the column of the piece that would be captured in
 	/// the en passant move). Has value -1 if upper en passant is not possible.
 	/// </summary>
-	int _upperEnPassantColumn = -1;
+	char _upperEnPassantColumn = -1;
 
 	/// <summary>
 	/// The column which lower en passant is possible to do to (the column of the piece that would be captured in
 	/// the en passant move). Has value -1 if lower en passant is not possible.
 	/// </summary>
-	int _lowerEnPassantColumn = -1;
+	char _lowerEnPassantColumn = -1;
 
 	/// <summary>
 	/// The last move that was made in this game state.
@@ -112,7 +112,7 @@ public:
 	/// <param name="isWhite">Information about if the king to find is white</param>
 	/// <param name="x">The variable where the X coordinate of the king will be set</param>
 	/// <param name="y">The variable where the Y coordinate of the king will be set</param>
-	void findKing(bool isWhite, int& x, int& y) const;
+	void findKing(bool isWhite, char& x, char& y) const;
 
 	/// <summary>
 	/// Prints the board content to the console.
@@ -127,7 +127,7 @@ public:
 	/// <param name="x">The x coordinate of the piece</param>
 	/// <param name="y">The y coordinate of the piece</param>
 	/// <returns>The piece at the given coordinates.</returns>
-	Piece* getPieceAt(int x, int y) const;
+	Piece* getPieceAt(char x, char y) const;
 
 	/// <summary>
 	/// Adds all possible new game states that can be created from this game state with
@@ -152,7 +152,7 @@ public:
 	/// <param name="x">The X coordinate of the square</param>
 	/// <param name="y">The Y coordinate of the square</param>
 	/// <returns>True if the given square is threatened</returns>
-	bool isThreatened(bool isWhite, int x, int y) const;
+	bool isThreatened(bool isWhite, char x, char y) const;
 
 	/// <summary>
 	/// Returns the evaluation value for the given player.
@@ -202,7 +202,7 @@ public:
 	/// Returns -1 if upper en passant is not possible.
 	/// </summary>
 	/// <returns>The column where upper en passant move is possible to do at, or -1 if upper en passant is not possible</returns>
-	int upperEnPassantColumn() const;
+	char upperEnPassantColumn() const;
 
 	/// <summary>
 	/// Checks which column lower en passant move is possible to do at.
@@ -210,7 +210,7 @@ public:
 	/// Returns -1 if lower en passant is not possible.
 	/// </summary>
 	/// <returns>The column where lower en passant move is possible to do at, or -1 if lower en passant is not possible</returns>
-	int lowerEnPassantColumn() const;
+	char lowerEnPassantColumn() const;
 
 	/// <summary>
 	/// The last move that was made in this game state.
