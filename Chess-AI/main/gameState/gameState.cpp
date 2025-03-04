@@ -180,7 +180,7 @@ void GameState::applyMove(const Move& move) {
 
                 _board[3][move.x2()] = 0;
             }
-        } else if (move.y2() == 5 && upperEnPassantColumn() == move.x2()) {
+        } else if (move.y2() == 5 && lowerEnPassantColumn() == move.x2()) {
             if (_board[4][move.x2()] != 0) {
                 _gamePhase -= _board[4][move.x2()]->gamePhaseInfluence();
                 _hash = _hash xor GameInfo::getInstance()->pieceZobristValue(_board[4][move.x2()]->getType(), _board[4][move.x2()]->isWhite(), move.x2(), 4);
