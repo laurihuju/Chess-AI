@@ -152,7 +152,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     // If no moves are available, this is checkmate or stalemate
     if (possibleStates.empty()) {
         if (state.isCheck(isMaximizingPlayer ? playerIsWhite : !playerIsWhite)) {
-            return isMaximizingPlayer ? -10000 + depth : 10000 - depth;
+            return isMaximizingPlayer ? -1000000 - (depth * 10000) : 1000000 + (depth * 10000);
         }
         return 0; // Stalemate
     }
