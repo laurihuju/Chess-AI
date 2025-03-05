@@ -100,27 +100,6 @@ void Pawn::possibleMoves(std::vector<Move>& moves, char x, char y, const GameSta
 	}
 }
 
-bool Pawn::threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const {
-	if (std::abs(squareX - ownX) != 1) {
-		return false;
-	}
-
-	char movementDirection = isWhite() ? -1 : 1;
-
-	// Upper en passant
-	if (movementDirection == 1 && ownY == 3 && squareY == 3 && gameState.upperEnPassantColumn() == squareX) {
-		return true;
-	}
-
-	// Lower en passant
-	if (movementDirection == -1 && ownY == 4 && squareY == 4 && gameState.lowerEnPassantColumn() == squareX) {
-		return true;
-	}
-
-	// Capturing
-	return squareY == ownY + movementDirection;
-}
-
-int Pawn::evaluationValue(const GameState& gameState, char x, char y) const {
+int Pawn::evaluationValue(char x, char y, char gamePhase) const {
 	return 100 + pawnValueAdditions[isWhite() ? y : 7 - y][x];
 }

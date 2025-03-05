@@ -10,7 +10,7 @@ std::atomic<int> ChessAI::bestValueGameStateIndex;
 
 TranspositionTable<30000000> ChessAI::transpositionTable;
 
-Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
+Move ChessAI::findBestMove(const GameState& state, int depth) {
     std::vector<GameState> possibleStates;
     state.possibleNewGameStates(possibleStates);
     if (possibleStates.empty()) {
@@ -18,22 +18,22 @@ Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
     }
 
     // Order moves before evaluation
-    orderMoves(possibleStates, Move(0, 0, 0, 0), isWhite);
+    orderMoves(possibleStates, Move(0, 0, 0, 0), state.isWhiteSideToMove());
 
     // Reset the best value
     bestValue = std::numeric_limits<int>::min();
     bestValueGameStateIndex = 0; // Initialize to 0 instead of -1 to ensure we always have a valid move
 
 	//// Code to be used instead of the multithreading code when debugging needs
-    //// fully deterministic single-threaded algorithm
-    //for (int i = 0; i < possibleStates.size(); i++) {
-    //    runMinimax(possibleStates[i], i, depth - 1, isWhite);
-    //}
+	//// fully deterministic single-threaded algorithm
+	//for (int i = 0; i < possibleStates.size(); i++) {
+	//    runMinimax(possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
+	//}
 
     // Run Minimax evaluation for every currently possible new GameState in different threads
     std::vector<std::thread*> threads;
     for (int i = 0; i < possibleStates.size(); i++) {
-        std::thread* thread = new std::thread(runMinimax, possibleStates[i], i, depth - 1, isWhite);
+        std::thread* thread = new std::thread(runMinimax, possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
         threads.push_back(thread);
     }
 
@@ -43,48 +43,8 @@ Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
         delete thread;
     }
 
-    // Find which move led to this state by comparing board states
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Piece* piece = state.getPieceAt(x, y);
-            if (!piece || piece->isWhite() != isWhite) {
-                continue;
-            }
-
-            std::vector<Move> moves;
-            piece->possibleMoves(moves, x, y, state);
-            for (const Move& move : moves) {
-                GameState testState(state);
-                testState.applyMove(move);
-
-                if (testState == possibleStates[bestValueGameStateIndex]) {
-                    return move;
-                }
-            }
-        }
-    }
-
-    // If we get here, pick any legal move from the first piece we find
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Piece* piece = state.getPieceAt(x, y);
-            if (!piece || piece->isWhite() != isWhite) {
-                continue;
-            }
-
-            std::vector<Move> moves;
-            piece->possibleMoves(moves, x, y, state);
-            for (const Move& move : moves) {
-                GameState testState(state);
-                testState.applyMove(move);
-                if (!testState.isCheck(isWhite)) {
-                    return move;
-                }
-            }
-        }
-    }
-
-    return Move(0, 0, 0, 0);
+	// Return the best move found
+	return possibleStates[bestValueGameStateIndex].lastMove();
 }
 
 void ChessAI::orderMoves(std::vector<GameState>& states, const Move& transpositionTableMove, bool isWhite) {

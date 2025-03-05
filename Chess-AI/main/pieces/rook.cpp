@@ -55,32 +55,6 @@ void Rook::possibleMoves(std::vector<Move>& moves, char x, char y, const GameSta
 	}
 }
 
-bool Rook::threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const {
-	if (ownX != squareX && ownY != squareY) {
-		return false;
-	}
-
-	char directionX = squareX > ownX ? 1 : (squareX < ownX ? -1 : 0);
-	char directionY = squareY > ownY ? 1 : (squareY < ownY ? -1 : 0);
-
-	char currentX = ownX + directionX;
-	char currentY = ownY + directionY;
-
-	while (currentX < 8 && currentX > -1 && currentY < 8 && currentY > -1) {
-		if (currentX == squareX && currentY == squareY) {
-			return true;
-		}
-		if (gameState.getPieceAt(currentX, currentY) != 0) {
-			return false;
-		}
-
-		currentX += directionX;
-		currentY += directionY;
-	}
-
-	return false;
-}
-
-int Rook::evaluationValue(const GameState& gameState, char x, char y) const {
+int Rook::evaluationValue(char x, char y, char gamePhase) const {
 	return 500 + rookValueAdditions[isWhite() ? y : 7 - y][x];
 }

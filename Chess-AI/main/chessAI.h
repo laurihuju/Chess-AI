@@ -9,13 +9,12 @@
 class ChessAI {
 public:
     /// <summary>
-    /// Finds the best move for the given player using Minimax algorithm.
+    /// Finds the best next move for the given game state using Minimax algorithm.
     /// </summary>
-    /// <param name="state">The current game state</param>
-    /// <param name="isWhite">If the best move should be searched for white</param>
+    /// <param name="state">The game state to search move for</param>
     /// <param name="depth">The Minimax evaluation depth</param>
-    /// <returns>The best move, or move from (0; 0) to (0; 0) if no moves found</returns>
-    static Move findBestMove(const GameState& state, bool isWhite, int depth);
+    /// <returns>The best move, or Move(0, 0, 0, 0) if no moves found</returns>
+    static Move findBestMove(const GameState& state, int depth);
 
 private:
     /// <summary>

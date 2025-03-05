@@ -27,29 +27,27 @@
 void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures);
 
 /// <summary>
-/// Checks input in the UI and handles updating the game state, turn, selected square and possible moves.
+/// Checks input in the UI and handles updating the game state, selected square and possible moves.
 /// </summary>
 /// <param name="gameState">The current game state</param>
-/// <param name="turn">The current turn (true is white)</param>
 /// <param name="selectedSquare">The selected square coordinates</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY);
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY);
 
 /// <summary>
 /// Draws the board content to the window.
 /// </summary>
 /// <param name="gameState">The current game state</param>
-/// <param name="turn">The current turn (true is white)</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
 /// <param name="selectedSquare">The selected square coordinates</param>
 /// <param name="textures">Textures loaded with loadPieceTextures()</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void drawBoard(const GameState& gameState, const bool& turn, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY);
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY);
 
 /// <summary>
 /// Draws the given piece at the given coordinates to the window.
@@ -71,10 +69,9 @@ void startGameUi()
     SetTargetFPS(60);
     MaximizeWindow();
 
-    // The current game state and turn
+    // The game info and current game state
     GameInfo gameInfo;
     GameState gameState;
-    bool turn = true;
 
     // The selected square and possible moves
     Vector2 selectedSquare = { -1, -1 };
@@ -96,10 +93,10 @@ void startGameUi()
         int boardOffsetY = (currentScreenHeight - boardSize) / 2;
 
         // Read input from the user
-        handleInput(gameState, turn, selectedSquare, possibleMoves, boardSize, boardOffsetX, boardOffsetY);
+        handleInput(gameState, selectedSquare, possibleMoves, boardSize, boardOffsetX, boardOffsetY);
         
         // Render the board
-        drawBoard(gameState, turn, possibleMoves, selectedSquare, textures, boardSize, boardOffsetX, boardOffsetY);
+        drawBoard(gameState, possibleMoves, selectedSquare, textures, boardSize, boardOffsetX, boardOffsetY);
     }
 
     // Unload textures
@@ -127,17 +124,21 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
     textures["KB"] = LoadTexture("main/resources/black_king.png");
 }
 
-void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
     // Use AI to complete the move when pressing space
     if (IsKeyPressed(KEY_SPACE)) {
         // Find the best move and calculate the calculation time
         auto startTime = std::chrono::high_resolution_clock::now();
-        Move aiMove = ChessAI::findBestMove(gameState, turn, 6); // Depth 6 is the best that has an acceptable runtime.
+        Move aiMove = ChessAI::findBestMove(gameState, 6); // Depth 6 is the best that has an acceptable runtime.
         auto endTime = std::chrono::high_resolution_clock::now();
 
         // Print debugging data
         std::cout << "Calculation time: " << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() << "ms\n";
-        std::cout << (turn ? "White" : "Black") << ": (" << (int)aiMove.x1() << "; " << (int)aiMove.y1() << ") -> (" << (int)aiMove.x2() << "; " << (int)aiMove.y2() << ")" << "\n";
+        std::cout << (gameState.isWhiteSideToMove() ? "White" : "Black") << ": (" << (int)aiMove.x1() << "; " << (int)aiMove.y1() << ") -> (" << (int)aiMove.x2() << "; " << (int)aiMove.y2() << ")" << "\n";
+
+        // Remove selection
+        selectedSquare = { -1, -1 };
+        possibleMoves.clear();
 
         // If AI returned an empty move, there are no moves available
         if (aiMove == Move(0, 0, 0, 0)) {
@@ -145,7 +146,6 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
         }
 
         gameState.applyMove(aiMove);
-        turn = !turn;
         return;
     }
 
@@ -180,7 +180,7 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
             selectedSquare = { (float)file, (float)rank };
 
             // There are no possible moves if moving piece at wrong turn
-            if (selectedPiece->isWhite() == turn) {
+            if (selectedPiece->isWhite() == gameState.isWhiteSideToMove()) {
                 selectedPiece->possibleMoves(possibleMoves, file, rank, gameState);
 
                 // Do not show moves that would lead the player to check
@@ -188,7 +188,7 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
                     GameState testState(gameState);
                     testState.applyMove(possibleMoves[i]);
 
-                    if (testState.isCheck(turn)) {
+                    if (testState.isCheck(gameState.isWhiteSideToMove())) {
                         possibleMoves.erase(possibleMoves.begin() + i);
                         i--;
                     }
@@ -201,7 +201,7 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
 
     // Second click (move the selected piece if possible)
     Piece* movingPiece = gameState.getPieceAt(selectedSquare.x, selectedSquare.y);
-    if (movingPiece != 0 && movingPiece->isWhite() != turn) {
+    if (movingPiece != 0 && movingPiece->isWhite() != gameState.isWhiteSideToMove()) {
         selectedSquare = { -1, -1 };
         possibleMoves.clear();
 
@@ -259,8 +259,6 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
     if (valid)
     {
         gameState.applyMove(move);
-        turn = !turn;
-
         std::cout << "Evaluation value: " << gameState.evaluationValue(true) << "\n";
     }
 
@@ -269,7 +267,7 @@ void handleInput(GameState& gameState, bool& turn, Vector2& selectedSquare, std:
     possibleMoves.clear();
 }
 
-void drawBoard(const GameState& gameState, const bool& turn, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY) {
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY) {
     BeginDrawing();
     ClearBackground(BLACK);
 
@@ -306,7 +304,7 @@ void drawBoard(const GameState& gameState, const bool& turn, const std::vector<M
     // Highlight selected square
     if (selectedSquare.x != -1)
     {
-        Color color = gameState.getPieceAt(selectedSquare.x, selectedSquare.y) != 0 && gameState.getPieceAt(selectedSquare.x, selectedSquare.y)->isWhite() == turn ? YELLOW : RED;
+        Color color = gameState.getPieceAt(selectedSquare.x, selectedSquare.y) != 0 && gameState.getPieceAt(selectedSquare.x, selectedSquare.y)->isWhite() == gameState.isWhiteSideToMove() ? YELLOW : RED;
         DrawRectangle(boardOffsetX + selectedSquare.x * (boardSize / 8), boardOffsetY + selectedSquare.y * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(color, 0.3f));
     }
 

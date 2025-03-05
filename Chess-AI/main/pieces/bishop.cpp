@@ -57,32 +57,6 @@ void Bishop::possibleMoves(std::vector<Move>& moves, char x, char y, const GameS
 
 }
 
-bool Bishop::threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const {
-	if (std::abs(ownX - squareX) != std::abs(ownY - squareY)) {
-		return false;
-	}
-
-	char directionX = squareX > ownX ? 1 : (squareX < ownX ? -1 : 0);
-	char directionY = squareY > ownY ? 1 : (squareY < ownY ? -1 : 0);
-
-	char currentX = ownX + directionX;
-	char currentY = ownY + directionY;
-
-	while (currentX < 8 && currentX > -1 && currentY < 8 && currentY > -1) {
-		if (currentX == squareX && currentY == squareY) {
-			return true;
-		}
-		if (gameState.getPieceAt(currentX, currentY) != 0) {
-			return false;
-		}
-
-		currentX += directionX;
-		currentY += directionY;
-	}
-
-	return false;
-}
-
-int Bishop::evaluationValue(const GameState& gameState, char x, char y) const {
+int Bishop::evaluationValue(char x, char y, char gamePhase) const {
 	return 300 + bishopValueAdditions[isWhite() ? y : 7 - y][x];
 }

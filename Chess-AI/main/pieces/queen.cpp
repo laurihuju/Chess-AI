@@ -36,10 +36,6 @@ void Queen::possibleMoves(std::vector<Move>& moves, char x, char y, const GameSt
 	Rook::possibleMoves(moves, x, y, gameState, captureOnly);
 }
 
-bool Queen::threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const {
-	return Bishop::threatensSquare(ownX, ownY, squareX, squareY, gameState) || Rook::threatensSquare(ownX, ownY, squareX, squareY, gameState);
-}
-
-int Queen::evaluationValue(const GameState& gameState, char x, char y) const {
+int Queen::evaluationValue(char x, char y, char gamePhase) const {
 	return 900 + queenValueAdditions[isWhite() ? y : 7 - y][x];
 }

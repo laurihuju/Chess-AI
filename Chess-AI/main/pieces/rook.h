@@ -45,24 +45,13 @@ public:
 	void possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly = false) const override;
 
 	/// <summary>
-	/// Checks if this piece at the given location threatens the given square.
+	/// The evaluation value of this piece at the given coordinates at the given game phase.
 	/// </summary>
-	/// <param name="ownX"></param>
-	/// <param name="ownY"></param>
-	/// <param name="squareX"></param>
-	/// <param name="squareY"></param>
-	/// <param name="gameState"></param>
-	/// <returns></returns>
-	bool threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const override;
-
-	/// <summary>
-	/// The evaluation value of this piece at the given coordinates on the given GameState.
-	/// </summary>
-	/// <param name="gameState">The game state of evaluation</param>
 	/// <param name="x">The X coordinate of the piece</param>
 	/// <param name="y">The Y coordinate of the piece</param>
-	/// <returns></returns>
-	int evaluationValue(const GameState& gameState, char x, char y) const override;
+	/// <param name="gamePhase">The game phase</param>
+	/// <returns>The evaluation value</returns>
+	int evaluationValue(char x, char y, char gamePhase) const override;
 
 };
 

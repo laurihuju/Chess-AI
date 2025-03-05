@@ -83,10 +83,6 @@ void King::possibleMoves(std::vector<Move>& moves, char x, char y, const GameSta
 
 }
 
-bool King::threatensSquare(char ownX, char ownY, char squareX, char squareY, const GameState& gameState) const {
-	return std::abs(ownX - squareX) <= 1 && std::abs(ownY - squareY) <= 1;
-}
-
-int King::evaluationValue(const GameState& gameState, char x, char y) const {
-	return gameState.gamePhase() > 10 ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
+int King::evaluationValue(char x, char y, char gamePhase) const {
+	return gamePhase > 10 ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
 }
