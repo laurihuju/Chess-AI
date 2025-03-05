@@ -191,8 +191,19 @@ void GameState::applyMove(const Move& move) {
         }
     }
 
-    // Handle castling move
+    // Handle king move
     if (_board[move.y2()][move.x2()]->getType() == PieceType::King) {
+		// Update king position
+        if (_board[move.y2()][move.x2()]->isWhite()) {
+			_whiteKingX = move.x2();
+			_whiteKingY = move.y2();
+        }
+        else {
+			_blackKingX = move.x2();
+			_blackKingY = move.y2();
+        }
+
+        // Handle castling moves
         if (move.x2() == 2 && move.y2() == 0 && upperLeftCastlingPossible()) {
             if (_board[0][3] != 0) {
                 _gamePhase -= _board[0][3]->gamePhaseInfluence();
@@ -296,25 +307,6 @@ void GameState::applyMove(const Move& move) {
     }
 }
 
-void GameState::findKing(bool isWhite, char& x, char& y) const {
-	for (char i = 0; i < 8; i++) {
-		for (char j = 0; j < 8; j++) {
-            if (_board[j][i] == 0)
-                continue;
-            if (_board[j][i]->getType() != PieceType::King)
-                continue;
-			if (_board[j][i]->isWhite() != isWhite)
-				continue;
-
-			x = i;
-			y = j;
-
-			return;
-		}
-	}
-
-}
-
 void GameState::printBoard() const {
     // Set the locale to support Unicode
     std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
@@ -382,25 +374,194 @@ void GameState::possibleNewGameStates(std::vector<GameState>& newGameStates, boo
 }
 
 bool GameState::isCheck(bool isWhite) const {
-    char kingX;
-    char kingY;
-    findKing(isWhite, kingX, kingY);
+	if (isWhite) {
+        return isThreatened(isWhite, _whiteKingX, _whiteKingY);
+	}
 
-    return isThreatened(isWhite, kingX, kingY);
+    return isThreatened(isWhite, _blackKingX, _blackKingY);
 }
 
 bool GameState::isThreatened(bool isWhite, char x, char y) const {
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
-            if (_board[i][j] == 0)
-                continue;
-            if (_board[i][j]->isWhite() == isWhite)
-                continue;
-            if (!_board[i][j]->threatensSquare(j, i, x, y, *this))
-                continue;
+    // Check for rooks and queens at the right side of the square
+    for (char i = x + 1; i < 8; i++) {
+        if (_board[y][i] == 0)
+            continue;
+        if (_board[y][i]->isWhite() == isWhite)
+            break;
+		if (_board[y][i]->getType() != PieceType::Rook && _board[y][i]->getType() != PieceType::Queen)
+			break;
 
-            return true;
+        return true;
+    }
+
+    // Check for rooks and queens at the left side of the square
+    for (char i = x - 1; i > -1; i--) {
+        if (_board[y][i] == 0)
+            continue;
+        if (_board[y][i]->isWhite() == isWhite)
+            break;
+        if (_board[y][i]->getType() != PieceType::Rook && _board[y][i]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+    // Check for rooks and queens at the down side of the square
+    for (char i = y + 1; i < 8; i++) {
+        if (_board[i][x] == 0)
+            continue;
+        if (_board[i][x]->isWhite() == isWhite)
+            break;
+        if (_board[i][x]->getType() != PieceType::Rook && _board[i][x]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+    // Check for rooks and queens at the up side of the square
+    for (char i = y - 1; i > -1; i--) {
+        if (_board[i][x] == 0)
+            continue;
+        if (_board[i][x]->isWhite() == isWhite)
+            break;
+        if (_board[i][x]->getType() != PieceType::Rook && _board[i][x]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+	// Check for bishops and queens at the lower right side of the square
+    char j = y;
+    for (char i = x + 1; i < 8; i++) {
+        j++;
+		if (j > 7)
+			break;
+
+        if (_board[j][i] == 0)
+            continue;
+        if (_board[j][i]->isWhite() == isWhite)
+            break;
+        if (_board[j][i]->getType() != PieceType::Bishop && _board[j][i]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+    // Check for bishops and queens at the upper right side of the square
+    j = y;
+    for (char i = x + 1; i < 8; i++) {
+        j--;
+        if (j < 0)
+            break;
+
+        if (_board[j][i] == 0)
+            continue;
+        if (_board[j][i]->isWhite() == isWhite)
+            break;
+        if (_board[j][i]->getType() != PieceType::Bishop && _board[j][i]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+    // Check for bishops and queens at the lower left side of the square
+    j = y;
+    for (char i = x - 1; i > -1; i--) {
+        j++;
+        if (j > 7)
+            break;
+
+        if (_board[j][i] == 0)
+            continue;
+        if (_board[j][i]->isWhite() == isWhite)
+            break;
+        if (_board[j][i]->getType() != PieceType::Bishop && _board[j][i]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+    // Check for bishops and queens at the upper left side of the square
+    j = y;
+    for (char i = x - 1; i > -1; i--) {
+        j--;
+        if (j < 0)
+            break;
+
+        if (_board[j][i] == 0)
+            continue;
+        if (_board[j][i]->isWhite() == isWhite)
+            break;
+        if (_board[j][i]->getType() != PieceType::Bishop && _board[j][i]->getType() != PieceType::Queen)
+            break;
+
+        return true;
+    }
+
+	// Check for knights
+	if (x - 2 > -1 && y - 1 > -1 && _board[y - 1][x - 2] != 0 && _board[y - 1][x - 2]->isWhite() != isWhite && _board[y - 1][x - 2]->getType() == PieceType::Knight) {
+		return true;
+	}
+    if (x - 1 > -1 && y - 2 > -1 && _board[y - 2][x - 1] != 0 && _board[y - 2][x - 1]->isWhite() != isWhite && _board[y - 2][x - 1]->getType() == PieceType::Knight) {
+        return true;
+    }
+    if (x + 1 < 8 && y - 2 > -1 && _board[y - 2][x + 1] != 0 && _board[y - 2][x + 1]->isWhite() != isWhite && _board[y - 2][x + 1]->getType() == PieceType::Knight) {
+        return true;
+    }
+    if (x + 2 < 8 && y - 1 > -1 && _board[y - 1][x + 2] != 0 && _board[y - 1][x + 2]->isWhite() != isWhite && _board[y - 1][x + 2]->getType() == PieceType::Knight) {
+        return true;
+    }
+    if (x + 2 < 8 && y + 1 < 8 && _board[y + 1][x + 2] != 0 && _board[y + 1][x + 2]->isWhite() != isWhite && _board[y + 1][x + 2]->getType() == PieceType::Knight) {
+        return true;
+    }
+    if (x + 1 < 8 && y + 2 < 8 && _board[y + 2][x + 1] != 0 && _board[y + 2][x + 1]->isWhite() != isWhite && _board[y + 2][x + 1]->getType() == PieceType::Knight) {
+        return true;
+    }
+    if (x - 1 > -1 && y + 2 < 8 && _board[y + 2][x - 1] != 0 && _board[y + 2][x - 1]->isWhite() != isWhite && _board[y + 2][x - 1]->getType() == PieceType::Knight) {
+        return true;
+    }
+    if (x - 2 > -1 && y + 1 < 8 && _board[y + 1][x - 2] != 0 && _board[y + 1][x - 2]->isWhite() != isWhite && _board[y + 1][x - 2]->getType() == PieceType::Knight) {
+        return true;
+    }
+
+	// Check for kings
+    for (char i = x - 1; i <= x + 1; i++) {
+		if (i < 0 || i > 7)
+			continue;
+
+        for (char j = y - 1; j <= y + 1; j++) {
+            if (j < 0 || j > 7)
+                continue;
+			if (i == x && j == y)
+				continue;
+
+			if (_board[j][i] == 0)
+				continue;
+			if (_board[j][i]->isWhite() == isWhite)
+				continue;
+			if (_board[j][i]->getType() != PieceType::King)
+				continue;
+
+			return true;
         }
+    }
+
+	// Check for pawns
+    if (isWhite) {
+		if (x - 1 > -1 && y - 1 > -1 && _board[y - 1][x - 1] != 0 && _board[y - 1][x - 1]->isWhite() != isWhite && _board[y - 1][x - 1]->getType() == PieceType::Pawn) {
+			return true;
+		}
+		if (x + 1 < 8 && y - 1 > -1 && _board[y - 1][x + 1] != 0 && _board[y - 1][x + 1]->isWhite() != isWhite && _board[y - 1][x + 1]->getType() == PieceType::Pawn) {
+			return true;
+		}
+	}
+	else {
+		if (x - 1 > -1 && y + 1 < 8 && _board[y + 1][x - 1] != 0 && _board[y + 1][x - 1]->isWhite() != isWhite && _board[y + 1][x - 1]->getType() == PieceType::Pawn) {
+			return true;
+		}
+		if (x + 1 < 8 && y + 1 < 8 && _board[y + 1][x + 1] != 0 && _board[y + 1][x + 1]->isWhite() != isWhite && _board[y + 1][x + 1]->getType() == PieceType::Pawn) {
+			return true;
+		}
     }
 
     return false;

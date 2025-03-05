@@ -19,6 +19,26 @@ private:
 	Piece* _board[8][8];
 
 	/// <summary>
+	/// The white king's X coordinate.
+	/// </summary>
+	char _whiteKingX = 4;
+
+	/// <summary>
+	/// The white king's Y coordinate.
+	/// </summary>
+	char _whiteKingY = 7;
+
+	/// <summary>
+	/// The black king's X coordinate.
+	/// </summary>
+	char _blackKingX = 4;
+
+	/// <summary>
+	/// The black king's Y coordinate.
+	/// </summary>
+	char _blackKingY = 0;
+
+	/// <summary>
 	/// The evaluation value of this game state for white.
 	/// Higher value means better position for white.
 	/// </summary>
@@ -105,14 +125,6 @@ public:
 	/// </summary>
 	/// <param name="move">The move to apply</param>
 	void applyMove(const Move& move);
-
-	/// <summary>
-	/// Finds the king of the given color. The coordinates of the king are set to the variables x and y.
-	/// </summary>
-	/// <param name="isWhite">Information about if the king to find is white</param>
-	/// <param name="x">The variable where the X coordinate of the king will be set</param>
-	/// <param name="y">The variable where the Y coordinate of the king will be set</param>
-	void findKing(bool isWhite, char& x, char& y) const;
 
 	/// <summary>
 	/// Prints the board content to the console.
