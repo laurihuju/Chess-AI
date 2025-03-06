@@ -9,9 +9,9 @@ bool Move::operator!=(const Move& other) const {
 	return !(*this == other);
 }
 
-Move::Move(int x1, int y1, int x2, int y2) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), _promotionPiece(-1) {}
+Move::Move(char x1, char y1, char x2, char y2) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), _promotionPiece(-1) {}
 
-Move::Move(int x1, int y1, int x2, int y2, char promotionPiece) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), _promotionPiece(promotionPiece) {}
+Move::Move(char x1, char y1, char x2, char y2, char promotionPiece) : _x1(x1), _y1(y1), _x2(x2), _y2(y2), _promotionPiece(promotionPiece) {}
 
 Move::Move(const std::string& input) {
 	// Parse promotion piece
@@ -46,17 +46,17 @@ Move::Move(const std::string& input) {
 
 }
 
-int Move::x1() const {
+char Move::x1() const {
 	return _x1;
 }
-int Move::y1() const {
+char Move::y1() const {
 	return _y1;
 }
 
-int Move::x2() const {
+char Move::x2() const {
 	return _x2;
 }
-int Move::y2() const {
+char Move::y2() const {
 	return _y2;
 }
 
@@ -64,13 +64,13 @@ char Move::promotionPiece() const {
 	return _promotionPiece;
 }
 
-int Move::convertXCoordinateFromInput(char coordinateInputChar) const {
+char Move::convertXCoordinateFromInput(char coordinateInputChar) const {
 	if (coordinateInputChar < 'a' || coordinateInputChar > 'h')
 		return 0;
 
 	return (int)coordinateInputChar - 'a';
 }
-int Move::convertYCoordinateFromInput(char coordinateInputChar) const {
+char Move::convertYCoordinateFromInput(char coordinateInputChar) const {
 	if (coordinateInputChar < '1' || coordinateInputChar > '8')
 		return 0;
 

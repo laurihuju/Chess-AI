@@ -44,28 +44,31 @@ char King::gamePhaseInfluence() const {
 	return 0;
 }
 
-void King::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
+void King::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// Directions: up, down, left, right
-	int directions[8][2] = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 },{ -1,-1 },{ -1,1 },{ 1,-1 },{ 1,1 } };
+	char directions[8][2] = { { -1,0 },{ 1,0 },{ 0,-1 },{ 0,1 },{ -1,-1 },{ -1,1 },{ 1,-1 },{ 1,1 } };
 	for (auto& dir : directions) {
-		int dx = x + dir[0];
-		int dy = y + dir[1];
+		char dx = x + dir[0];
+		char dy = y + dir[1];
 		if (dx < 0 || dx > 7 || dy < 0 || dy > 7)
 			continue;
+
 		Piece* p = gameState.getPieceAt(dx, dy);
 		if (p) {
 			if (p->isWhite() != this->isWhite()) {
 				moves.push_back(Move(x, y, dx, dy));
 			}
+			continue;
 		}
-		else {
+		
+		if (!captureOnly) {
 			moves.push_back(Move(x, y, dx, dy));
 		}
 	}
 
 	// Castling
-	if (!gameState.isCheck(isWhite())) {
-		int castlingRow = isWhite() ? 7 : 0;
+	if (!captureOnly && !gameState.isCheck(isWhite())) {
+		char castlingRow = isWhite() ? 7 : 0;
 
 		// Left castling
 		if ((isWhite() ? gameState.lowerLeftCastlingPossible() : gameState.upperLeftCastlingPossible()) && gameState.getPieceAt(1, castlingRow) == 0 && gameState.getPieceAt(2, castlingRow) == 0 && gameState.getPieceAt(3, castlingRow) == 0 && !gameState.isThreatened(isWhite(), 2, castlingRow) && !gameState.isThreatened(isWhite(), 3, castlingRow)) {
@@ -80,10 +83,6 @@ void King::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 
 }
 
-bool King::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
-	return std::abs(ownX - squareX) <= 1 && std::abs(ownY - squareY) <= 1;
-}
-
-int King::evaluationValue(const GameState& gameState, int x, int y) const {
-	return gameState.gamePhase() > 10 ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
+int King::evaluationValue(char x, char y, char gamePhase) const {
+	return gamePhase > 10 ? middleKingValueAdditions[isWhite() ? y : 7 - y][x] : endKingValueAdditions[isWhite() ? y : 7 - y][x];
 }

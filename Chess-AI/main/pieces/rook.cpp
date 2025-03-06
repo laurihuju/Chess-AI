@@ -28,12 +28,12 @@ char Rook::gamePhaseInfluence() const {
 	return 2;
 }
 
-void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
+void Rook::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// Directions: up, down, left, right
-	int directions[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+	char directions[4][2] = { {-1,0}, {1,0}, {0,-1}, {0,1} };
 	for (auto& dir : directions) {
-		int dx = x;
-		int dy = y;
+		char dx = x;
+		char dy = y;
 		while (true) {
 			dx += dir[0];
 			dy += dir[1];
@@ -48,37 +48,13 @@ void Rook::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 				break;
 			}
 			
-			moves.push_back(Move(x, y, dx, dy));
+			if (!captureOnly) {
+				moves.push_back(Move(x, y, dx, dy));
+			}
 		}
 	}
 }
 
-bool Rook::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
-	if (ownX != squareX && ownY != squareY) {
-		return false;
-	}
-
-	int directionX = squareX > ownX ? 1 : (squareX < ownX ? -1 : 0);
-	int directionY = squareY > ownY ? 1 : (squareY < ownY ? -1 : 0);
-
-	int currentX = ownX + directionX;
-	int currentY = ownY + directionY;
-
-	while (currentX < 8 && currentX > -1 && currentY < 8 && currentY > -1) {
-		if (currentX == squareX && currentY == squareY) {
-			return true;
-		}
-		if (gameState.getPieceAt(currentX, currentY) != 0) {
-			return false;
-		}
-
-		currentX += directionX;
-		currentY += directionY;
-	}
-
-	return false;
-}
-
-int Rook::evaluationValue(const GameState& gameState, int x, int y) const {
+int Rook::evaluationValue(char x, char y, char gamePhase) const {
 	return 500 + rookValueAdditions[isWhite() ? y : 7 - y][x];
 }

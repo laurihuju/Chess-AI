@@ -28,18 +28,14 @@ char Queen::gamePhaseInfluence() const {
 	return 4;
 }
 
-void Queen::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
+void Queen::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// Get diagonal moves from Bishop
-	Bishop::possibleMoves(moves, x, y, gameState);
+	Bishop::possibleMoves(moves, x, y, gameState, captureOnly);
 
 	// Get straight moves from Rook
-	Rook::possibleMoves(moves, x, y, gameState);
+	Rook::possibleMoves(moves, x, y, gameState, captureOnly);
 }
 
-bool Queen::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
-	return Bishop::threatensSquare(ownX, ownY, squareX, squareY, gameState) || Rook::threatensSquare(ownX, ownY, squareX, squareY, gameState);
-}
-
-int Queen::evaluationValue(const GameState& gameState, int x, int y) const {
+int Queen::evaluationValue(char x, char y, char gamePhase) const {
 	return 900 + queenValueAdditions[isWhite() ? y : 7 - y][x];
 }

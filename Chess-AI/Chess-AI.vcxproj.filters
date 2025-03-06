@@ -51,13 +51,16 @@
     <ClCompile Include="main\move.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main\gameState\currentGameState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main\gameUi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main\chessAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\transpositionTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main\gameState\gameInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,13 +92,16 @@
     <ClInclude Include="main\move.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="main\gameState\currentGameState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="main\gameUi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="main\chessAI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\transpositionTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main\gameState\gameInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

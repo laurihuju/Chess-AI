@@ -76,33 +76,25 @@ public:
 	virtual char gamePhaseInfluence() const = 0;
 
 	/// <summary>
-	/// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.
+	/// Adds the possible moves of this piece to the moves vector.
+	/// Does not take into account if the king is threatened.
+	/// You can generate only capture moves by setting the captureOnly parameter to true.
 	/// </summary>
-	/// <param name="moves"></param>
+	/// <param name="moves">The vector where the moves will be added</param>
 	/// <param name="x">The x coordinate of this piece</param>
 	/// <param name="y">The y coordinate of this piece</param>
 	/// <param name="gameState">The game state from which the possible moves are generated</param>
-	virtual void possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const = 0;
+	/// <param name="captureOnly">If to generate only capture moves</param>
+	virtual void possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly = false) const = 0;
 
 	/// <summary>
-	/// Checks if this piece at the given location threatens the given square.
+	/// The evaluation value of this piece at the given coordinates at the given game phase.
 	/// </summary>
-	/// <param name="ownX"></param>
-	/// <param name="ownY"></param>
-	/// <param name="squareX"></param>
-	/// <param name="squareY"></param>
-	/// <param name="gameState"></param>
-	/// <returns></returns>
-	virtual bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const = 0;
-
-	/// <summary>
-	/// The evaluation value of this piece at the given coordinates on the given GameState.
-	/// </summary>
-	/// <param name="gameState">The game state of evaluation</param>
 	/// <param name="x">The X coordinate of the piece</param>
 	/// <param name="y">The Y coordinate of the piece</param>
-	/// <returns></returns>
-	virtual int evaluationValue(const GameState& gameState, int x, int y) const = 0;
+	/// <param name="gamePhase">The game phase</param>
+	/// <returns>The evaluation value</returns>
+	virtual int evaluationValue(char x, char y, char gamePhase) const = 0;
 
 };
 

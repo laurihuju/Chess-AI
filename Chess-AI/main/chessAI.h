@@ -4,35 +4,35 @@
 #include <mutex>
 #include "gameState/gameState.h"
 #include "move.h"
+#include "transpositionTable.h"
 
 class ChessAI {
 public:
     /// <summary>
-    /// Finds the best move for the given player using Minimax algorithm.
+    /// Finds the best next move for the given game state using Minimax algorithm.
     /// </summary>
-    /// <param name="state">The current game state</param>
-    /// <param name="isWhite">If the best move should be searched for white</param>
+    /// <param name="state">The game state to search move for</param>
     /// <param name="depth">The Minimax evaluation depth</param>
-    /// <returns>The best move, or move from (0; 0) to (0; 0) if no moves found</returns>
-    static Move findBestMove(const GameState& state, bool isWhite, int depth);
+    /// <returns>The best move, or Move(0, 0, 0, 0) if no moves found</returns>
+    static Move findBestMove(const GameState& state, int depth);
 
 private:
-    /// <summary>
-    /// The mutex used for writing the value of bestValue and bestValueGameStateIndex.
-    /// </summary>
-    static std::mutex mutex;
-
     /// <summary>
     /// The currently best value found by the runMinimax function.
     /// The value is reseted when starting a new best move search.
     /// </summary>
-    static int bestValue;
+    static std::atomic<int> bestValue;
 
     /// <summary>
     /// The index of the game state with the currently best value found by the runMinimax function.
     /// The value is reseted when starting a new best move search.
     /// </summary>
-    static int bestValueGameStateIndex;
+    static std::atomic<int> bestValueGameStateIndex;
+
+    /// <summary>
+    /// The transposition table.
+    /// </summary>
+    static TranspositionTable<30000000> transpositionTable;
 
     /// <summary>
     /// Thread safe function that evaluates the given GameState with the minimax function.
@@ -61,8 +61,9 @@ private:
     /// Orders game states by their initial evaluation.
     /// </summary>
     /// <param name="states">Vector of game states to order</param>
+    /// <param name="transpositionTableMove">The best move stored in the transposition table, give Move(0, 0, 0, 0) if not available</param>
     /// <param name="isWhite">If evaluation should be done from perspective of white</param>
-    static void orderMoves(std::vector<GameState>& states, bool isWhite);
+    static void orderMoves(std::vector<GameState>& states, const Move& transpositionTableMove, bool isWhite);
 
     /// <summary>
     /// Quiescence search to evaluate tactical positions more accurately.
@@ -76,13 +77,6 @@ private:
     /// <returns>Evaluation score for the quiet position</returns>
     static int quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth = 4);
 
-    /// <summary>
-    /// Gets only the capturing moves from a state.
-    /// </summary>
-    /// <param name="state">The game state to analyze</param>
-    /// <param name="isWhite">Whether to get moves for white</param>
-    /// <param name="capturingStates">Vector to store states after capturing moves</param>
-    static void getCapturingMoves(const GameState& state, bool isWhite, std::vector<GameState>& capturingStates);
 };
 
 #endif

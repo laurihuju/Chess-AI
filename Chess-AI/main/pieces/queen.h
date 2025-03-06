@@ -36,33 +36,25 @@ public:
     char gamePhaseInfluence() const override;
 
     /// <summary>
-    /// Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.
+    /// Adds the possible moves of this piece to the moves vector.
+    /// Does not take into account if the king is threatened.
+    /// You can generate only capture moves by setting the captureOnly parameter to true.
     /// </summary>
-    /// <param name="moves"></param>
+    /// <param name="moves">The vector where the moves will be added</param>
     /// <param name="x">The x coordinate of this piece</param>
     /// <param name="y">The y coordinate of this piece</param>
     /// <param name="gameState">The game state from which the possible moves are generated</param>
-    void possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const override;
-
-	/// <summary>
-    /// Checks if this piece at the given location threatens the given square.
-    /// </summary>
-    /// <param name="ownX"></param>
-    /// <param name="ownY"></param>
-    /// <param name="squareX"></param>
-    /// <param name="squareY"></param>
-    /// <param name="gameState"></param>
-    /// <returns></returns>
-    bool threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const override;
+    /// <param name="captureOnly">If to generate only capture moves</param>
+    void possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly = false) const override;
 
     /// <summary>
-    /// The evaluation value of this piece at the given coordinates on the given GameState.
+    /// The evaluation value of this piece at the given coordinates at the given game phase.
     /// </summary>
-    /// <param name="gameState">The game state of evaluation</param>
     /// <param name="x">The X coordinate of the piece</param>
     /// <param name="y">The Y coordinate of the piece</param>
-    /// <returns></returns>
-    int evaluationValue(const GameState& gameState, int x, int y) const override;
+    /// <param name="gamePhase">The game phase</param>
+    /// <returns>The evaluation value</returns>
+    int evaluationValue(char x, char y, char gamePhase) const override;
 
 };
 

@@ -5,28 +5,35 @@
 #include <vector>
 #include <algorithm>
 
-std::mutex ChessAI::mutex;
-int ChessAI::bestValue;
-int ChessAI::bestValueGameStateIndex;
+std::atomic<int> ChessAI::bestValue;
+std::atomic<int> ChessAI::bestValueGameStateIndex;
 
-Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
+TranspositionTable<30000000> ChessAI::transpositionTable;
+
+Move ChessAI::findBestMove(const GameState& state, int depth) {
     std::vector<GameState> possibleStates;
-    state.possibleNewGameStates(possibleStates, isWhite);
+    state.possibleNewGameStates(possibleStates);
     if (possibleStates.empty()) {
         return Move(0, 0, 0, 0); // Return empty move as there are no moves available
     }
 
     // Order moves before evaluation
-    orderMoves(possibleStates, isWhite);
+    orderMoves(possibleStates, Move(0, 0, 0, 0), state.isWhiteSideToMove());
 
     // Reset the best value
     bestValue = std::numeric_limits<int>::min();
     bestValueGameStateIndex = 0; // Initialize to 0 instead of -1 to ensure we always have a valid move
 
+	//// Code to be used instead of the multithreading code when debugging needs
+	//// fully deterministic single-threaded algorithm
+	//for (int i = 0; i < possibleStates.size(); i++) {
+	//    runMinimax(possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
+	//}
+
     // Run Minimax evaluation for every currently possible new GameState in different threads
     std::vector<std::thread*> threads;
     for (int i = 0; i < possibleStates.size(); i++) {
-        std::thread* thread = new std::thread(runMinimax, possibleStates[i], i, depth - 1, isWhite);
+        std::thread* thread = new std::thread(runMinimax, possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
         threads.push_back(thread);
     }
 
@@ -36,144 +43,143 @@ Move ChessAI::findBestMove(const GameState& state, bool isWhite, int depth) {
         delete thread;
     }
 
-    // Find which move led to this state by comparing board states
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Piece* piece = state.getPieceAt(x, y);
-            if (!piece || piece->isWhite() != isWhite) {
-                continue;
-            }
+	// Return the best move found
+	return possibleStates[bestValueGameStateIndex].lastMove();
+}
 
-            std::vector<Move> moves;
-            piece->possibleMoves(moves, x, y, state);
-            for (const Move& move : moves) {
-                GameState testState(state);
-                testState.applyMove(move);
+void ChessAI::orderMoves(std::vector<GameState>& states, const Move& transpositionTableMove, bool isWhite) {
+	std::sort(states.begin(), states.end(), [isWhite, transpositionTableMove](const GameState& a, const GameState& b) {
+		if (a.lastMove() == transpositionTableMove) {
+			return true;
+		}
+		if (b.lastMove() == transpositionTableMove) {
+			return false;
+		}
 
-                if (testState == possibleStates[bestValueGameStateIndex]) {
-                    return move;
-                }
-            }
-        }
-    }
-
-    // If we get here, pick any legal move from the first piece we find
-    for (int y = 0; y < 8; y++) {
-        for (int x = 0; x < 8; x++) {
-            Piece* piece = state.getPieceAt(x, y);
-            if (!piece || piece->isWhite() != isWhite) {
-                continue;
-            }
-
-            std::vector<Move> moves;
-            piece->possibleMoves(moves, x, y, state);
-            for (const Move& move : moves) {
-                GameState testState(state);
-                testState.applyMove(move);
-                if (!testState.isCheck(isWhite)) {
-                    return move;
-                }
-            }
-        }
-    }
-
-    return Move(0, 0, 0, 0);
+		return a.evaluationValue(isWhite) > b.evaluationValue(isWhite);
+    });
 }
 
 void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite) {
+    // Calculate the evaluation value of the game tree branch this function evaluates
     int value = minimax(state, depth, false, isWhite);
-    
-    if (value > bestValue || bestValueGameStateIndex == -1) {
-        mutex.lock();
 
+    // If the evaluation value is better than the previous one, update the best value
+    if (value > bestValue || bestValueGameStateIndex == -1) {
         bestValue = value;
         bestValueGameStateIndex = stateIndex;
-
-        mutex.unlock();
     }
-
-}
-
-void ChessAI::orderMoves(std::vector<GameState>& states, bool isWhite) {
-    // Create pairs of (evaluation, index) for stable sorting
-    std::vector<std::pair<int, int>> evaluations;
-    for (int i = 0; i < states.size(); i++) {
-        evaluations.push_back({states[i].evaluate(isWhite), i});
-    }
-
-    // Sort evaluations in descending order
-    std::stable_sort(evaluations.begin(), evaluations.end(), 
-        [](const auto& a, const auto& b) { return a.first > b.first; });
-
-    // Reorder states based on sorted evaluations
-    std::vector<GameState> orderedStates;
-    orderedStates.reserve(states.size());
-    for (const auto& eval : evaluations) {
-        orderedStates.push_back(std::move(states[eval.second]));
-    }
-    states = std::move(orderedStates);
 }
 
 int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha, int beta) {
+    // The alpha and beta before the changes made to them in this function
+    int alphaOrig = alpha;
+    int betaOrig = beta;
+    
+    // Look up the transposition table
+    int transpositionTableEvaluationValue;
+	Move transpositionTableMove = Move(0, 0, 0, 0);
+    TranspositionTableItemType transpositionTableItemType;
+    if (transpositionTable.lookup(state, depth, transpositionTableEvaluationValue, transpositionTableMove, transpositionTableItemType)) {
+        // If the stored value is exact minimax value, return it
+        if (transpositionTableItemType == TranspositionTableItemType::Exact) {
+            return transpositionTableEvaluationValue;
+        }
+        // If the stored value is lower bound (the exact value is not known due to pruning but the value is at least the stored value), adjust alpha
+        else if (transpositionTableItemType == TranspositionTableItemType::LowerBound) {
+            alpha = std::max(alpha, transpositionTableEvaluationValue);
+        }
+        // If the stored value is lower bound (the exact value is not known due to pruning but the value is at most the stored value), adjust beta
+        else if (transpositionTableItemType == TranspositionTableItemType::UpperBound) {
+            beta = std::min(beta, transpositionTableEvaluationValue);
+        }
+
+        // Alpha-beta pruning
+        if (alpha >= beta) {
+            return transpositionTableEvaluationValue;
+        }
+    }
+    
+    // If we've reached the maximum depth or game is over
     if (depth == 0) {
         return quiescenceSearch(state, playerIsWhite, alpha, beta);
     }
 
+    // Fetch the possible new game states that can be made from the current evaluation game state with one move
     std::vector<GameState> possibleStates;
-    state.possibleNewGameStates(possibleStates, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
+    state.possibleNewGameStates(possibleStates);
 
+    // If no moves are available, this is checkmate or stalemate
     if (possibleStates.empty()) {
         if (state.isCheck(isMaximizingPlayer ? playerIsWhite : !playerIsWhite)) {
-            return isMaximizingPlayer ? -10000 + depth : 10000 - depth;
+            return isMaximizingPlayer ? -1000000 - (depth * 10000) : 1000000 + (depth * 10000);
         }
         return 0; // Stalemate
     }
 
     // Order moves before evaluation
-    orderMoves(possibleStates, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
+    orderMoves(possibleStates, transpositionTableMove, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
 
+    // The best evaluation value and move found for the game state
+    int bestEval;
+	Move bestMove = Move(0, 0, 0, 0);
+
+    // Handle the maximizer's turn
     if (isMaximizingPlayer) {
-        int maxEval = std::numeric_limits<int>::min();
+        bestEval = std::numeric_limits<int>::min();
         for (const auto& newState : possibleStates) {
             int eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, beta);
-            maxEval = std::max(maxEval, eval);
             alpha = std::max(alpha, eval);
+			if (eval > bestEval) {
+				bestEval = eval;
+				bestMove = newState.lastMove();
+			}
+            
+            // Alpha-beta pruning
             if (beta <= alpha) {
                 break;
             }
         }
-        return maxEval;
+    // Handle the minimizer's turn
     } else {
-        int minEval = std::numeric_limits<int>::max();
+        bestEval = std::numeric_limits<int>::max();
         for (const auto& newState : possibleStates) {
             int eval = minimax(newState, depth - 1, true, playerIsWhite, alpha, beta);
-            minEval = std::min(minEval, eval);
             beta = std::min(beta, eval);
+            if (eval < bestEval) {
+                bestEval = eval;
+                bestMove = newState.lastMove();
+            }
+
+            // Alpha-beta pruning
             if (beta <= alpha) {
                 break;
             }
         }
-        return minEval;
     }
-}
 
-void ChessAI::getCapturingMoves(const GameState& state, bool isWhite, std::vector<GameState>& capturingStates) {
-    std::vector<GameState> allStates;
-    state.possibleNewGameStates(allStates, isWhite);
-    
-    // Filter for capturing moves only
-    for (const auto& newState : allStates) {
-        int materialDiff = newState.evaluate(isWhite) - state.evaluate(isWhite);
-        // Only include if material difference indicates a capture occurred
-        if (std::abs(materialDiff) >= 100) { // 100 is minimum piece value (pawn)
-            capturingStates.push_back(newState);
-        }
+    // Calculate the transposition table item type of this node
+    TranspositionTableItemType transpositionItemType;
+    if (bestEval <= alphaOrig) {
+        transpositionItemType = TranspositionTableItemType::UpperBound;
     }
+    else if (bestEval >= betaOrig) {
+        transpositionItemType = TranspositionTableItemType::LowerBound;
+    }
+    else {
+        transpositionItemType = TranspositionTableItemType::Exact;
+    }
+
+    // Store the result of the evaluation of this game state to the transposition table
+    transpositionTable.store(state, bestEval, depth, bestMove, transpositionItemType);
+
+    // Return the evaluation value of this game state
+    return bestEval;
 }
 
 int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth) {
     // Base evaluation
-    int standPat = state.evaluate(playerIsWhite);
+    int standPat = state.evaluationValue(playerIsWhite);
     
     // Return if maximum depth or checkmate
     if (depth == 0) {
@@ -192,10 +198,10 @@ int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int al
 
     // Get capturing moves only
     std::vector<GameState> capturingStates;
-    getCapturingMoves(state, playerIsWhite, capturingStates);
+    state.possibleNewGameStates(capturingStates, true);
 
     // Order moves for better pruning
-    orderMoves(capturingStates, playerIsWhite);
+    orderMoves(capturingStates, Move(0, 0, 0, 0), playerIsWhite);
 
     // Search capturing moves
     for (const auto& newState : capturingStates) {

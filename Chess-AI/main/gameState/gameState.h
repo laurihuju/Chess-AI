@@ -2,9 +2,9 @@
 #define GAMESTATE_H
 
 #include <vector>
+#include "../move.h"
 
 class Piece;
-class Move;
 class King;
 
 /// <summary>
@@ -12,11 +12,42 @@ class King;
 /// </summary>
 class GameState {
 
-protected:
+private:
 	/// <summary>
 	/// The current board content.
 	/// </summary>
 	Piece* _board[8][8];
+
+	/// <summary>
+	/// The white king's X coordinate.
+	/// </summary>
+	char _whiteKingX = 4;
+
+	/// <summary>
+	/// The white king's Y coordinate.
+	/// </summary>
+	char _whiteKingY = 7;
+
+	/// <summary>
+	/// The black king's X coordinate.
+	/// </summary>
+	char _blackKingX = 4;
+
+	/// <summary>
+	/// The black king's Y coordinate.
+	/// </summary>
+	char _blackKingY = 0;
+
+	/// <summary>
+	/// The evaluation value of this game state for white.
+	/// Higher value means better position for white.
+	/// </summary>
+	int _evaluationValue = 0;
+
+	/// <summary>
+	/// Information if it is white's side to move.
+	/// </summary>
+	bool _isWhiteSideToMove = true;
 
 	/// <summary>
 	/// Flag for checking if upper left castling is still possible during the game.
@@ -42,22 +73,31 @@ protected:
 	/// The column which upper en passant is possible to do to (the column of the piece that would be captured in
 	/// the en passant move). Has value -1 if upper en passant is not possible.
 	/// </summary>
-	int _upperEnPassantColumn = -1;
+	char _upperEnPassantColumn = -1;
 
 	/// <summary>
 	/// The column which lower en passant is possible to do to (the column of the piece that would be captured in
 	/// the en passant move). Has value -1 if lower en passant is not possible.
 	/// </summary>
-	int _lowerEnPassantColumn = -1;
+	char _lowerEnPassantColumn = -1;
+
+	/// <summary>
+	/// The last move that was made in this game state.
+	/// If the last move is not available, the move will be Move(0, 0, 0, 0).
+	/// </summary>
+	Move _lastMove = Move(0, 0, 0, 0);
 
 	/// <summary>
 	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
 	/// </summary>
-	char _gamePhase;
+	char _gamePhase = 0;
+
+	/// <summary>
+	/// The zobrist hash value of this GameState.
+	/// </summary>
+	uint64_t _hash = 0;
 
 public:
-	GameState& operator=(const GameState&) = delete;
-
 	/// <summary>
 	/// Compares the other game state with this game state.
 	/// </summary>
@@ -78,11 +118,6 @@ public:
 	GameState();
 
 	/// <summary>
-	/// Deletes all pieces owned by this GameState.
-	/// </summary>
-	virtual ~GameState();
-
-	/// <summary>
 	/// Moves the given move. Handles capture if the move moves a piece to a place where another piece is located.
 	/// Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically.
 	/// Handles piece promotion if the move has specified the promotion piece (the promotion piece instance will be searched from the CurrentGameState instance).
@@ -90,14 +125,6 @@ public:
 	/// </summary>
 	/// <param name="move">The move to apply</param>
 	void applyMove(const Move& move);
-
-	/// <summary>
-	/// Finds the king of the given color. The coordinates of the king are set to the variables x and y.
-	/// </summary>
-	/// <param name="isWhite">Information about if the king to find is white</param>
-	/// <param name="x">The variable where the X coordinate of the king will be set</param>
-	/// <param name="y">The variable where the Y coordinate of the king will be set</param>
-	void findKing(bool isWhite, int& x, int& y) const;
 
 	/// <summary>
 	/// Prints the board content to the console.
@@ -112,23 +139,17 @@ public:
 	/// <param name="x">The x coordinate of the piece</param>
 	/// <param name="y">The y coordinate of the piece</param>
 	/// <returns>The piece at the given coordinates.</returns>
-	Piece* getPieceAt(int x, int y) const;
+	Piece* getPieceAt(char x, char y) const;
 
 	/// <summary>
-	/// Returns a vector containing all possible new game states that can be created
-	/// from this game state with one move of the given color.
+	/// Adds all possible new game states that can be created from this game state with
+	/// one move to the newGameStates vector. The game states are fully validated to not
+	/// contain moves that would put the king of the given color in check.
+	/// You can generate only capture moves by setting the captureOnly parameter to true.
 	/// </summary>
-	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
-	/// <returns>A vector containing all possible new game states with one move of the given color</returns>
-	
-
-	/// <summary>
-	/// Generates all possible new game states that can be created from this game state with one
-	/// move of the given color, and adds them to the newGameStates vector.
-	/// </summary>
-	/// <param name="newGameStates">The vector where the new game states will be added</param>
-	/// <param name="isWhite">If the new game states should be generated for moves of white</param>
-	void possibleNewGameStates(std::vector<GameState>& newGameStates, bool isWhite) const;
+	/// <param name="gameStates">The vector where the new game states will be added</param>
+	/// <param name="captureOnly">If to generate only capture moves</param>
+	void possibleNewGameStates(std::vector<GameState>& gameStates, bool captureOnly = false) const;
 
 	/// <summary>
 	/// Checks if the king of the given color is in check.
@@ -145,16 +166,21 @@ public:
 	/// <param name="x">The X coordinate of the square</param>
 	/// <param name="y">The Y coordinate of the square</param>
 	/// <returns>True if the given square is threatened</returns>
-	bool isThreatened(bool isWhite, int x, int y) const;
+	bool isThreatened(bool isWhite, char x, char y) const;
 
 	/// <summary>
-	/// Evaluates this GameState for the given color.
-	/// Higher evaluation value means this game state is better for the given color
-	/// and lower means this game state is worse for the given color.
+	/// Returns the evaluation value for the given player.
+	/// Higher value means better position for the player.
 	/// </summary>
-	/// <param>If the function should evaluate from the perspective of white</param>
+	/// <param name="isWhite">If to evaluate for white</param>
 	/// <returns>The evaluation value</returns>
-	int evaluate(bool isWhite) const;
+	int evaluationValue(bool isWhite) const;
+
+	/// <summary>
+	/// Checks if the side to move is white.
+	/// </summary>
+	/// <returns>True if the side to move is white</returns>
+	bool isWhiteSideToMove() const;
 
 	/// <summary>
 	/// Checks if upper left castling is still possible in this game state.
@@ -190,7 +216,7 @@ public:
 	/// Returns -1 if upper en passant is not possible.
 	/// </summary>
 	/// <returns>The column where upper en passant move is possible to do at, or -1 if upper en passant is not possible</returns>
-	int upperEnPassantColumn() const;
+	char upperEnPassantColumn() const;
 
 	/// <summary>
 	/// Checks which column lower en passant move is possible to do at.
@@ -198,13 +224,26 @@ public:
 	/// Returns -1 if lower en passant is not possible.
 	/// </summary>
 	/// <returns>The column where lower en passant move is possible to do at, or -1 if lower en passant is not possible</returns>
-	int lowerEnPassantColumn() const;
+	char lowerEnPassantColumn() const;
+
+	/// <summary>
+	/// The last move that was made in this game state.
+	/// If the last move is not available, the move will be Move(0, 0, 0, 0).
+	/// </summary>
+	/// <returns>The last move that was made</returns>
+	Move lastMove() const;
 
 	/// <summary>
 	/// The game phase value which is sum of the game phase influence value of all pieces on the board.
 	/// </summary>
 	/// <returns></returns>
 	char gamePhase() const;
+
+	/// <summary>
+	/// Gets the zobrist hash value of this GameState.
+	/// </summary>
+	/// <returns>The zobrist hash value</returns>
+	uint64_t hash() const;
 
 };
 

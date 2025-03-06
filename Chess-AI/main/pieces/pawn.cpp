@@ -30,17 +30,17 @@ char Pawn::gamePhaseInfluence() const {
 	return 0;
 }
 
-void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState& gameState) const {
+void Pawn::possibleMoves(std::vector<Move>& moves, char x, char y, const GameState& gameState, bool captureOnly) const {
 	// There are no possible moves when the pawn is at the top or bottom row
 	if (y == 0 || y == 7) {
 		return;
 	}
 	
 	// The possible movement direction (white moves up and black down)
-	int movementDirection = isWhite() ? -1 : 1;
+	char movementDirection = isWhite() ? -1 : 1;
 
 	// Capturing
-	for (int i = (x - 1 > 0 ? x - 1 : 0); i <= x + 1 && i <= 7; i++) {
+	for (char i = (x - 1 > 0 ? x - 1 : 0); i <= x + 1 && i <= 7; i++) {
 		// Ignore the square in front of this piece
 		if (i == x) {
 			continue;
@@ -72,6 +72,11 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 		moves.push_back(Move(x, y, gameState.lowerEnPassantColumn(), 5));
 	}
 
+	// Don't generate normal moves if only capture moves are needed
+	if (captureOnly) {
+		return;
+	}
+
 	// Prevent moving forward when there is an obstacle
 	if (gameState.getPieceAt(x, y + movementDirection) != 0) {
 		return;
@@ -95,27 +100,6 @@ void Pawn::possibleMoves(std::vector<Move>& moves, int x, int y, const GameState
 	}
 }
 
-bool Pawn::threatensSquare(int ownX, int ownY, int squareX, int squareY, const GameState& gameState) const {
-	if (std::abs(squareX - ownX) != 1) {
-		return false;
-	}
-
-	int movementDirection = isWhite() ? -1 : 1;
-
-	// Upper en passant
-	if (movementDirection == 1 && ownY == 3 && squareY == 3 && gameState.upperEnPassantColumn() == squareX) {
-		return true;
-	}
-
-	// Lower en passant
-	if (movementDirection == -1 && ownY == 4 && squareY == 4 && gameState.lowerEnPassantColumn() == squareX) {
-		return true;
-	}
-
-	// Capturing
-	return squareY == ownY + movementDirection;
-}
-
-int Pawn::evaluationValue(const GameState& gameState, int x, int y) const {
+int Pawn::evaluationValue(char x, char y, char gamePhase) const {
 	return 100 + pawnValueAdditions[isWhite() ? y : 7 - y][x];
 }
