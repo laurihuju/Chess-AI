@@ -2,6 +2,8 @@
 #define CHESS_AI_H
 
 #include <mutex>
+#include <atomic>
+#include <chrono>
 #include "gameState/gameState.h"
 #include "move.h"
 #include "transpositionTable.h"
@@ -9,25 +11,46 @@
 class ChessAI {
 public:
     /// <summary>
-    /// Finds the best next move for the given game state using Minimax algorithm.
+    /// Finds the best next move for the given game state using Minimax algorithm with iterative deepening.
     /// </summary>
     /// <param name="state">The game state to search move for</param>
-    /// <param name="depth">The Minimax evaluation depth</param>
+    /// <param name="maxDepth">The maximum Minimax evaluation depth</param>
+    /// <param name="timeLimit">The time limit in milliseconds (default: 4000ms)</param>
     /// <returns>The best move, or Move(0, 0, 0, 0) if no moves found</returns>
-    static Move findBestMove(const GameState& state, int depth);
+    static Move findBestMove(const GameState& state, int maxDepth, int timeLimit = 4000);
 
 private:
     /// <summary>
     /// The currently best value found by the runMinimax function.
-    /// The value is reseted when starting a new best move search.
+    /// The value is reset when starting a new best move search.
     /// </summary>
     static std::atomic<int> bestValue;
 
     /// <summary>
     /// The index of the game state with the currently best value found by the runMinimax function.
-    /// The value is reseted when starting a new best move search.
+    /// The value is reset when starting a new best move search.
     /// </summary>
     static std::atomic<int> bestValueGameStateIndex;
+    
+    /// <summary>
+    /// Flag indicating whether the time limit has been exceeded.
+    /// </summary>
+    static std::atomic<bool> timeExceeded;
+    
+    /// <summary>
+    /// Start time of the search for time tracking.
+    /// </summary>
+    static std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
+    
+    /// <summary>
+    /// Time limit for the search in milliseconds.
+    /// </summary>
+    static int searchTimeLimit;
+
+    /// <summary>
+    /// The best move found so far in iterative deepening.
+    /// </summary>
+    static Move currentBestMove;
 
     /// <summary>
     /// The transposition table.
@@ -44,6 +67,12 @@ private:
     /// <param name="depth">The evaluation depth</param>
     /// <param name="isWhite">If evaluation should be done from the perspective of white</param>
     static void runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite);
+    
+    /// <summary>
+    /// Check if the time limit has been exceeded.
+    /// </summary>
+    /// <returns>True if time limit has been exceeded</returns>
+    static bool isTimeExceeded();
     
     /// <summary>
     /// Recursive implementation of the Minimax algorithm with Alpha-Beta pruning.

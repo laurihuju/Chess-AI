@@ -4,47 +4,92 @@
 #include <thread>
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 std::atomic<int> ChessAI::bestValue;
 std::atomic<int> ChessAI::bestValueGameStateIndex;
+std::atomic<bool> ChessAI::timeExceeded;
+std::chrono::time_point<std::chrono::high_resolution_clock> ChessAI::startTime;
+int ChessAI::searchTimeLimit;
+Move ChessAI::currentBestMove = Move(0, 0, 0, 0);
 
 TranspositionTable<30000000> ChessAI::transpositionTable;
 
-Move ChessAI::findBestMove(const GameState& state, int depth) {
+Move ChessAI::findBestMove(const GameState& state, int maxDepth, int timeLimit) {
     std::vector<GameState> possibleStates;
     state.possibleNewGameStates(possibleStates);
     if (possibleStates.empty()) {
         return Move(0, 0, 0, 0); // Return empty move as there are no moves available
     }
 
-    // Order moves before evaluation
-    orderMoves(possibleStates, Move(0, 0, 0, 0), state.isWhiteSideToMove());
+    // Initialize time tracking
+    startTime = std::chrono::high_resolution_clock::now();
+    searchTimeLimit = timeLimit;
+    timeExceeded = false;
+    
+    // Initialize the best move to the first possible move as a fallback
+    currentBestMove = possibleStates[0].lastMove();
+    
+    // Iterative deepening
+    // Start with depth 1 to quickly find mates in 1 move
+    // Then continue with depths 2, 4, 6, ... up to maxDepth
+    for (int depth = 1; depth <= maxDepth; depth = (depth == 1) ? 2 : depth + 2) {
+        // Order moves before evaluation
+        orderMoves(possibleStates, currentBestMove, state.isWhiteSideToMove());
 
-    // Reset the best value
-    bestValue = std::numeric_limits<int>::min();
-    bestValueGameStateIndex = 0; // Initialize to 0 instead of -1 to ensure we always have a valid move
+        // Reset the best value for this depth iteration
+        bestValue = std::numeric_limits<int>::min();
+        bestValueGameStateIndex = 0;
+        
+        // Run Minimax evaluation for every currently possible new GameState in different threads
+        std::vector<std::thread*> threads;
+        for (int i = 0; i < possibleStates.size(); i++) {
+            std::thread* thread = new std::thread(runMinimax, possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
+            threads.push_back(thread);
+        }
 
-	//// Code to be used instead of the multithreading code when debugging needs
-	//// fully deterministic single-threaded algorithm
-	//for (int i = 0; i < possibleStates.size(); i++) {
-	//    runMinimax(possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
-	//}
+        // Wait for all threads to finish before continuing
+        for (std::thread* thread : threads) {
+            thread->join();
+            delete thread;
+        }
 
-    // Run Minimax evaluation for every currently possible new GameState in different threads
-    std::vector<std::thread*> threads;
-    for (int i = 0; i < possibleStates.size(); i++) {
-        std::thread* thread = new std::thread(runMinimax, possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
-        threads.push_back(thread);
+        // Store the best move for this depth iteration if not out of time
+        if (!timeExceeded) {
+            currentBestMove = possibleStates[bestValueGameStateIndex].lastMove();
+            
+            // Debug output
+            std::cout << "Depth " << depth << " completed. Best move: (" 
+                      << (int)currentBestMove.x1() << "," << (int)currentBestMove.y1() << ") -> (" 
+                      << (int)currentBestMove.x2() << "," << (int)currentBestMove.y2() << ")" << std::endl;
+            
+            // If we found a checkmate, no need to search deeper
+            if (bestValue > 900000 || bestValue < -900000) {
+                break;
+            }
+        } else {
+            std::cout << "Depth " << depth << " exceeded time limit. Using best move from depth " 
+                      << ((depth == 1) ? 1 : depth - 2) << std::endl;
+            break;
+        }
     }
 
-    // Wait for all threads to finish before continuing
-    for (std::thread* thread : threads) {
-        thread->join();
-        delete thread;
-    }
+    // Return the best move found
+    return currentBestMove;
+}
 
-	// Return the best move found
-	return possibleStates[bestValueGameStateIndex].lastMove();
+bool ChessAI::isTimeExceeded() {
+    if (timeExceeded) return true;
+    
+    auto now = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - startTime).count();
+    
+    if (elapsed >= searchTimeLimit) {
+        timeExceeded = true;
+        return true;
+    }
+    
+    return false;
 }
 
 void ChessAI::orderMoves(std::vector<GameState>& states, const Move& transpositionTableMove, bool isWhite) {
@@ -61,6 +106,11 @@ void ChessAI::orderMoves(std::vector<GameState>& states, const Move& transpositi
 }
 
 void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite) {
+    // Stop evaluation if time is exceeded
+    if (isTimeExceeded()) {
+        return;
+    }
+    
     // Calculate the evaluation value of the game tree branch this function evaluates
     int value = minimax(state, depth, false, isWhite);
 
@@ -72,6 +122,12 @@ void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool
 }
 
 int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha, int beta) {
+    // Check if time is exceeded
+    if (isTimeExceeded()) {
+        // Return a neutral value that won't affect the search
+        return 0;
+    }
+    
     // The alpha and beta before the changes made to them in this function
     int alphaOrig = alpha;
     int betaOrig = beta;
@@ -128,6 +184,11 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     if (isMaximizingPlayer) {
         bestEval = std::numeric_limits<int>::min();
         for (const auto& newState : possibleStates) {
+            // Check time limit before recursing
+            if (isTimeExceeded()) {
+                return 0;
+            }
+            
             int eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, beta);
             alpha = std::max(alpha, eval);
 			if (eval > bestEval) {
@@ -144,6 +205,11 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     } else {
         bestEval = std::numeric_limits<int>::max();
         for (const auto& newState : possibleStates) {
+            // Check time limit before recursing
+            if (isTimeExceeded()) {
+                return 0;
+            }
+            
             int eval = minimax(newState, depth - 1, true, playerIsWhite, alpha, beta);
             beta = std::min(beta, eval);
             if (eval < bestEval) {
@@ -156,6 +222,11 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
                 break;
             }
         }
+    }
+
+    // If time is exceeded, don't store in the transposition table
+    if (isTimeExceeded()) {
+        return bestEval;
     }
 
     // Calculate the transposition table item type of this node
@@ -178,6 +249,11 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
 }
 
 int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth) {
+    // Check if time is exceeded
+    if (isTimeExceeded()) {
+        return 0;
+    }
+    
     // Base evaluation
     int standPat = state.evaluationValue(playerIsWhite);
     
@@ -205,6 +281,11 @@ int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int al
 
     // Search capturing moves
     for (const auto& newState : capturingStates) {
+        // Check time limit
+        if (isTimeExceeded()) {
+            return alpha;
+        }
+        
         int score = -quiescenceSearch(newState, !playerIsWhite, -beta, -alpha, depth - 1);
         
         if (score >= beta) {

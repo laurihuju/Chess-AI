@@ -129,7 +129,7 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
     if (IsKeyPressed(KEY_SPACE)) {
         // Find the best move and calculate the calculation time
         auto startTime = std::chrono::high_resolution_clock::now();
-        Move aiMove = ChessAI::findBestMove(gameState, 6); // Depth 6 is the best that has an acceptable runtime.
+        Move aiMove = ChessAI::findBestMove(gameState, 20); // Max depth 20 with 4 second time limit
         auto endTime = std::chrono::high_resolution_clock::now();
 
         // Print debugging data
