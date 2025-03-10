@@ -36,16 +36,6 @@ private:
     /// Flag indicating whether the time limit has been exceeded.
     /// </summary>
     static std::atomic<bool> timeExceeded;
-    
-    /// <summary>
-    /// Start time of the search for time tracking.
-    /// </summary>
-    static std::chrono::time_point<std::chrono::high_resolution_clock> startTime;
-    
-    /// <summary>
-    /// Time limit for the search in milliseconds.
-    /// </summary>
-    static int searchTimeLimit;
 
     /// <summary>
     /// The best move found so far in iterative deepening.
@@ -67,12 +57,6 @@ private:
     /// <param name="depth">The evaluation depth</param>
     /// <param name="isWhite">If evaluation should be done from the perspective of white</param>
     static void runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite);
-    
-    /// <summary>
-    /// Check if the time limit has been exceeded.
-    /// </summary>
-    /// <returns>True if time limit has been exceeded</returns>
-    static bool isTimeExceeded();
     
     /// <summary>
     /// Recursive implementation of the Minimax algorithm with Alpha-Beta pruning.

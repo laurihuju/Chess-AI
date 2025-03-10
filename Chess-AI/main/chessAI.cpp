@@ -9,8 +9,6 @@
 std::atomic<int> ChessAI::bestValue;
 std::atomic<int> ChessAI::bestValueGameStateIndex;
 std::atomic<bool> ChessAI::timeExceeded;
-std::chrono::time_point<std::chrono::high_resolution_clock> ChessAI::startTime;
-int ChessAI::searchTimeLimit;
 Move ChessAI::currentBestMove = Move(0, 0, 0, 0);
 
 TranspositionTable<30000000> ChessAI::transpositionTable;
@@ -22,10 +20,12 @@ Move ChessAI::findBestMove(const GameState& state, int maxDepth, int timeLimit) 
         return Move(0, 0, 0, 0); // Return empty move as there are no moves available
     }
 
-    // Initialize time tracking
-    startTime = std::chrono::high_resolution_clock::now();
-    searchTimeLimit = timeLimit;
+    // Time tracking
     timeExceeded = false;
+    std::thread timeExceedThread([timeLimit]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(timeLimit));
+        timeExceeded = true;
+    });
     
     // Initialize the best move to the first possible move as a fallback
     currentBestMove = possibleStates[0].lastMove();
@@ -81,21 +81,8 @@ Move ChessAI::findBestMove(const GameState& state, int maxDepth, int timeLimit) 
     }
 
     // Return the best move found
+    timeExceedThread.join();
     return currentBestMove;
-}
-
-bool ChessAI::isTimeExceeded() {
-    if (timeExceeded) return true;
-    
-    auto now = std::chrono::high_resolution_clock::now();
-    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - startTime).count();
-    
-    if (elapsed >= searchTimeLimit) {
-        timeExceeded = true;
-        return true;
-    }
-    
-    return false;
 }
 
 void ChessAI::orderMoves(std::vector<GameState>& states, const Move& transpositionTableMove, bool isWhite) {
@@ -113,7 +100,7 @@ void ChessAI::orderMoves(std::vector<GameState>& states, const Move& transpositi
 
 void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool isWhite) {
     // Stop evaluation if time is exceeded
-    if (isTimeExceeded()) {
+    if (timeExceeded) {
         return;
     }
     
@@ -129,7 +116,7 @@ void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool
 
 int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer, bool playerIsWhite, int alpha, int beta) {
     // Check if time is exceeded
-    if (isTimeExceeded()) {
+    if (timeExceeded) {
         // Return a neutral value that won't affect the search
         return 0;
     }
@@ -191,7 +178,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
         bestEval = std::numeric_limits<int>::min();
         for (const auto& newState : possibleStates) {
             // Check time limit before recursing
-            if (isTimeExceeded()) {
+            if (timeExceeded) {
                 return 0;
             }
             
@@ -212,7 +199,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
         bestEval = std::numeric_limits<int>::max();
         for (const auto& newState : possibleStates) {
             // Check time limit before recursing
-            if (isTimeExceeded()) {
+            if (timeExceeded) {
                 return 0;
             }
             
@@ -231,7 +218,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     }
 
     // If time is exceeded, don't store in the transposition table
-    if (isTimeExceeded()) {
+    if (timeExceeded) {
         return bestEval;
     }
 
@@ -256,7 +243,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
 
 int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int alpha, int beta, int depth) {
     // Check if time is exceeded
-    if (isTimeExceeded()) {
+    if (timeExceeded) {
         return 0;
     }
     
@@ -288,7 +275,7 @@ int ChessAI::quiescenceSearch(const GameState& state, bool playerIsWhite, int al
     // Search capturing moves
     for (const auto& newState : capturingStates) {
         // Check time limit
-        if (isTimeExceeded()) {
+        if (timeExceeded) {
             return alpha;
         }
         
