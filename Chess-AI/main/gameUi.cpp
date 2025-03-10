@@ -32,10 +32,11 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures);
 /// <param name="gameState">The current game state</param>
 /// <param name="selectedSquare">The selected square coordinates</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
+/// <param name="lastMove">The last move</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY);
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, int boardSize, int boardOffsetX, int boardOffsetY);
 
 /// <summary>
 /// Draws the board content to the window.
@@ -43,11 +44,12 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 /// <param name="gameState">The current game state</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
 /// <param name="selectedSquare">The selected square coordinates</param>
+/// <param name="lastMove">The last move</param>
 /// <param name="textures">Textures loaded with loadPieceTextures()</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY);
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const Move& lastMove, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY);
 
 /// <summary>
 /// Draws the given piece at the given coordinates to the window.
@@ -73,9 +75,10 @@ void startGameUi()
     GameInfo gameInfo;
     GameState gameState;
 
-    // The selected square and possible moves
+    // The selected square, possible moves and the last move
     Vector2 selectedSquare = { -1, -1 };
     std::vector<Move> possibleMoves;
+    Move lastMove = Move(0, 0, 0, 0);
 
     // Load textures once and store them in a map
     std::unordered_map<std::string, Texture2D> textures;
@@ -93,10 +96,10 @@ void startGameUi()
         int boardOffsetY = (currentScreenHeight - boardSize) / 2;
 
         // Read input from the user
-        handleInput(gameState, selectedSquare, possibleMoves, boardSize, boardOffsetX, boardOffsetY);
+        handleInput(gameState, selectedSquare, possibleMoves, lastMove, boardSize, boardOffsetX, boardOffsetY);
         
         // Render the board
-        drawBoard(gameState, possibleMoves, selectedSquare, textures, boardSize, boardOffsetX, boardOffsetY);
+        drawBoard(gameState, possibleMoves, selectedSquare, lastMove, textures, boardSize, boardOffsetX, boardOffsetY);
     }
 
     // Unload textures
@@ -124,7 +127,7 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
     textures["KB"] = LoadTexture("main/resources/black_king.png");
 }
 
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, int boardSize, int boardOffsetX, int boardOffsetY) {
     // Use AI to complete the move when pressing space
     if (IsKeyPressed(KEY_SPACE)) {
         // Find the best move and calculate the calculation time
@@ -146,6 +149,7 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
         }
 
         gameState.applyMove(aiMove);
+        lastMove = aiMove;
         return;
     }
 
@@ -259,6 +263,7 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
     if (valid)
     {
         gameState.applyMove(move);
+        lastMove = move;
         std::cout << "Evaluation value: " << gameState.evaluationValue(true) << "\n";
     }
 
@@ -267,7 +272,7 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
     possibleMoves.clear();
 }
 
-void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY) {
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const Move& lastMove, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY) {
     BeginDrawing();
     ClearBackground(BLACK);
 
@@ -293,6 +298,13 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
         }
     }
 
+    // Highlight the last move
+    if (lastMove.x1() != 0 || lastMove.x2() != 0 || lastMove.y1() != 0 || lastMove.y2() != 0)
+    {
+        DrawRectangle(boardOffsetX + lastMove.x1() * (boardSize / 8), boardOffsetY + lastMove.y1() * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(DARKPURPLE, 0.3f));
+        DrawRectangle(boardOffsetX + lastMove.x2() * (boardSize / 8), boardOffsetY + lastMove.y2() * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(DARKPURPLE, 0.3f));
+    }
+
     // Highlight possible moves
     for (const auto& move : possibleMoves)
     {
@@ -305,7 +317,7 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
     if (selectedSquare.x != -1)
     {
         Color color = gameState.getPieceAt(selectedSquare.x, selectedSquare.y) != 0 && gameState.getPieceAt(selectedSquare.x, selectedSquare.y)->isWhite() == gameState.isWhiteSideToMove() ? YELLOW : RED;
-        DrawRectangle(boardOffsetX + selectedSquare.x * (boardSize / 8), boardOffsetY + selectedSquare.y * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(color, 0.3f));
+        DrawRectangle(boardOffsetX + selectedSquare.x * (boardSize / 8), boardOffsetY + selectedSquare.y * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(color, 0.5f));
     }
 
     // Draw pieces
