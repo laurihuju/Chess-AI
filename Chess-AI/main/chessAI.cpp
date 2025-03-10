@@ -9,7 +9,6 @@
 std::atomic<int> ChessAI::bestValue;
 std::atomic<int> ChessAI::bestValueGameStateIndex;
 std::atomic<bool> ChessAI::timeExceeded;
-Move ChessAI::currentBestMove = Move(0, 0, 0, 0);
 
 TranspositionTable<30000000> ChessAI::transpositionTable;
 
@@ -28,7 +27,7 @@ Move ChessAI::findBestMove(const GameState& state, int maxDepth, int timeLimit) 
     });
     
     // Initialize the best move to the first possible move as a fallback
-    currentBestMove = possibleStates[0].lastMove();
+    Move currentBestMove = possibleStates[0].lastMove();
     
     // Iterative deepening
     // Start with depth 1 to quickly find mates in 1 move

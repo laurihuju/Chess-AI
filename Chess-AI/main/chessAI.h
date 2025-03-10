@@ -38,11 +38,6 @@ private:
     static std::atomic<bool> timeExceeded;
 
     /// <summary>
-    /// The best move found so far in iterative deepening.
-    /// </summary>
-    static Move currentBestMove;
-
-    /// <summary>
     /// The transposition table.
     /// </summary>
     static TranspositionTable<30000000> transpositionTable;
