@@ -1,5 +1,6 @@
 #include <vector>
 #include <unordered_map>
+#include <stack>
 #include <string>
 #include <chrono>
 #include <iostream>
@@ -33,10 +34,12 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures);
 /// <param name="selectedSquare">The selected square coordinates</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
 /// <param name="lastMove">The last move</param>
+/// <param name="previousStates">The stack of previous game states</param>
+/// <param name="nextStates">The stack of next game states</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, int boardSize, int boardOffsetX, int boardOffsetY);
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, std::stack<GameState>& previousStates, std::stack<GameState>& nextStates, int boardSize, int boardOffsetX, int boardOffsetY);
 
 /// <summary>
 /// Draws the board content to the window.
@@ -80,6 +83,10 @@ void startGameUi()
     std::vector<Move> possibleMoves;
     Move lastMove = Move(0, 0, 0, 0);
 
+    // The stacks of previous and next game states stack for the undo and redo features
+    std::stack<GameState> previousStates;
+    std::stack<GameState> nextStates;
+
     // Load textures once and store them in a map
     std::unordered_map<std::string, Texture2D> textures;
     loadPieceTextures(textures);
@@ -96,7 +103,7 @@ void startGameUi()
         int boardOffsetY = (currentScreenHeight - boardSize) / 2;
 
         // Read input from the user
-        handleInput(gameState, selectedSquare, possibleMoves, lastMove, boardSize, boardOffsetX, boardOffsetY);
+        handleInput(gameState, selectedSquare, possibleMoves, lastMove, previousStates, nextStates, boardSize, boardOffsetX, boardOffsetY);
         
         // Render the board
         drawBoard(gameState, possibleMoves, selectedSquare, lastMove, textures, boardSize, boardOffsetX, boardOffsetY);
@@ -127,7 +134,7 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
     textures["KB"] = LoadTexture("main/resources/black_king.png");
 }
 
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, int boardSize, int boardOffsetX, int boardOffsetY) {
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, std::stack<GameState>& previousStates, std::stack<GameState>& nextStates, int boardSize, int boardOffsetX, int boardOffsetY) {
     // Use AI to complete the move when pressing space
     if (IsKeyPressed(KEY_SPACE)) {
         // Find the best move and calculate the calculation time
@@ -148,9 +155,49 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
             return;
         }
 
+        GameState previousState(gameState);
+        previousStates.push(previousState);
+        if (!nextStates.empty()) {
+            nextStates = std::stack<GameState>();
+        }
+
         gameState.applyMove(aiMove);
         lastMove = aiMove;
         return;
+    }
+
+    // Undo move
+    if (IsKeyPressed(KEY_LEFT)) {
+        if (previousStates.size() == 0) {
+            return;
+        }
+
+        GameState nextState(gameState);
+        nextStates.push(nextState);
+
+        gameState = previousStates.top();
+        previousStates.pop();
+        lastMove = gameState.lastMove();
+
+        selectedSquare = { -1, -1 };
+        possibleMoves.clear();
+    }
+
+    // Redo move
+    if (IsKeyPressed(KEY_RIGHT)) {
+        if (nextStates.size() == 0) {
+            return;
+        }
+
+        GameState previousState(gameState);
+        previousStates.push(previousState);
+
+        gameState = nextStates.top();
+        nextStates.pop();
+        lastMove = gameState.lastMove();
+
+        selectedSquare = { -1, -1 };
+        possibleMoves.clear();
     }
 
     // Handle mouse left click input
@@ -262,6 +309,12 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 
     if (valid)
     {
+        GameState previousState(gameState);
+        previousStates.push(previousState);
+        if (!nextStates.empty()) {
+            nextStates = std::stack<GameState>();
+        }
+
         gameState.applyMove(move);
         lastMove = move;
         std::cout << "Evaluation value: " << gameState.evaluationValue(true) << "\n";
