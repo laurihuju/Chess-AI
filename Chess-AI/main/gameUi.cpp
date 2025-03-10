@@ -3,6 +3,7 @@
 #include <string>
 #include <chrono>
 #include <iostream>
+#include <deque> // Add this include for deque
 
 #include "raylib.h"
 
@@ -35,7 +36,9 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures);
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY);
+/// <param name="isFlipped">Whether the board is in flipped orientation</param>
+/// <param name="gameHistory">Deque containing previous game states for undo functionality</param>
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY, bool& isFlipped, std::deque<GameState>& gameHistory);
 
 /// <summary>
 /// Draws the board content to the window.
@@ -47,7 +50,8 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY);
+/// <param name="isFlipped">Whether the board is in flipped orientation</param>
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY, bool isFlipped);
 
 /// <summary>
 /// Draws the given piece at the given coordinates to the window.
@@ -59,7 +63,8 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
 /// <param name="squareSize">Size of one square of the board</param>
 /// <param name="offsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="offsetY">The board Y offset from the window 0 coordinate</param>
-void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures, int squareSize, int offsetX, int offsetY);
+/// <param name="isFlipped">Whether the board is in flipped orientation</param>
+void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures, int squareSize, int offsetX, int offsetY, bool isFlipped);
 
 void startGameUi()
 {
@@ -72,10 +77,16 @@ void startGameUi()
     // The game info and current game state
     GameInfo gameInfo;
     GameState gameState;
+    
+    // Game history for undo functionality (stores up to 10 previous states)
+    std::deque<GameState> gameHistory;
 
     // The selected square and possible moves
     Vector2 selectedSquare = { -1, -1 };
     std::vector<Move> possibleMoves;
+
+    // Track if the board is flipped (false = white at bottom, true = black at bottom)
+    bool isFlipped = false;
 
     // Load textures once and store them in a map
     std::unordered_map<std::string, Texture2D> textures;
@@ -93,10 +104,10 @@ void startGameUi()
         int boardOffsetY = (currentScreenHeight - boardSize) / 2;
 
         // Read input from the user
-        handleInput(gameState, selectedSquare, possibleMoves, boardSize, boardOffsetX, boardOffsetY);
+        handleInput(gameState, selectedSquare, possibleMoves, boardSize, boardOffsetX, boardOffsetY, isFlipped, gameHistory);
         
         // Render the board
-        drawBoard(gameState, possibleMoves, selectedSquare, textures, boardSize, boardOffsetX, boardOffsetY);
+        drawBoard(gameState, possibleMoves, selectedSquare, textures, boardSize, boardOffsetX, boardOffsetY, isFlipped);
     }
 
     // Unload textures
@@ -124,9 +135,44 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
     textures["KB"] = LoadTexture("main/resources/black_king.png");
 }
 
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY) {
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, int boardSize, int boardOffsetX, int boardOffsetY, bool& isFlipped, std::deque<GameState>& gameHistory) {
+    // Handle undo with Ctrl+Z
+    if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_Z)) {
+        if (!gameHistory.empty()) {
+            gameState = gameHistory.back();
+            gameHistory.pop_back();
+            
+            // Clear selection when undoing a move
+            selectedSquare = { -1, -1 };
+            possibleMoves.clear();
+            
+            std::cout << "Move undone. " << gameHistory.size() << " moves in history." << std::endl;
+            return;
+        } else {
+            std::cout << "No moves to undo." << std::endl;
+            return;
+        }
+    }
+    
+    // Flip the board when pressing F key
+    if (IsKeyPressed(KEY_F)) {
+        isFlipped = !isFlipped;
+        std::cout << "Board flipped. " << (isFlipped ? "Black" : "White") << " side is now at the bottom." << std::endl;
+        
+        // Clear selection when flipping
+        selectedSquare = { -1, -1 };
+        possibleMoves.clear();
+        return;
+    }
+    
     // Use AI to complete the move when pressing space
     if (IsKeyPressed(KEY_SPACE)) {
+        // Save current state before AI move
+        if (gameHistory.size() >= 10) {
+            gameHistory.pop_front();
+        }
+        gameHistory.push_back(gameState);
+        
         // Find the best move and calculate the calculation time
         auto startTime = std::chrono::high_resolution_clock::now();
         Move aiMove = ChessAI::findBestMove(gameState, 20); // Max depth 20 with 4 second time limit
@@ -170,6 +216,12 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
     // Calculate the file and rank of the clicked mouse position
     int file = mousePos.x / (boardSize / 8);
     int rank = mousePos.y / (boardSize / 8);
+    
+    // Adjust coordinates if the board is flipped
+    if (isFlipped) {
+        file = 7 - file;
+        rank = 7 - rank;
+    }
 
     // First click (select piece)
     if (selectedSquare.x == -1)
@@ -258,8 +310,14 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 
     if (valid)
     {
+        // Save current state before applying move
+        if (gameHistory.size() >= 10) {
+            gameHistory.pop_front();
+        }
+        gameHistory.push_back(gameState);
+        
         gameState.applyMove(move);
-        std::cout << "Evaluation value: " << gameState.evaluationValue(true) << "\n";
+        std::cout << "Evaluation value: " << gameState.evaluationValue(true) << " (History: " << gameHistory.size() << " moves)\n";
     }
 
     // Reset selection
@@ -267,7 +325,7 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
     possibleMoves.clear();
 }
 
-void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY) {
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY, bool isFlipped) {
     BeginDrawing();
     ClearBackground(BLACK);
 
@@ -275,21 +333,48 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
     Color brown = { 168, 126, 98, 255 }; // Brown color
     Color offWhite = { 244, 222, 203, 255 }; // Off-white color
     Color textColor = BLACK; // Coordinate text color
+    Color flipIndicatorColor = YELLOW; // Color for the flip indicator button
 
     // Calculate text size based on board size
     int textSize = boardSize / 40;
+    
+    // Draw the flip indicator/button
+    int buttonSize = boardSize / 16;
+    Rectangle flipButton = { 
+        (float)(boardOffsetX + boardSize - buttonSize - 10), 
+        (float)(boardOffsetY - buttonSize - 10), 
+        (float)buttonSize, 
+        (float)buttonSize 
+    };
+    DrawRectangleRec(flipButton, flipIndicatorColor);
+    DrawRectangleLinesEx(flipButton, 2, BLACK);
+    DrawText("F", flipButton.x + buttonSize/4, flipButton.y + buttonSize/4, buttonSize/2, BLACK);
+    
+    // Draw orientation indicator text
+    const char* orientationText = isFlipped ? "Black at Bottom (F to Flip)" : "White at Bottom (F to Flip)";
+    DrawText(orientationText, boardOffsetX, boardOffsetY - buttonSize - 5, textSize, WHITE);
 
     // Draw chess board
     for (int y = 0; y < 8; y++)
     {
         for (int x = 0; x < 8; x++)
         {
-            Color color = (x + y) % 2 ? brown : offWhite;
-            DrawRectangle(boardOffsetX + x * (boardSize / 8), boardOffsetY + y * (boardSize / 8), (boardSize / 8), (boardSize / 8), color);
+            // Calculate visual position (which may be flipped)
+            int visualX = isFlipped ? 7 - x : x;
+            int visualY = isFlipped ? 7 - y : y;
+            
+            Color color = (visualX + visualY) % 2 ? brown : offWhite;
+            DrawRectangle(boardOffsetX + visualX * (boardSize / 8), boardOffsetY + visualY * (boardSize / 8), (boardSize / 8), (boardSize / 8), color);
 
-            // Draw coordinates inside the squares
-            std::string coordinate = std::string(1, 'A' + x) + std::to_string(8 - y);
-            DrawText(coordinate.c_str(), boardOffsetX + x * (boardSize / 8) + 5, boardOffsetY + (y + 1) * (boardSize / 8) - textSize - 5, textSize, textColor);
+            // Draw coordinates inside the squares - use actual chess coordinates
+            char fileChar = 'A' + x;
+            int rankNum = 8 - y;
+            std::string coordinate = std::string(1, fileChar) + std::to_string(rankNum);
+            DrawText(coordinate.c_str(), 
+                     boardOffsetX + visualX * (boardSize / 8) + 5, 
+                     boardOffsetY + (visualY + 1) * (boardSize / 8) - textSize - 5, 
+                     textSize, 
+                     textColor);
         }
     }
 
@@ -298,14 +383,22 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
     {
         int x = move.x2();
         int y = move.y2();
-        DrawRectangle(boardOffsetX + x * (boardSize / 8), boardOffsetY + y * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(GREEN, 0.3f));
+        
+        // Apply flipping for visualization
+        int visualX = isFlipped ? 7 - x : x;
+        int visualY = isFlipped ? 7 - y : y;
+        
+        DrawRectangle(boardOffsetX + visualX * (boardSize / 8), boardOffsetY + visualY * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(GREEN, 0.3f));
     }
 
     // Highlight selected square
     if (selectedSquare.x != -1)
     {
+        int visualX = isFlipped ? 7 - (int)selectedSquare.x : (int)selectedSquare.x;
+        int visualY = isFlipped ? 7 - (int)selectedSquare.y : (int)selectedSquare.y;
+        
         Color color = gameState.getPieceAt(selectedSquare.x, selectedSquare.y) != 0 && gameState.getPieceAt(selectedSquare.x, selectedSquare.y)->isWhite() == gameState.isWhiteSideToMove() ? YELLOW : RED;
-        DrawRectangle(boardOffsetX + selectedSquare.x * (boardSize / 8), boardOffsetY + selectedSquare.y * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(color, 0.3f));
+        DrawRectangle(boardOffsetX + visualX * (boardSize / 8), boardOffsetY + visualY * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(color, 0.3f));
     }
 
     // Draw pieces
@@ -314,17 +407,21 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
         for (int x = 0; x < 8; x++)
         {
             Piece* piece = gameState.getPieceAt(x, y);
-            drawPiece(piece, x, y, textures, (boardSize / 8), boardOffsetX, boardOffsetY);
+            drawPiece(piece, x, y, textures, (boardSize / 8), boardOffsetX, boardOffsetY, isFlipped);
         }
     }
 
     EndDrawing();
 }
 
-void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures, int squareSize, int offsetX, int offsetY)
+void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string, Texture2D>& textures, int squareSize, int offsetX, int offsetY, bool isFlipped)
 {
     if (!piece)
         return;
+        
+    // Apply flipping for visualization
+    int visualX = isFlipped ? 7 - x : x;
+    int visualY = isFlipped ? 7 - y : y;
 
     char pieceChar = ' ';
     if (dynamic_cast<Queen*>(piece))
@@ -344,7 +441,7 @@ void drawPiece(Piece* piece, int x, int y, const std::unordered_map<std::string,
     Texture2D texture = textures.at(key);
 
     Rectangle sourceRec = { 0, 0, (float)texture.width, (float)texture.height };
-    Rectangle destRec = { offsetX + x * squareSize, offsetY + y * squareSize, squareSize, squareSize };
+    Rectangle destRec = { offsetX + visualX * squareSize, offsetY + visualY * squareSize, squareSize, squareSize };
     Vector2 origin = { 0, 0 };
 
     DrawTexturePro(texture, sourceRec, destRec, origin, 0.0f, WHITE);
