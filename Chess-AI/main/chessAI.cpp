@@ -40,6 +40,12 @@ Move ChessAI::findBestMove(const GameState& state, int maxDepth, int timeLimit) 
         // Reset the best value for this depth iteration
         bestValue = std::numeric_limits<int>::min();
         bestValueGameStateIndex = 0;
+
+        //// Code for single threaded testing
+        //std::vector<std::thread*> threads;
+        //for (int i = 0; i < possibleStates.size(); i++) {
+        //    runMinimax(possibleStates[i], i, depth - 1, state.isWhiteSideToMove());
+        //}
         
         // Run Minimax evaluation for every currently possible new GameState in different threads
         std::vector<std::thread*> threads;
@@ -136,7 +142,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     int transpositionTableEvaluationValue;
 	Move transpositionTableMove = Move(0, 0, 0, 0);
     TranspositionTableItemType transpositionTableItemType;
-    if (transpositionTable.lookup(state, depth, transpositionTableEvaluationValue, transpositionTableMove, transpositionTableItemType)) {
+    if (transpositionTable.lookup(state, depth, playerIsWhite, transpositionTableEvaluationValue, transpositionTableMove, transpositionTableItemType)) {
         // If the stored value is exact minimax value, return it
         if (transpositionTableItemType == TranspositionTableItemType::Exact) {
             return transpositionTableEvaluationValue;
@@ -242,7 +248,7 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     }
 
     // Store the result of the evaluation of this game state to the transposition table
-    transpositionTable.store(state, bestEval, depth, bestMove, transpositionItemType);
+    transpositionTable.store(state, bestEval, depth, playerIsWhite, transpositionItemType, bestMove);
 
     // Return the evaluation value of this game state
     return bestEval;
