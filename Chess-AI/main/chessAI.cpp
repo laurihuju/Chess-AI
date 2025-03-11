@@ -165,27 +165,21 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
         return 0; // Stalemate
     }
 
-    // Null move pruning
-    if (!state.isCheck(isMaximizingPlayer ? playerIsWhite : !playerIsWhite) && depth >= NULL_MOVE_REDUCTION + 1) {
+    // Make null move reductions search if the player is not in check and the depth is sufficient
+    if (!state.isCheck(isMaximizingPlayer ? playerIsWhite : !playerIsWhite) && depth >= NULL_MOVE_SEARCH_REDUCTION + 1) {
+        // Create a game state copy and apply a null move to it
         GameState nullMoveState(state);
         nullMoveState.applyNullMove();
 
-        // Handle the maximizer's turn
-        if (isMaximizingPlayer) {
-            int eval = minimax(nullMoveState, depth - 1 - NULL_MOVE_REDUCTION, false, playerIsWhite, alpha, beta);
-
-            // Alpha-beta pruning
-            if (eval >= beta) {
-                return eval;
-            }
-        }
-        // Handle the minimizer's turn
-        else {
-            int eval = minimax(nullMoveState, depth - 1 - NULL_MOVE_REDUCTION, true, playerIsWhite, alpha, beta);
-
-            // Alpha-beta pruning
-            if (eval <= alpha) {
-                return eval;
+        // Evaluate the null move game state with reduced depth
+        int eval = minimax(nullMoveState, depth - 1 - NULL_MOVE_SEARCH_REDUCTION, !isMaximizingPlayer, playerIsWhite, alpha, beta);
+        
+        // If the evaluation produces a alpha/beta cutoff, decrease search depth
+        // or do quiescence search if the depth becomes too shallow
+        if ((isMaximizingPlayer && eval >= beta) || (!isMaximizingPlayer && eval <= alpha)) {
+            depth -= 4;
+            if (depth <= 0) {
+                return quiescenceSearch(state, playerIsWhite, alpha, beta);
             }
         }
     }

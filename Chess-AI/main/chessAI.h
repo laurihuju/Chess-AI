@@ -8,8 +8,10 @@
 #include "move.h"
 #include "transpositionTable.h"
 
-// The null move pruning depth reduction
-#define NULL_MOVE_REDUCTION 2
+/// <summary>
+/// The amount null move search is shallower than the normal search in the node.
+/// </summary>
+constexpr auto NULL_MOVE_SEARCH_REDUCTION = 2;
 
 class ChessAI {
 public:
