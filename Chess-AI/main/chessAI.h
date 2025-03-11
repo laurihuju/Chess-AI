@@ -8,6 +8,9 @@
 #include "move.h"
 #include "transpositionTable.h"
 
+// The null move pruning depth reduction
+#define NULL_MOVE_REDUCTION 2
+
 class ChessAI {
 public:
     /// <summary>

@@ -165,6 +165,31 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
         return 0; // Stalemate
     }
 
+    // Null move pruning
+    if (!state.isCheck(isMaximizingPlayer ? playerIsWhite : !playerIsWhite) && depth >= NULL_MOVE_REDUCTION + 1) {
+        GameState nullMoveState(state);
+        nullMoveState.applyNullMove();
+
+        // Handle the maximizer's turn
+        if (isMaximizingPlayer) {
+            int eval = minimax(nullMoveState, depth - 1 - NULL_MOVE_REDUCTION, false, playerIsWhite, alpha, beta);
+
+            // Alpha-beta pruning
+            if (eval >= beta) {
+                return eval;
+            }
+        }
+        // Handle the minimizer's turn
+        else {
+            int eval = minimax(nullMoveState, depth - 1 - NULL_MOVE_REDUCTION, true, playerIsWhite, alpha, beta);
+
+            // Alpha-beta pruning
+            if (eval <= alpha) {
+                return eval;
+            }
+        }
+    }
+
     // Order moves before evaluation
     orderMoves(possibleStates, transpositionTableMove, isMaximizingPlayer ? playerIsWhite : !playerIsWhite);
 

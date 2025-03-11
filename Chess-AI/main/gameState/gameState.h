@@ -126,6 +126,8 @@ public:
 	/// <param name="move">The move to apply</param>
 	void applyMove(const Move& move);
 
+	void applyNullMove();
+
 	/// <summary>
 	/// Prints the board content to the console.
 	/// </summary>

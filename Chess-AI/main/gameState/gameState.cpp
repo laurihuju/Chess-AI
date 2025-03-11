@@ -307,6 +307,15 @@ void GameState::applyMove(const Move& move) {
     }
 }
 
+void GameState::applyNullMove() {
+    // Update the last move
+    _lastMove = Move(0, 0, 0, 0);
+
+    // Change the side to move
+    _isWhiteSideToMove = !_isWhiteSideToMove;
+    _hash = _hash xor GameInfo::getInstance()->whiteSideToMoveZobristValue();
+}
+
 void GameState::printBoard() const {
     // Set the locale to support Unicode
     std::wcout.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t>));
