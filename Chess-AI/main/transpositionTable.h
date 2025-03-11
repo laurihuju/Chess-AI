@@ -36,27 +36,33 @@ struct TranspositionTableItem {
 	/// <summary>
 	/// The type of the item.
 	/// </summary>
-	std::atomic<TranspositionTableItemType> itemType = TranspositionTableItemType::Exact;
+	TranspositionTableItemType itemType = TranspositionTableItemType::Exact;
 
 	/// <summary>
 	/// The hash of the item.
 	/// </summary>
-	std::atomic<uint64_t> hash = 0;
+	uint64_t hash = 0;
 
 	/// <summary>
 	/// The evaluation value of the item.
 	/// </summary>
-	std::atomic<int> evaluationValue = 0;
+	int evaluationValue = 0;
 
 	/// <summary>
 	/// The evaluation depth of the item.
 	/// </summary>
-	std::atomic<int> evaluationDepth = 0;
+	int evaluationDepth = 0;
+
+	/// <summary>
+	/// If the item was evaluated for white.
+	/// </summary>
+	bool evaluatedForWhite = true;
 
 	/// <summary>
 	/// The best move of the item.
 	/// </summary>
-	std::atomic<Move> bestMove = Move(0, 0, 0, 0);
+	Move bestMove = Move(0, 0, 0, 0);
+
 };
 
 /// <summary>
@@ -70,7 +76,7 @@ private:
 	/// <summary>
 	/// The transposition table items.
 	/// </summary>
-	TranspositionTableItem _items[Size];
+	std::atomic<TranspositionTableItem> _items[Size];
 	
 public:
 	/// <summary>
@@ -82,9 +88,10 @@ public:
 	/// <param name="state">The game state to store</param>
 	/// <param name="evaluationValue">The evaluation value</param>
 	/// <param name="evaluationDepth">The evaluation depth</param>
-	/// <param name="bestMove">The best move</param>
+	/// <param name="evaluatedForWhite">If the game state was evaluated for white</param>
 	/// <param name="itemType">The item type</param>
-	void store(const GameState& state, int evaluationValue, int evaluationDepth, const Move& bestMove, TranspositionTableItemType itemType);
+	/// <param name="bestMove">The best move</param>
+	void store(const GameState& state, int evaluationValue, int evaluationDepth, bool evaluatedForWhite, TranspositionTableItemType itemType, const Move& bestMove);
 
 	/// <summary>
 	/// Performs a table lookup with the given game state and minimum depth.
@@ -94,11 +101,12 @@ public:
 	/// </summary>
 	/// <param name="state">The game state to lookup</param>
 	/// <param name="minDepth">The minumum depth to lookup</param>
+	/// <param name="evaluateForWhite">If the lookup should search result for white (or black)</param>
 	/// <param name="evaluationValue">Reference parameter that gets the evaluation value if an item is found</param>
 	/// <param name="bestMove">Reference parameter that gets the best move if an item is found</param>
 	/// <param name="itemType">Reference parameter that gets the item type if an item is found</param>
 	/// <returns>True if an item was found and the reference parameters were updated</returns>
-	bool lookup(const GameState& state, int minDepth, int& evaluationValue, Move& bestMove, TranspositionTableItemType& itemType);
+	bool lookup(const GameState& state, int minDepth, bool evaluateForWhite, int& evaluationValue, Move& bestMove, TranspositionTableItemType& itemType);
 
 };
 

@@ -2,6 +2,8 @@
 #define CHESS_AI_H
 
 #include <mutex>
+#include <atomic>
+#include <chrono>
 #include "gameState/gameState.h"
 #include "move.h"
 #include "transpositionTable.h"
@@ -9,25 +11,31 @@
 class ChessAI {
 public:
     /// <summary>
-    /// Finds the best next move for the given game state using Minimax algorithm.
+    /// Finds the best next move for the given game state using Minimax algorithm with iterative deepening.
     /// </summary>
     /// <param name="state">The game state to search move for</param>
-    /// <param name="depth">The Minimax evaluation depth</param>
+    /// <param name="maxDepth">The maximum Minimax evaluation depth</param>
+    /// <param name="timeLimit">The time limit in milliseconds (default: 4000ms)</param>
     /// <returns>The best move, or Move(0, 0, 0, 0) if no moves found</returns>
-    static Move findBestMove(const GameState& state, int depth);
+    static Move findBestMove(const GameState& state, int maxDepth, int timeLimit = 4000);
 
 private:
     /// <summary>
     /// The currently best value found by the runMinimax function.
-    /// The value is reseted when starting a new best move search.
+    /// The value is reset when starting a new best move search.
     /// </summary>
     static std::atomic<int> bestValue;
 
     /// <summary>
     /// The index of the game state with the currently best value found by the runMinimax function.
-    /// The value is reseted when starting a new best move search.
+    /// The value is reset when starting a new best move search.
     /// </summary>
     static std::atomic<int> bestValueGameStateIndex;
+    
+    /// <summary>
+    /// Flag indicating whether the time limit has been exceeded.
+    /// </summary>
+    static std::atomic<bool> timeExceeded;
 
     /// <summary>
     /// The transposition table.
