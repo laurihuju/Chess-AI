@@ -194,13 +194,25 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     // Handle the maximizer's turn
     if (isMaximizingPlayer) {
         bestEval = std::numeric_limits<int>::min();
+        bool firstMove = true;
         for (const auto& newState : possibleStates) {
             // Check time limit before recursing
             if (timeExceeded) {
                 return 0;
             }
-            
-            int eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, beta);
+
+            // Search the eval with principal variation search
+            int eval;
+            if (firstMove) {
+                eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, beta);
+                firstMove = false;
+            } else {
+                eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, alpha + 1);
+                if (eval > alpha && eval < beta) {
+                    eval = minimax(newState, depth - 1, false, playerIsWhite, alpha, beta);
+                }
+            }
+
             alpha = std::max(alpha, eval);
 			if (eval > bestEval) {
 				bestEval = eval;
@@ -215,13 +227,26 @@ int ChessAI::minimax(const GameState& state, int depth, bool isMaximizingPlayer,
     // Handle the minimizer's turn
     } else {
         bestEval = std::numeric_limits<int>::max();
+        bool firstMove = true;
         for (const auto& newState : possibleStates) {
             // Check time limit before recursing
             if (timeExceeded) {
                 return 0;
             }
             
-            int eval = minimax(newState, depth - 1, true, playerIsWhite, alpha, beta);
+            // Search the eval with principal variation search
+            int eval;
+            if (firstMove) {
+                eval = minimax(newState, depth - 1, true, playerIsWhite, alpha, beta);
+                firstMove = false;
+            }
+            else {
+                eval = minimax(newState, depth - 1, true, playerIsWhite, beta - 1, beta);
+                if (eval < beta && eval > alpha) {
+                    eval = minimax(newState, depth - 1, true, playerIsWhite, alpha, beta);
+                }
+            }
+
             beta = std::min(beta, eval);
             if (eval < bestEval) {
                 bestEval = eval;
