@@ -372,7 +372,7 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
         (float)buttonSize 
     };
     DrawRectangleRec(flipButton, flipIndicatorColor);
-    DrawRectangleLinesEx(flipButton, 2, BLACK);
+    DrawRectangleLinesEx(flipButton, 2, GRAY);
     DrawText("F", flipButton.x + buttonSize/4, flipButton.y + buttonSize/4, buttonSize/2, BLACK);
     
     // Draw orientation indicator text
@@ -406,8 +406,15 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
     // Highlight the last move
     if (lastMove.x1() != 0 || lastMove.x2() != 0 || lastMove.y1() != 0 || lastMove.y2() != 0) 
     {
-		DrawRectangle(boardOffsetX + lastMove.x1() * (boardSize / 8), boardOffsetY + lastMove.y1() * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(BLUE, 0.5f));
-		DrawRectangle(boardOffsetX + lastMove.x2() * (boardSize / 8), boardOffsetY + lastMove.y2() * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(BLUE, 0.5f));
+        // Apply flipping for visualization of last move
+        int visualX1 = isFlipped ? 7 - lastMove.x1() : lastMove.x1();
+        int visualY1 = isFlipped ? 7 - lastMove.y1() : lastMove.y1();
+        int visualX2 = isFlipped ? 7 - lastMove.x2() : lastMove.x2();
+        int visualY2 = isFlipped ? 7 - lastMove.y2() : lastMove.y2();
+        
+        // Draw the highlighted squares for the last move
+        DrawRectangle(boardOffsetX + visualX1 * (boardSize / 8), boardOffsetY + visualY1 * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(BLUE, 0.5f));
+        DrawRectangle(boardOffsetX + visualX2 * (boardSize / 8), boardOffsetY + visualY2 * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(BLUE, 0.5f));
     }
 
     // Highlight possible moves
