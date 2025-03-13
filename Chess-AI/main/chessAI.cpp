@@ -104,11 +104,28 @@ void ChessAI::runMinimax(const GameState& state, int stateIndex, int depth, bool
     }
     
     // Calculate the evaluation value of the game tree branch this function evaluates
-    int value = minimax(state, depth, false, isWhite);
+    int eval;
+    if (depth == 1) {
+        // Calculate first depth with full window as we don't have previous evaluation value for aspiration window
+        eval = minimax(state, depth, false, isWhite);
+    }
+    else {
+        // Aspiration window
+        int alpha = bestValue - ASPIRATION_WINDOW_SIZE;
+        int beta = bestValue + ASPIRATION_WINDOW_SIZE;
+
+        // Calculate evaluation value first with aspiration window
+        eval = minimax(state, depth, false, isWhite, alpha, beta);
+
+        // If the evaluation value fails outside the aspiration window, search with full window
+        if (eval <= alpha || eval >= beta) {
+            eval = minimax(state, depth, false, isWhite);
+        }
+    }
 
     // If the evaluation value is better than the previous one, update the best value
-    if (value > bestValue || bestValueGameStateIndex == -1) {
-        bestValue = value;
+    if (eval > bestValue || bestValueGameStateIndex == -1) {
+        bestValue = eval;
         bestValueGameStateIndex = stateIndex;
     }
 }
