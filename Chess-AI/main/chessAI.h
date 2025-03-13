@@ -13,11 +13,6 @@
 /// </summary>
 constexpr auto NULL_MOVE_SEARCH_REDUCTION = 2;
 
-/// <summary>
-/// The aspiration window size.
-/// </summary>
-constexpr auto ASPIRATION_WINDOW_SIZE = 75;
-
 class ChessAI {
 public:
     /// <summary>
