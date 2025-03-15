@@ -97,6 +97,8 @@ $(function(){initNavTree('pawn_8cpp.html',''); initResizable(true); });
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">pawn.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -106,7 +108,42 @@ $(function(){initNavTree('pawn_8cpp.html',''); initResizable(true); });
 <code>#include &quot;<a class="el" href="move_8h_source.html">../move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="piece_8h_source.html">../piece.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="game_state_8h_source.html">../gameState/gameState.h</a>&quot;</code><br />
-</div></div><!-- contents -->
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:afed6a1b846dbbe18ac97e5416df7e320" id="r_afed6a1b846dbbe18ac97e5416df7e320"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afed6a1b846dbbe18ac97e5416df7e320">pawnValueAdditions</a> [8][8]</td></tr>
+<tr class="memdesc:afed6a1b846dbbe18ac97e5416df7e320"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additions and reductions of the value of white pawn at different positions.  <br /></td></tr>
+<tr class="separator:afed6a1b846dbbe18ac97e5416df7e320"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="afed6a1b846dbbe18ac97e5416df7e320" name="afed6a1b846dbbe18ac97e5416df7e320"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afed6a1b846dbbe18ac97e5416df7e320">&#9670;&#160;</a></span>pawnValueAdditions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int pawnValueAdditions[8][8]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">{</div>
+<div class="line">    {0, 0, 0, 0, 0, 0, 0, 0},</div>
+<div class="line">    {50, 50, 50, 50, 50, 50, 50, 50},</div>
+<div class="line">    {10, 10, 20, 30, 30, 20, 10, 10},</div>
+<div class="line">    {5, 5, 10, 25, 25, 10, 5, 5},</div>
+<div class="line">    {0, 0, 0, 20, 20, 0, 0, 0},</div>
+<div class="line">    {5, -5, -10, 0, 0, -10, -5, 5},</div>
+<div class="line">    {5, 10, 10, -20, -20, 10, 10, 5},</div>
+<div class="line">    {0, 0, 0, 0, 0, 0, 0, 0}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p>The additions and reductions of the value of white pawn at different positions. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

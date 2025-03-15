@@ -1,6 +1,8 @@
 var class_pawn =
 [
     [ "Pawn", "class_pawn.html#abd55b4b7833b27db45a0d375fc7de29e", null ],
-    [ "possibleMoves", "class_pawn.html#ac8bced2ee66f8ec8e820393a65730b9b", null ],
-    [ "threatensSquare", "class_pawn.html#a8cd2670b642ab0cebd7f44e772422727", null ]
+    [ "evaluationValue", "class_pawn.html#a3c7fc75639ea25b96a916112f8a95ca2", null ],
+    [ "gamePhaseInfluence", "class_pawn.html#aadb8cb073854ac7b65daacfb30d7191f", null ],
+    [ "getType", "class_pawn.html#a36d870758755895dcc2a1f654172f818", null ],
+    [ "possibleMoves", "class_pawn.html#a321fe91fb481c2fa4185f594a18e4afc", null ]
 ];

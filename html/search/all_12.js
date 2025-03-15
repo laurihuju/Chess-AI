@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['x1_0',['x1',['../class_move.html#acd3ba6b77ade4aff100c97757eb3e19d',1,'Move']]],
-  ['x2_1',['x2',['../class_move.html#a3a61a2e1f01e4a2d8b25816648335eb8',1,'Move']]]
+  ['startgameui_0',['startGameUi',['../game_ui_8cpp.html#a7eddc9a6c5b6311bfcaf2ceb5f5d02c3',1,'startGameUi():&#160;gameUi.cpp'],['../game_ui_8h.html#a7eddc9a6c5b6311bfcaf2ceb5f5d02c3',1,'startGameUi():&#160;gameUi.cpp']]],
+  ['store_1',['store',['../class_transposition_table.html#abf420b0c2a0f633e05f333c9df2d7b2d',1,'TranspositionTable']]]
 ];

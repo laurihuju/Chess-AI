@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['lowerenpassantcolumn_0',['lowerEnPassantColumn',['../class_game_state.html#accc3ba89094a218f02d8ec104a76af96',1,'GameState']]],
-  ['lowerleftcastlingpossible_1',['lowerLeftCastlingPossible',['../class_game_state.html#a55309cd14b3cdad9b6be81d2fec77f26',1,'GameState']]],
-  ['lowerrightcastlingpossible_2',['lowerRightCastlingPossible',['../class_game_state.html#ad1c033c4328cfc9e66970aaba5ec9dec',1,'GameState']]]
+  ['ischeck_0',['isCheck',['../class_game_state.html#a2eb782d7041289f79aa8eecf440f74fe',1,'GameState']]],
+  ['isthreatened_1',['isThreatened',['../class_game_state.html#a2e91e8b0633ec1536a62f9482a90f972',1,'GameState']]],
+  ['iswhite_2',['isWhite',['../class_piece.html#a890d9a42397ca3c9e30e4a6dfb5568e9',1,'Piece']]],
+  ['iswhitesidetomove_3',['isWhiteSideToMove',['../class_game_state.html#a3a06f6a0a4d9207cad952cbd5f9246a1',1,'GameState']]]
 ];

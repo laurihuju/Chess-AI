@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['currentgamestate_0',['CurrentGameState',['../class_current_game_state.html',1,'']]]
+  ['chessai_0',['ChessAI',['../class_chess_a_i.html',1,'']]]
 ];

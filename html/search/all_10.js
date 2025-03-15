@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['threatenssquare_0',['threatensSquare',['../class_piece.html#ad81f509b60ad0157fe44c0298f751a68',1,'Piece::threatensSquare()'],['../class_bishop.html#a03ddeacfcb120a5b06e814d33ea27fe3',1,'Bishop::threatensSquare()'],['../class_king.html#a4ee714679be748791428a3b1bbeb2fa9',1,'King::threatensSquare()'],['../class_knight.html#a1b78027f87c89087de342d22422febe4',1,'Knight::threatensSquare()'],['../class_pawn.html#a8cd2670b642ab0cebd7f44e772422727',1,'Pawn::threatensSquare()'],['../class_queen.html#a0dec1723da3bf8b8f63b632182e82b85',1,'Queen::threatensSquare()'],['../class_rook.html#a316284470d448fca689a62186f0ac3a1',1,'Rook::threatensSquare()']]]
+  ['queen_0',['Queen',['../class_queen.html',1,'Queen'],['../class_queen.html#a038ab01ca7e1af9a948b32819d14a500',1,'Queen::Queen()'],['../piece_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021a2c2d2c0291163b077a372c2a9c5a6eda',1,'Queen:&#160;piece.h']]],
+  ['queen_2ecpp_1',['queen.cpp',['../queen_8cpp.html',1,'']]],
+  ['queen_2eh_2',['queen.h',['../queen_8h.html',1,'']]],
+  ['queenvalueadditions_3',['queenValueAdditions',['../queen_8cpp.html#ac11ab46e7910124558b11626163f1885',1,'queen.cpp']]],
+  ['quiescencesearch_4',['quiescenceSearch',['../class_chess_a_i.html#a02688f8040aad3017d4d8ee2e91e3e5d',1,'ChessAI']]]
 ];

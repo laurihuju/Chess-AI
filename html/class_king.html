@@ -104,7 +104,7 @@ $(function(){initNavTree('class_king.html',''); initResizable(true); });
 </div><!--header-->
 <div class="contents">
 
-<p>A class that describes a king piece.  
+<p>A class that describes a king piece. The class is immutable, and any child class should be immutable.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="king_8h_source.html">king.h</a>&gt;</code></p>
@@ -114,7 +114,7 @@ Inheritance diagram for King:</div>
  <div class="center">
   <img src="class_king.png" usemap="#King_map" alt=""/>
   <map id="King_map" name="King_map">
-<area href="class_piece.html" title="An abstract class that describes a basic chess piece with only color." alt="Piece" shape="rect" coords="0,0,44,24"/>
+<area href="class_piece.html" title="An abstract class that describes a basic chess piece with only color. The class is immutable,..." alt="Piece" shape="rect" coords="0,0,44,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -123,13 +123,25 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab95f3f75f4acaa7806070e2a66cc9832" id="r_ab95f3f75f4acaa7806070e2a66cc9832"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab95f3f75f4acaa7806070e2a66cc9832">King</a> (bool <a class="el" href="class_piece.html#a890d9a42397ca3c9e30e4a6dfb5568e9">isWhite</a>)</td></tr>
 <tr class="memdesc:ab95f3f75f4acaa7806070e2a66cc9832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes this king.  <br /></td></tr>
 <tr class="separator:ab95f3f75f4acaa7806070e2a66cc9832"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a859db63ec8f86b5928da31d494888548" id="r_a859db63ec8f86b5928da31d494888548"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a859db63ec8f86b5928da31d494888548">possibleMoves</a> (std::vector&lt; <a class="el" href="class_move.html">Move</a> &gt; &amp;moves, int x, int y, const <a class="el" href="class_game_state.html">GameState</a> &amp;gameState) const override</td></tr>
-<tr class="memdesc:a859db63ec8f86b5928da31d494888548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened.  <br /></td></tr>
-<tr class="separator:a859db63ec8f86b5928da31d494888548"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ee714679be748791428a3b1bbeb2fa9" id="r_a4ee714679be748791428a3b1bbeb2fa9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ee714679be748791428a3b1bbeb2fa9">threatensSquare</a> (int ownX, int ownY, int squareX, int squareY, const <a class="el" href="class_game_state.html">GameState</a> &amp;gameState) const override</td></tr>
-<tr class="memdesc:a4ee714679be748791428a3b1bbeb2fa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if this piece at the given location threatens the given square.  <br /></td></tr>
-<tr class="separator:a4ee714679be748791428a3b1bbeb2fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab05421b1f559daec575102c7a9c2e727" id="r_ab05421b1f559daec575102c7a9c2e727"><td class="memItemLeft" align="right" valign="top"><a class="el" href="piece_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021">PieceType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab05421b1f559daec575102c7a9c2e727">getType</a> () const override</td></tr>
+<tr class="memdesc:ab05421b1f559daec575102c7a9c2e727"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="piece_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021" title="Enum class describing piece types. These are used for efficient type checking without RTTI.">PieceType</a> of this piece.  <br /></td></tr>
+<tr class="separator:ab05421b1f559daec575102c7a9c2e727"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ccf498ff7c4b53542147bf8d5a0fda8" id="r_a6ccf498ff7c4b53542147bf8d5a0fda8"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ccf498ff7c4b53542147bf8d5a0fda8">gamePhaseInfluence</a> () const override</td></tr>
+<tr class="memdesc:a6ccf498ff7c4b53542147bf8d5a0fda8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The influence of this piece to the game phase.  <br /></td></tr>
+<tr class="separator:a6ccf498ff7c4b53542147bf8d5a0fda8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf0ecab804f2e7f17fdd7527eca41dd5" id="r_adf0ecab804f2e7f17fdd7527eca41dd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf0ecab804f2e7f17fdd7527eca41dd5">possibleMoves</a> (std::vector&lt; <a class="el" href="class_move.html">Move</a> &gt; &amp;moves, char x, char y, const <a class="el" href="class_game_state.html">GameState</a> &amp;gameState, bool captureOnly=false) const override</td></tr>
+<tr class="memdesc:adf0ecab804f2e7f17fdd7527eca41dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the possible moves of this piece to the moves vector. Does not take into account if the king is threatened. You can generate only capture moves by setting the captureOnly parameter to true.  <br /></td></tr>
+<tr class="separator:adf0ecab804f2e7f17fdd7527eca41dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96c7a23043fb801f368d29e34919b9bc" id="r_a96c7a23043fb801f368d29e34919b9bc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96c7a23043fb801f368d29e34919b9bc">evaluationValue</a> (char x, char y, char gamePhase) const override</td></tr>
+<tr class="memdesc:a96c7a23043fb801f368d29e34919b9bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The evaluation value of this piece at the given coordinates at the given game phase.  <br /></td></tr>
+<tr class="separator:a96c7a23043fb801f368d29e34919b9bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_piece"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_class_piece')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_piece.html">Piece</a></td></tr>
+<tr class="memitem:a9e38866c919b5ecdd142ff3402a618f1 inherit pub_methods_class_piece" id="r_a9e38866c919b5ecdd142ff3402a618f1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_piece.html#a9e38866c919b5ecdd142ff3402a618f1">operator==</a> (const <a class="el" href="class_piece.html">Piece</a> &amp;other) const</td></tr>
+<tr class="memdesc:a9e38866c919b5ecdd142ff3402a618f1 inherit pub_methods_class_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares the other piece with this piece.  <br /></td></tr>
+<tr class="separator:a9e38866c919b5ecdd142ff3402a618f1 inherit pub_methods_class_piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aee32b102b414cfd0faa16caee9d98b inherit pub_methods_class_piece" id="r_a3aee32b102b414cfd0faa16caee9d98b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_piece.html#a3aee32b102b414cfd0faa16caee9d98b">operator!=</a> (const <a class="el" href="class_piece.html">Piece</a> &amp;other) const</td></tr>
+<tr class="memdesc:a3aee32b102b414cfd0faa16caee9d98b inherit pub_methods_class_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares the other piece with this piece.  <br /></td></tr>
+<tr class="separator:a3aee32b102b414cfd0faa16caee9d98b inherit pub_methods_class_piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f7ab61f34214a3c380aab593906f322 inherit pub_methods_class_piece" id="r_a5f7ab61f34214a3c380aab593906f322"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_piece.html#a5f7ab61f34214a3c380aab593906f322">Piece</a> (bool <a class="el" href="class_piece.html#a890d9a42397ca3c9e30e4a6dfb5568e9">isWhite</a>)</td></tr>
 <tr class="memdesc:a5f7ab61f34214a3c380aab593906f322 inherit pub_methods_class_piece"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the piece.  <br /></td></tr>
 <tr class="separator:a5f7ab61f34214a3c380aab593906f322 inherit pub_methods_class_piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -141,7 +153,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a890d9a42397ca3c9e30e4a6dfb5568e9 inherit pub_methods_class_piece"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class that describes a king piece. </p>
+<div class="textblock"><p>A class that describes a king piece. The class is immutable, and any child class should be immutable. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab95f3f75f4acaa7806070e2a66cc9832" name="ab95f3f75f4acaa7806070e2a66cc9832"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab95f3f75f4acaa7806070e2a66cc9832">&#9670;&#160;</a></span>King()</h2>
@@ -169,8 +181,115 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a859db63ec8f86b5928da31d494888548" name="a859db63ec8f86b5928da31d494888548"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a859db63ec8f86b5928da31d494888548">&#9670;&#160;</a></span>possibleMoves()</h2>
+<a id="a96c7a23043fb801f368d29e34919b9bc" name="a96c7a23043fb801f368d29e34919b9bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96c7a23043fb801f368d29e34919b9bc">&#9670;&#160;</a></span>evaluationValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int King::evaluationValue </td>
+          <td>(</td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>y</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>gamePhase</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The evaluation value of this piece at the given coordinates at the given game phase. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The X coordinate of the piece</td></tr>
+    <tr><td class="paramname">y</td><td>The Y coordinate of the piece</td></tr>
+    <tr><td class="paramname">gamePhase</td><td>The game phase</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The evaluation value</dd></dl>
+
+<p>Implements <a class="el" href="class_piece.html#af4ca3f314272bbec04beb85df26e5d2d">Piece</a>.</p>
+
+</div>
+</div>
+<a id="a6ccf498ff7c4b53542147bf8d5a0fda8" name="a6ccf498ff7c4b53542147bf8d5a0fda8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ccf498ff7c4b53542147bf8d5a0fda8">&#9670;&#160;</a></span>gamePhaseInfluence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char King::gamePhaseInfluence </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The influence of this piece to the game phase. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Implements <a class="el" href="class_piece.html#a9917ef6c92670ff258b79259c56c4882">Piece</a>.</p>
+
+</div>
+</div>
+<a id="ab05421b1f559daec575102c7a9c2e727" name="ab05421b1f559daec575102c7a9c2e727"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab05421b1f559daec575102c7a9c2e727">&#9670;&#160;</a></span>getType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="piece_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021">PieceType</a> King::getType </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The <a class="el" href="piece_8h.html#a12ed9719bbdf7bc596ff7a6f4bf3f021" title="Enum class describing piece types. These are used for efficient type checking without RTTI.">PieceType</a> of this piece. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+<p>Implements <a class="el" href="class_piece.html#a2b2a0cc8047e4e88d15f305bf029dff8">Piece</a>.</p>
+
+</div>
+</div>
+<a id="adf0ecab804f2e7f17fdd7527eca41dd5" name="adf0ecab804f2e7f17fdd7527eca41dd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf0ecab804f2e7f17fdd7527eca41dd5">&#9670;&#160;</a></span>possibleMoves()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,17 +305,22 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em></span>, </td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>y</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>gameState</em></span>&#160;) const</td>
+          <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>gameState</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>captureOnly</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -206,77 +330,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Adds all the possible moves of this piece to the moves vector. Does not take into account if the king is threatened. </p>
+<p>Adds the possible moves of this piece to the moves vector. Does not take into account if the king is threatened. You can generate only capture moves by setting the captureOnly parameter to true. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">moves</td><td></td></tr>
+    <tr><td class="paramname">moves</td><td>The vector where the moves will be added</td></tr>
     <tr><td class="paramname">x</td><td>The x coordinate of this piece</td></tr>
     <tr><td class="paramname">y</td><td>The y coordinate of this piece</td></tr>
     <tr><td class="paramname">gameState</td><td>The game state from which the possible moves are generated</td></tr>
+    <tr><td class="paramname">captureOnly</td><td>If to generate only capture moves</td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="class_piece.html#aefe51eb7a0b102a4a678fc46b073489d">Piece</a>.</p>
-
-</div>
-</div>
-<a id="a4ee714679be748791428a3b1bbeb2fa9" name="a4ee714679be748791428a3b1bbeb2fa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ee714679be748791428a3b1bbeb2fa9">&#9670;&#160;</a></span>threatensSquare()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool King::threatensSquare </td>
-          <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>ownX</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>ownY</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>squareX</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>squareY</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>gameState</em></span>&#160;) const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel override">override</span><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks if this piece at the given location threatens the given square. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ownX</td><td></td></tr>
-    <tr><td class="paramname">ownY</td><td></td></tr>
-    <tr><td class="paramname">squareX</td><td></td></tr>
-    <tr><td class="paramname">squareY</td><td></td></tr>
-    <tr><td class="paramname">gameState</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-<p>Implements <a class="el" href="class_piece.html#ad81f509b60ad0157fe44c0298f751a68">Piece</a>.</p>
+<p>Implements <a class="el" href="class_piece.html#afde12eb884829e383997a85e180ce3c0">Piece</a>.</p>
 
 </div>
 </div>

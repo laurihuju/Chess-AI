@@ -98,7 +98,8 @@ $(function(){initNavTree('piece_8h.html',''); initResizable(true); });
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">piece.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -109,9 +110,57 @@ $(function(){initNavTree('piece_8h.html',''); initResizable(true); });
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_piece.html">Piece</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract class that describes a basic chess piece with only color.  <a href="class_piece.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An abstract class that describes a basic chess piece with only color. The class is immutable, and any child class should be immutable.  <a href="class_piece.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a12ed9719bbdf7bc596ff7a6f4bf3f021" id="r_a12ed9719bbdf7bc596ff7a6f4bf3f021"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021">PieceType</a> { <br />
+&#160;&#160;<a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021a3aa4584e547efba20238772d4af5c03d">Bishop</a>
+, <a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021a719ef271d38a388fd7b2bc967f4bd885">King</a>
+, <a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021a8c23b2b86573edf2a5ea482c2ccc1497">Knight</a>
+, <a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021a36cddea7303c5d9d8a0930128b1fbb80">Pawn</a>
+, <br />
+&#160;&#160;<a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021a2c2d2c0291163b077a372c2a9c5a6eda">Queen</a>
+, <a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021a1a415f5ae0f891e49d34821a896b4466">Rook</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a12ed9719bbdf7bc596ff7a6f4bf3f021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enum class describing piece types. These are used for efficient type checking without RTTI.  <a href="#a12ed9719bbdf7bc596ff7a6f4bf3f021">More...</a><br /></td></tr>
+<tr class="separator:a12ed9719bbdf7bc596ff7a6f4bf3f021"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a12ed9719bbdf7bc596ff7a6f4bf3f021" name="a12ed9719bbdf7bc596ff7a6f4bf3f021"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a12ed9719bbdf7bc596ff7a6f4bf3f021">&#9670;&#160;</a></span>PieceType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#a12ed9719bbdf7bc596ff7a6f4bf3f021">PieceType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Enum class describing piece types. These are used for efficient type checking without RTTI. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a12ed9719bbdf7bc596ff7a6f4bf3f021a3aa4584e547efba20238772d4af5c03d" name="a12ed9719bbdf7bc596ff7a6f4bf3f021a3aa4584e547efba20238772d4af5c03d"></a>Bishop&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a12ed9719bbdf7bc596ff7a6f4bf3f021a719ef271d38a388fd7b2bc967f4bd885" name="a12ed9719bbdf7bc596ff7a6f4bf3f021a719ef271d38a388fd7b2bc967f4bd885"></a>King&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a12ed9719bbdf7bc596ff7a6f4bf3f021a8c23b2b86573edf2a5ea482c2ccc1497" name="a12ed9719bbdf7bc596ff7a6f4bf3f021a8c23b2b86573edf2a5ea482c2ccc1497"></a>Knight&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a12ed9719bbdf7bc596ff7a6f4bf3f021a36cddea7303c5d9d8a0930128b1fbb80" name="a12ed9719bbdf7bc596ff7a6f4bf3f021a36cddea7303c5d9d8a0930128b1fbb80"></a>Pawn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a12ed9719bbdf7bc596ff7a6f4bf3f021a2c2d2c0291163b077a372c2a9c5a6eda" name="a12ed9719bbdf7bc596ff7a6f4bf3f021a2c2d2c0291163b077a372c2a9c5a6eda"></a>Queen&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a12ed9719bbdf7bc596ff7a6f4bf3f021a1a415f5ae0f891e49d34821a896b4466" name="a12ed9719bbdf7bc596ff7a6f4bf3f021a1a415f5ae0f891e49d34821a896b4466"></a>Rook&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

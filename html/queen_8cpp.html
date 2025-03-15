@@ -97,6 +97,8 @@ $(function(){initNavTree('queen_8cpp.html',''); initResizable(true); });
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">queen.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -104,7 +106,42 @@ $(function(){initNavTree('queen_8cpp.html',''); initResizable(true); });
 <code>#include &quot;<a class="el" href="queen_8h_source.html">queen.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="move_8h_source.html">../move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="game_state_8h_source.html">../gameState/gameState.h</a>&quot;</code><br />
-</div></div><!-- contents -->
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ac11ab46e7910124558b11626163f1885" id="r_ac11ab46e7910124558b11626163f1885"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac11ab46e7910124558b11626163f1885">queenValueAdditions</a> [8][8]</td></tr>
+<tr class="memdesc:ac11ab46e7910124558b11626163f1885"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additions and reductions of the value of white queen at different positions.  <br /></td></tr>
+<tr class="separator:ac11ab46e7910124558b11626163f1885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ac11ab46e7910124558b11626163f1885" name="ac11ab46e7910124558b11626163f1885"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac11ab46e7910124558b11626163f1885">&#9670;&#160;</a></span>queenValueAdditions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int queenValueAdditions[8][8]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">{</div>
+<div class="line">    {-20, -10, -10, -5, -5, -10, -10, -20},</div>
+<div class="line">    {-10, 0, 0, 0, 0, 0, 0, -10},</div>
+<div class="line">    {-10, 0, 5, 5, 5, 5, 0, -10},</div>
+<div class="line">    {-5, 0, 5, 5, 5, 5, 0, -5},</div>
+<div class="line">    {0, 0, 5, 5, 5, 5, 0, -5},</div>
+<div class="line">    {-10, 5, 5, 5, 5, 5, 0, -10},</div>
+<div class="line">    {-10, 0, 5, 0, 0, 0, 0, -10},</div>
+<div class="line">    {-20, -10, -10, -5, -5, -10, -10, -20}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p>The additions and reductions of the value of white queen at different positions. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

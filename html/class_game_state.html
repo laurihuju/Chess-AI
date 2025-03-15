@@ -99,8 +99,7 @@ $(function(){initNavTree('class_game_state.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-methods">Protected Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="class_game_state-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">GameState Class Reference</div></div>
 </div><!--header-->
@@ -110,52 +109,44 @@ $(function(){initNavTree('class_game_state.html',''); initResizable(true); });
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="game_state_8h_source.html">gameState.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for GameState:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="class_game_state.png" usemap="#GameState_map" alt=""/>
-  <map id="GameState_map" name="GameState_map">
-<area href="class_current_game_state.html" title="Describes the current game state (not any other possible game state). Create only one these as a time..." alt="CurrentGameState" shape="rect" coords="0,56,115,80"/>
-  </map>
-</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a15d67413b30b79bfa8d4e710191a42cb" id="r_a15d67413b30b79bfa8d4e710191a42cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_game_state.html">GameState</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a15d67413b30b79bfa8d4e710191a42cb">operator=</a> (const <a class="el" href="class_game_state.html">GameState</a> &amp;)=delete</td></tr>
-<tr class="separator:a15d67413b30b79bfa8d4e710191a42cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebf350d68f5c008b748180c8876fba71" id="r_aebf350d68f5c008b748180c8876fba71"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aebf350d68f5c008b748180c8876fba71">operator==</a> (const <a class="el" href="class_game_state.html">GameState</a> &amp;other)</td></tr>
-<tr class="separator:aebf350d68f5c008b748180c8876fba71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a532c7e274301a8e46472c70c410e5e4e" id="r_a532c7e274301a8e46472c70c410e5e4e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a532c7e274301a8e46472c70c410e5e4e">GameState</a> (const <a class="el" href="class_game_state.html">GameState</a> &amp;other)</td></tr>
-<tr class="memdesc:a532c7e274301a8e46472c70c410e5e4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a copy of the given <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. The copied <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> is guaranteed to be valid only as long as any of its parent GameStates are not modified.  <br /></td></tr>
-<tr class="separator:a532c7e274301a8e46472c70c410e5e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61ca1dbd9b96e464565cda5018b36e9f" id="r_a61ca1dbd9b96e464565cda5018b36e9f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a61ca1dbd9b96e464565cda5018b36e9f">operator==</a> (const <a class="el" href="class_game_state.html">GameState</a> &amp;other) const</td></tr>
+<tr class="memdesc:a61ca1dbd9b96e464565cda5018b36e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares the other game state with this game state.  <br /></td></tr>
+<tr class="separator:a61ca1dbd9b96e464565cda5018b36e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75e2a00378cd25343d7ff72e5a61a319" id="r_a75e2a00378cd25343d7ff72e5a61a319"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75e2a00378cd25343d7ff72e5a61a319">operator!=</a> (const <a class="el" href="class_game_state.html">GameState</a> &amp;other) const</td></tr>
+<tr class="memdesc:a75e2a00378cd25343d7ff72e5a61a319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares the other game state with this game state.  <br /></td></tr>
+<tr class="separator:a75e2a00378cd25343d7ff72e5a61a319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fa0a2bf50315c4a35a3890a0adcee5c" id="r_a4fa0a2bf50315c4a35a3890a0adcee5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fa0a2bf50315c4a35a3890a0adcee5c">GameState</a> ()</td></tr>
 <tr class="memdesc:a4fa0a2bf50315c4a35a3890a0adcee5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> with empty board.  <br /></td></tr>
 <tr class="separator:a4fa0a2bf50315c4a35a3890a0adcee5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae623df5042cd0c17daa3394fdcb397b3" id="r_ae623df5042cd0c17daa3394fdcb397b3"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae623df5042cd0c17daa3394fdcb397b3">~GameState</a> ()</td></tr>
-<tr class="memdesc:ae623df5042cd0c17daa3394fdcb397b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes all pieces owned by this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>.  <br /></td></tr>
-<tr class="separator:ae623df5042cd0c17daa3394fdcb397b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae49b41e18e1697711d1689839a47963" id="r_aae49b41e18e1697711d1689839a47963"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aae49b41e18e1697711d1689839a47963">applyMove</a> (const <a class="el" href="class_move.html">Move</a> &amp;move)</td></tr>
-<tr class="memdesc:aae49b41e18e1697711d1689839a47963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the given move. Handles capture if the move moves a piece to a place where another piece is located. Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically. Handles piece promotion if the move has specified the promotion piece. The new promoted pieces are owned by this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. Does not check if the move is valid!  <br /></td></tr>
+<tr class="memdesc:aae49b41e18e1697711d1689839a47963"><td class="mdescLeft">&#160;</td><td class="mdescRight">Moves the given move. Handles capture if the move moves a piece to a place where another piece is located. Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically. Handles piece promotion if the move has specified the promotion piece (the promotion piece instance will be searched from the CurrentGameState instance). Does not check if the move is valid!  <br /></td></tr>
 <tr class="separator:aae49b41e18e1697711d1689839a47963"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec7badecb45a36171dd4aec1b95c3c76" id="r_aec7badecb45a36171dd4aec1b95c3c76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_king.html">King</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aec7badecb45a36171dd4aec1b95c3c76">findKing</a> (bool isWhite, int &amp;x, int &amp;y) const</td></tr>
-<tr class="memdesc:aec7badecb45a36171dd4aec1b95c3c76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the king of the given color. The coordinates of the king are set to the variables x and y.  <br /></td></tr>
-<tr class="separator:aec7badecb45a36171dd4aec1b95c3c76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa117b3068e40c3a8a887647af10277" id="r_a2fa117b3068e40c3a8a887647af10277"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fa117b3068e40c3a8a887647af10277">applyNullMove</a> ()</td></tr>
+<tr class="separator:a2fa117b3068e40c3a8a887647af10277"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d36511802f11f0455e63f5630aa9804" id="r_a3d36511802f11f0455e63f5630aa9804"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d36511802f11f0455e63f5630aa9804">printBoard</a> () const</td></tr>
 <tr class="memdesc:a3d36511802f11f0455e63f5630aa9804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the board content to the console.  <br /></td></tr>
 <tr class="separator:a3d36511802f11f0455e63f5630aa9804"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59ff7c45c86e7ef580ce5f28139851be" id="r_a59ff7c45c86e7ef580ce5f28139851be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_piece.html">Piece</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59ff7c45c86e7ef580ce5f28139851be">getPieceAt</a> (int x, int y) const</td></tr>
-<tr class="memdesc:a59ff7c45c86e7ef580ce5f28139851be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the piece at the given coordinates. The coordinates are given as internal index coordinates! Does not check if the coordinates are valid!  <br /></td></tr>
-<tr class="separator:a59ff7c45c86e7ef580ce5f28139851be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9681d30f867dcc0c2506dc95118085d" id="r_ae9681d30f867dcc0c2506dc95118085d"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_game_state.html">GameState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9681d30f867dcc0c2506dc95118085d">possibleNewGameStates</a> (bool isWhite) const</td></tr>
-<tr class="memdesc:ae9681d30f867dcc0c2506dc95118085d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a vector containing all possible new game states that can be created from this game state with one move of the given color.  <br /></td></tr>
-<tr class="separator:ae9681d30f867dcc0c2506dc95118085d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ef8909b80d2ab00fdd204e13ff7beef" id="r_a5ef8909b80d2ab00fdd204e13ff7beef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_piece.html">Piece</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ef8909b80d2ab00fdd204e13ff7beef">getPieceAt</a> (char x, char y) const</td></tr>
+<tr class="memdesc:a5ef8909b80d2ab00fdd204e13ff7beef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the piece at the given coordinates. The coordinates are given as internal index coordinates! Does not check if the coordinates are valid!  <br /></td></tr>
+<tr class="separator:a5ef8909b80d2ab00fdd204e13ff7beef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96f9e17d23c4a8625adf6a8f265b0c6f" id="r_a96f9e17d23c4a8625adf6a8f265b0c6f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a96f9e17d23c4a8625adf6a8f265b0c6f">possibleNewGameStates</a> (std::vector&lt; <a class="el" href="class_game_state.html">GameState</a> &gt; &amp;gameStates, bool captureOnly=false) const</td></tr>
+<tr class="memdesc:a96f9e17d23c4a8625adf6a8f265b0c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds all possible new game states that can be created from this game state with one move to the newGameStates vector. The game states are fully validated to not contain moves that would put the king of the given color in check. You can generate only capture moves by setting the captureOnly parameter to true.  <br /></td></tr>
+<tr class="separator:a96f9e17d23c4a8625adf6a8f265b0c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eb782d7041289f79aa8eecf440f74fe" id="r_a2eb782d7041289f79aa8eecf440f74fe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2eb782d7041289f79aa8eecf440f74fe">isCheck</a> (bool isWhite) const</td></tr>
 <tr class="memdesc:a2eb782d7041289f79aa8eecf440f74fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the king of the given color is in check.  <br /></td></tr>
 <tr class="separator:a2eb782d7041289f79aa8eecf440f74fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48db05ec6b1463cb52b1ffc2b132d8a3" id="r_a48db05ec6b1463cb52b1ffc2b132d8a3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a48db05ec6b1463cb52b1ffc2b132d8a3">isThreatened</a> (bool isWhite, int x, int y) const</td></tr>
-<tr class="memdesc:a48db05ec6b1463cb52b1ffc2b132d8a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the square is threatened by the opponent at the perspective of the given color. The coordinates are given as internal index coordinates!  <br /></td></tr>
-<tr class="separator:a48db05ec6b1463cb52b1ffc2b132d8a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e91e8b0633ec1536a62f9482a90f972" id="r_a2e91e8b0633ec1536a62f9482a90f972"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2e91e8b0633ec1536a62f9482a90f972">isThreatened</a> (bool isWhite, char x, char y) const</td></tr>
+<tr class="memdesc:a2e91e8b0633ec1536a62f9482a90f972"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the square is threatened by the opponent at the perspective of the given color. The coordinates are given as internal index coordinates!  <br /></td></tr>
+<tr class="separator:a2e91e8b0633ec1536a62f9482a90f972"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affee5df438cf2799ca0781c48f5fe0f1" id="r_affee5df438cf2799ca0781c48f5fe0f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#affee5df438cf2799ca0781c48f5fe0f1">evaluationValue</a> (bool isWhite) const</td></tr>
+<tr class="memdesc:affee5df438cf2799ca0781c48f5fe0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the evaluation value for the given player. Higher value means better position for the player.  <br /></td></tr>
+<tr class="separator:affee5df438cf2799ca0781c48f5fe0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a06f6a0a4d9207cad952cbd5f9246a1" id="r_a3a06f6a0a4d9207cad952cbd5f9246a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a06f6a0a4d9207cad952cbd5f9246a1">isWhiteSideToMove</a> () const</td></tr>
+<tr class="memdesc:a3a06f6a0a4d9207cad952cbd5f9246a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if the side to move is white.  <br /></td></tr>
+<tr class="separator:a3a06f6a0a4d9207cad952cbd5f9246a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44e037b4104d8b321f04136f660d0320" id="r_a44e037b4104d8b321f04136f660d0320"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44e037b4104d8b321f04136f660d0320">upperLeftCastlingPossible</a> () const</td></tr>
 <tr class="memdesc:a44e037b4104d8b321f04136f660d0320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if upper left castling is still possible in this game state. Does not check if there is space for castling or if the squares are threatened.  <br /></td></tr>
 <tr class="separator:a44e037b4104d8b321f04136f660d0320"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,24 +159,45 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad1c033c4328cfc9e66970aaba5ec9dec" id="r_ad1c033c4328cfc9e66970aaba5ec9dec"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1c033c4328cfc9e66970aaba5ec9dec">lowerRightCastlingPossible</a> () const</td></tr>
 <tr class="memdesc:ad1c033c4328cfc9e66970aaba5ec9dec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if lower right castling is still possible in this game state. Does not check if there is space for castling or if the squares are threatened.  <br /></td></tr>
 <tr class="separator:ad1c033c4328cfc9e66970aaba5ec9dec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a354468f7425d0bafb228684f1da98278" id="r_a354468f7425d0bafb228684f1da98278"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a354468f7425d0bafb228684f1da98278">upperEnPassantColumn</a> () const</td></tr>
-<tr class="memdesc:a354468f7425d0bafb228684f1da98278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks which column upper en passant move is possible to do at. The returned column is the column of the piece that would be captured in the en passant move. Returns -1 if upper en passant is not possible.  <br /></td></tr>
-<tr class="separator:a354468f7425d0bafb228684f1da98278"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accc3ba89094a218f02d8ec104a76af96" id="r_accc3ba89094a218f02d8ec104a76af96"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accc3ba89094a218f02d8ec104a76af96">lowerEnPassantColumn</a> () const</td></tr>
-<tr class="memdesc:accc3ba89094a218f02d8ec104a76af96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks which column lower en passant move is possible to do at. The returned column is the column of the piece that would be captured in the en passant move. Returns -1 if lower en passant is not possible.  <br /></td></tr>
-<tr class="separator:accc3ba89094a218f02d8ec104a76af96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8871e0c8fe2a9c03a6d95e5bf1de8af2" id="r_a8871e0c8fe2a9c03a6d95e5bf1de8af2"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8871e0c8fe2a9c03a6d95e5bf1de8af2">upperEnPassantColumn</a> () const</td></tr>
+<tr class="memdesc:a8871e0c8fe2a9c03a6d95e5bf1de8af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks which column upper en passant move is possible to do at. The returned column is the column of the piece that would be captured in the en passant move. Returns -1 if upper en passant is not possible.  <br /></td></tr>
+<tr class="separator:a8871e0c8fe2a9c03a6d95e5bf1de8af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d786f2aa6cd0d3782a3d00c4655b64" id="r_a65d786f2aa6cd0d3782a3d00c4655b64"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a65d786f2aa6cd0d3782a3d00c4655b64">lowerEnPassantColumn</a> () const</td></tr>
+<tr class="memdesc:a65d786f2aa6cd0d3782a3d00c4655b64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks which column lower en passant move is possible to do at. The returned column is the column of the piece that would be captured in the en passant move. Returns -1 if lower en passant is not possible.  <br /></td></tr>
+<tr class="separator:a65d786f2aa6cd0d3782a3d00c4655b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a773fb4ad28d0671139e1220f072014ba" id="r_a773fb4ad28d0671139e1220f072014ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_move.html">Move</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a773fb4ad28d0671139e1220f072014ba">lastMove</a> () const</td></tr>
+<tr class="memdesc:a773fb4ad28d0671139e1220f072014ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last move that was made in this game state. If the last move is not available, the move will be <a class="el" href="class_move.html" title="Describes move from one square to another. Can also contain optional information about piece promotio...">Move(0, 0, 0, 0)</a>.  <br /></td></tr>
+<tr class="separator:a773fb4ad28d0671139e1220f072014ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acae2e189181f9c6f4f4c3d304d3694dd" id="r_acae2e189181f9c6f4f4c3d304d3694dd"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acae2e189181f9c6f4f4c3d304d3694dd">gamePhase</a> () const</td></tr>
+<tr class="memdesc:acae2e189181f9c6f4f4c3d304d3694dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The game phase value which is sum of the game phase influence value of all pieces on the board.  <br /></td></tr>
+<tr class="separator:acae2e189181f9c6f4f4c3d304d3694dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ec6a417b3c8e234db87beee048ca0af" id="r_a4ec6a417b3c8e234db87beee048ca0af"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ec6a417b3c8e234db87beee048ca0af">hash</a> () const</td></tr>
+<tr class="memdesc:a4ec6a417b3c8e234db87beee048ca0af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the zobrist hash value of this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>.  <br /></td></tr>
+<tr class="separator:a4ec6a417b3c8e234db87beee048ca0af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
-Protected Member Functions</h2></td></tr>
-<tr class="memitem:aaf90487aabf4d1c401a29e9d93b63feb" id="r_aaf90487aabf4d1c401a29e9d93b63feb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaf90487aabf4d1c401a29e9d93b63feb">handlePieceDelete</a> (<a class="el" href="class_piece.html">Piece</a> *piece)</td></tr>
-<tr class="memdesc:aaf90487aabf4d1c401a29e9d93b63feb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the given piece if it is owned by this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>.  <br /></td></tr>
-<tr class="separator:aaf90487aabf4d1c401a29e9d93b63feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
 <tr class="memitem:a435c34ab037751214f8f92df2a611fd5" id="r_a435c34ab037751214f8f92df2a611fd5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_piece.html">Piece</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a435c34ab037751214f8f92df2a611fd5">_board</a> [8][8]</td></tr>
 <tr class="memdesc:a435c34ab037751214f8f92df2a611fd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current board content.  <br /></td></tr>
 <tr class="separator:a435c34ab037751214f8f92df2a611fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37692280ef0afde83edc2d7ee4dd8fa2" id="r_a37692280ef0afde83edc2d7ee4dd8fa2"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37692280ef0afde83edc2d7ee4dd8fa2">_whiteKingX</a> = 4</td></tr>
+<tr class="memdesc:a37692280ef0afde83edc2d7ee4dd8fa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The white king's X coordinate.  <br /></td></tr>
+<tr class="separator:a37692280ef0afde83edc2d7ee4dd8fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55877cf71fca832da98578aaa8115e42" id="r_a55877cf71fca832da98578aaa8115e42"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a55877cf71fca832da98578aaa8115e42">_whiteKingY</a> = 7</td></tr>
+<tr class="memdesc:a55877cf71fca832da98578aaa8115e42"><td class="mdescLeft">&#160;</td><td class="mdescRight">The white king's Y coordinate.  <br /></td></tr>
+<tr class="separator:a55877cf71fca832da98578aaa8115e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9889ae6b21e83413441488836deb01ae" id="r_a9889ae6b21e83413441488836deb01ae"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9889ae6b21e83413441488836deb01ae">_blackKingX</a> = 4</td></tr>
+<tr class="memdesc:a9889ae6b21e83413441488836deb01ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The black king's X coordinate.  <br /></td></tr>
+<tr class="separator:a9889ae6b21e83413441488836deb01ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace986af0d8d0c7d9cec8608bd1a4b8f4" id="r_ace986af0d8d0c7d9cec8608bd1a4b8f4"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ace986af0d8d0c7d9cec8608bd1a4b8f4">_blackKingY</a> = 0</td></tr>
+<tr class="memdesc:ace986af0d8d0c7d9cec8608bd1a4b8f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The black king's Y coordinate.  <br /></td></tr>
+<tr class="separator:ace986af0d8d0c7d9cec8608bd1a4b8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0bf81aec7e96dc3211f4b43f8b8ce2f" id="r_ab0bf81aec7e96dc3211f4b43f8b8ce2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab0bf81aec7e96dc3211f4b43f8b8ce2f">_evaluationValue</a> = 0</td></tr>
+<tr class="memdesc:ab0bf81aec7e96dc3211f4b43f8b8ce2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The evaluation value of this game state for white. Higher value means better position for white.  <br /></td></tr>
+<tr class="separator:ab0bf81aec7e96dc3211f4b43f8b8ce2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ad8c470e14fb0cad8f0b7bcb848ab22" id="r_a2ad8c470e14fb0cad8f0b7bcb848ab22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ad8c470e14fb0cad8f0b7bcb848ab22">_isWhiteSideToMove</a> = true</td></tr>
+<tr class="memdesc:a2ad8c470e14fb0cad8f0b7bcb848ab22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information if it is white's side to move.  <br /></td></tr>
+<tr class="separator:a2ad8c470e14fb0cad8f0b7bcb848ab22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeea963074645e6c2c33a409850e6e22" id="r_adeea963074645e6c2c33a409850e6e22"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adeea963074645e6c2c33a409850e6e22">_upperLeftCastlingPossible</a> = true</td></tr>
 <tr class="memdesc:adeea963074645e6c2c33a409850e6e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag for checking if upper left castling is still possible during the game.  <br /></td></tr>
 <tr class="separator:adeea963074645e6c2c33a409850e6e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,46 +210,27 @@ Protected Attributes</h2></td></tr>
 <tr class="memitem:a088d8478e9d8c61da7133dbdf6eadc64" id="r_a088d8478e9d8c61da7133dbdf6eadc64"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a088d8478e9d8c61da7133dbdf6eadc64">_lowerRightCastlingPossible</a> = true</td></tr>
 <tr class="memdesc:a088d8478e9d8c61da7133dbdf6eadc64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag for checking if lower right castling is still possible during the game.  <br /></td></tr>
 <tr class="separator:a088d8478e9d8c61da7133dbdf6eadc64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4738ae3752a722c49c09fee32eee9335" id="r_a4738ae3752a722c49c09fee32eee9335"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4738ae3752a722c49c09fee32eee9335">_upperEnPassantColumn</a> = -1</td></tr>
-<tr class="memdesc:a4738ae3752a722c49c09fee32eee9335"><td class="mdescLeft">&#160;</td><td class="mdescRight">The column which upper en passant is possible to do to (the column of the piece that would be captured in the en passant move). Has value -1 if upper en passant is not possible.  <br /></td></tr>
-<tr class="separator:a4738ae3752a722c49c09fee32eee9335"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a696859dda6e1fb510978e62094c361f1" id="r_a696859dda6e1fb510978e62094c361f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a696859dda6e1fb510978e62094c361f1">_lowerEnPassantColumn</a> = -1</td></tr>
-<tr class="memdesc:a696859dda6e1fb510978e62094c361f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The column which lower en passant is possible to do to (the column of the piece that would be captured in the en passant move). Has value -1 if lower en passant is not possible.  <br /></td></tr>
-<tr class="separator:a696859dda6e1fb510978e62094c361f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedc8e366eaf95d83473a3ed95383945c" id="r_aedc8e366eaf95d83473a3ed95383945c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="class_piece.html">Piece</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aedc8e366eaf95d83473a3ed95383945c">ownPieces</a></td></tr>
-<tr class="memdesc:aedc8e366eaf95d83473a3ed95383945c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The pieces this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> owns and is responsible to destroy.  <br /></td></tr>
-<tr class="separator:aedc8e366eaf95d83473a3ed95383945c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82ab5c1e15224f025cbf2044a72e884b" id="r_a82ab5c1e15224f025cbf2044a72e884b"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82ab5c1e15224f025cbf2044a72e884b">_upperEnPassantColumn</a> = -1</td></tr>
+<tr class="memdesc:a82ab5c1e15224f025cbf2044a72e884b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The column which upper en passant is possible to do to (the column of the piece that would be captured in the en passant move). Has value -1 if upper en passant is not possible.  <br /></td></tr>
+<tr class="separator:a82ab5c1e15224f025cbf2044a72e884b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b47ef6c1d112a6773af7574826e88f3" id="r_a8b47ef6c1d112a6773af7574826e88f3"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b47ef6c1d112a6773af7574826e88f3">_lowerEnPassantColumn</a> = -1</td></tr>
+<tr class="memdesc:a8b47ef6c1d112a6773af7574826e88f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The column which lower en passant is possible to do to (the column of the piece that would be captured in the en passant move). Has value -1 if lower en passant is not possible.  <br /></td></tr>
+<tr class="separator:a8b47ef6c1d112a6773af7574826e88f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6133cdc611d2c22e1477fc061200e9eb" id="r_a6133cdc611d2c22e1477fc061200e9eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_move.html">Move</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6133cdc611d2c22e1477fc061200e9eb">_lastMove</a> = <a class="el" href="class_move.html">Move</a>(0, 0, 0, 0)</td></tr>
+<tr class="memdesc:a6133cdc611d2c22e1477fc061200e9eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">The last move that was made in this game state. If the last move is not available, the move will be <a class="el" href="class_move.html" title="Describes move from one square to another. Can also contain optional information about piece promotio...">Move(0, 0, 0, 0)</a>.  <br /></td></tr>
+<tr class="separator:a6133cdc611d2c22e1477fc061200e9eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa355c9ded1a115c132cbfd563ba7a419" id="r_aa355c9ded1a115c132cbfd563ba7a419"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa355c9ded1a115c132cbfd563ba7a419">_gamePhase</a> = 0</td></tr>
+<tr class="memdesc:aa355c9ded1a115c132cbfd563ba7a419"><td class="mdescLeft">&#160;</td><td class="mdescRight">The game phase value which is sum of the game phase influence value of all pieces on the board.  <br /></td></tr>
+<tr class="separator:aa355c9ded1a115c132cbfd563ba7a419"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00543054e6695ce39d81b289c0c37ce9" id="r_a00543054e6695ce39d81b289c0c37ce9"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a00543054e6695ce39d81b289c0c37ce9">_hash</a> = 0</td></tr>
+<tr class="memdesc:a00543054e6695ce39d81b289c0c37ce9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The zobrist hash value of this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>.  <br /></td></tr>
+<tr class="separator:a00543054e6695ce39d81b289c0c37ce9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Describes a game state. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a532c7e274301a8e46472c70c410e5e4e" name="a532c7e274301a8e46472c70c410e5e4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a532c7e274301a8e46472c70c410e5e4e">&#9670;&#160;</a></span>GameState() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">GameState::GameState </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Creates a copy of the given <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. The copied <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> is guaranteed to be valid only as long as any of its parent GameStates are not modified. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> to copy</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a4fa0a2bf50315c4a35a3890a0adcee5c" name="a4fa0a2bf50315c4a35a3890a0adcee5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4fa0a2bf50315c4a35a3890a0adcee5c">&#9670;&#160;</a></span>GameState() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fa0a2bf50315c4a35a3890a0adcee5c">&#9670;&#160;</a></span>GameState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,33 +245,6 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Creates a new <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> with empty board. </p>
-
-</div>
-</div>
-<a id="ae623df5042cd0c17daa3394fdcb397b3" name="ae623df5042cd0c17daa3394fdcb397b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae623df5042cd0c17daa3394fdcb397b3">&#9670;&#160;</a></span>~GameState()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">GameState::~GameState </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel virtual">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Deletes all pieces owned by this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. </p>
 
 </div>
 </div>
@@ -298,7 +264,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Moves the given move. Handles capture if the move moves a piece to a place where another piece is located. Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically. Handles piece promotion if the move has specified the promotion piece. The new promoted pieces are owned by this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. Does not check if the move is valid! </p>
+<p>Moves the given move. Handles capture if the move moves a piece to a place where another piece is located. Updates the castling and en passant flags automatically. Handles castling and en passant moves automatically. Handles piece promotion if the move has specified the promotion piece (the promotion piece instance will be searched from the CurrentGameState instance). Does not check if the move is valid! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">move</td><td>The move to apply</td></tr>
@@ -308,45 +274,71 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aec7badecb45a36171dd4aec1b95c3c76" name="aec7badecb45a36171dd4aec1b95c3c76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec7badecb45a36171dd4aec1b95c3c76">&#9670;&#160;</a></span>findKing()</h2>
+<a id="a2fa117b3068e40c3a8a887647af10277" name="a2fa117b3068e40c3a8a887647af10277"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fa117b3068e40c3a8a887647af10277">&#9670;&#160;</a></span>applyNullMove()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_king.html">King</a> * GameState::findKing </td>
+          <td class="memname">void GameState::applyNullMove </td>
           <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>isWhite</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
-          <td class="paramtype">int &amp;</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int &amp;</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Finds the king of the given color. The coordinates of the king are set to the variables x and y. </p>
+</div>
+</div>
+<a id="affee5df438cf2799ca0781c48f5fe0f1" name="affee5df438cf2799ca0781c48f5fe0f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affee5df438cf2799ca0781c48f5fe0f1">&#9670;&#160;</a></span>evaluationValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int GameState::evaluationValue </td>
+          <td>(</td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>isWhite</em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the evaluation value for the given player. Higher value means better position for the player. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isWhite</td><td>Information about if the king to find is white</td></tr>
-    <tr><td class="paramname">x</td><td>The variable where the X coordinate of the king will be set</td></tr>
-    <tr><td class="paramname">y</td><td>The variable where the Y coordinate of the king will be set</td></tr>
+    <tr><td class="paramname">isWhite</td><td>If to evaluate for white</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The pointer to the king, or nullptr if the king was not found.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The evaluation value</dd></dl>
 
 </div>
 </div>
-<a id="a59ff7c45c86e7ef580ce5f28139851be" name="a59ff7c45c86e7ef580ce5f28139851be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59ff7c45c86e7ef580ce5f28139851be">&#9670;&#160;</a></span>getPieceAt()</h2>
+<a id="acae2e189181f9c6f4f4c3d304d3694dd" name="acae2e189181f9c6f4f4c3d304d3694dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acae2e189181f9c6f4f4c3d304d3694dd">&#9670;&#160;</a></span>gamePhase()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::gamePhase </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The game phase value which is sum of the game phase influence value of all pieces on the board. </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a5ef8909b80d2ab00fdd204e13ff7beef" name="a5ef8909b80d2ab00fdd204e13ff7beef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ef8909b80d2ab00fdd204e13ff7beef">&#9670;&#160;</a></span>getPieceAt()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -354,12 +346,12 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname"><a class="el" href="class_piece.html">Piece</a> * GameState::getPieceAt </td>
           <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;) const</td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -376,36 +368,23 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aaf90487aabf4d1c401a29e9d93b63feb" name="aaf90487aabf4d1c401a29e9d93b63feb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf90487aabf4d1c401a29e9d93b63feb">&#9670;&#160;</a></span>handlePieceDelete()</h2>
+<a id="a4ec6a417b3c8e234db87beee048ca0af" name="a4ec6a417b3c8e234db87beee048ca0af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ec6a417b3c8e234db87beee048ca0af">&#9670;&#160;</a></span>hash()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void GameState::handlePieceDelete </td>
+          <td class="memname">uint64_t GameState::hash </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_piece.html">Piece</a> *</td>          <td class="paramname"><span class="paramname"><em>piece</em></span></td><td>)</td>
-          <td></td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Deletes the given piece if it is owned by this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">piece</td><td>The piece to handle</td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Gets the zobrist hash value of this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The zobrist hash value</dd></dl>
 
 </div>
 </div>
@@ -435,8 +414,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a48db05ec6b1463cb52b1ffc2b132d8a3" name="a48db05ec6b1463cb52b1ffc2b132d8a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48db05ec6b1463cb52b1ffc2b132d8a3">&#9670;&#160;</a></span>isThreatened()</h2>
+<a id="a2e91e8b0633ec1536a62f9482a90f972" name="a2e91e8b0633ec1536a62f9482a90f972"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e91e8b0633ec1536a62f9482a90f972">&#9670;&#160;</a></span>isThreatened()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -449,12 +428,12 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>x</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;) const</td>
+          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>y</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -472,14 +451,54 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="accc3ba89094a218f02d8ec104a76af96" name="accc3ba89094a218f02d8ec104a76af96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#accc3ba89094a218f02d8ec104a76af96">&#9670;&#160;</a></span>lowerEnPassantColumn()</h2>
+<a id="a3a06f6a0a4d9207cad952cbd5f9246a1" name="a3a06f6a0a4d9207cad952cbd5f9246a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a06f6a0a4d9207cad952cbd5f9246a1">&#9670;&#160;</a></span>isWhiteSideToMove()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int GameState::lowerEnPassantColumn </td>
+          <td class="memname">bool GameState::isWhiteSideToMove </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks if the side to move is white. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the side to move is white</dd></dl>
+
+</div>
+</div>
+<a id="a773fb4ad28d0671139e1220f072014ba" name="a773fb4ad28d0671139e1220f072014ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a773fb4ad28d0671139e1220f072014ba">&#9670;&#160;</a></span>lastMove()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_move.html">Move</a> GameState::lastMove </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The last move that was made in this game state. If the last move is not available, the move will be <a class="el" href="class_move.html" title="Describes move from one square to another. Can also contain optional information about piece promotio...">Move(0, 0, 0, 0)</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>The last move that was made</dd></dl>
+
+</div>
+</div>
+<a id="a65d786f2aa6cd0d3782a3d00c4655b64" name="a65d786f2aa6cd0d3782a3d00c4655b64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65d786f2aa6cd0d3782a3d00c4655b64">&#9670;&#160;</a></span>lowerEnPassantColumn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::lowerEnPassantColumn </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -532,33 +551,34 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a15d67413b30b79bfa8d4e710191a42cb" name="a15d67413b30b79bfa8d4e710191a42cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15d67413b30b79bfa8d4e710191a42cb">&#9670;&#160;</a></span>operator=()</h2>
+<a id="a75e2a00378cd25343d7ff72e5a61a319" name="a75e2a00378cd25343d7ff72e5a61a319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a75e2a00378cd25343d7ff72e5a61a319">&#9670;&#160;</a></span>operator!=()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="class_game_state.html">GameState</a> &amp; GameState::operator= </td>
+          <td class="memname">bool GameState::operator!= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
+          <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel delete">delete</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
+
+<p>Compares the other game state with this game state. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the game states are not equal</dd></dl>
 
 </div>
 </div>
-<a id="aebf350d68f5c008b748180c8876fba71" name="aebf350d68f5c008b748180c8876fba71"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebf350d68f5c008b748180c8876fba71">&#9670;&#160;</a></span>operator==()</h2>
+<a id="a61ca1dbd9b96e464565cda5018b36e9f" name="a61ca1dbd9b96e464565cda5018b36e9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61ca1dbd9b96e464565cda5018b36e9f">&#9670;&#160;</a></span>operator==()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -567,36 +587,49 @@ Protected Attributes</h2></td></tr>
           <td class="memname">bool GameState::operator== </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_game_state.html">GameState</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>other</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae9681d30f867dcc0c2506dc95118085d" name="ae9681d30f867dcc0c2506dc95118085d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9681d30f867dcc0c2506dc95118085d">&#9670;&#160;</a></span>possibleNewGameStates()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt; <a class="el" href="class_game_state.html">GameState</a> &gt; GameState::possibleNewGameStates </td>
-          <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>isWhite</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Returns a vector containing all possible new game states that can be created from this game state with one move of the given color. </p>
+<p>Compares the other game state with this game state. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isWhite</td><td>If the new game states should be generated for moves of white</td></tr>
+    <tr><td class="paramname">other</td><td></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A vector containing all possible new game states with one move of the given color</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the game states are equal</dd></dl>
+
+</div>
+</div>
+<a id="a96f9e17d23c4a8625adf6a8f265b0c6f" name="a96f9e17d23c4a8625adf6a8f265b0c6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96f9e17d23c4a8625adf6a8f265b0c6f">&#9670;&#160;</a></span>possibleNewGameStates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void GameState::possibleNewGameStates </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="class_game_state.html">GameState</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>gameStates</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>captureOnly</em></span><span class="paramdefsep"> = </span><span class="paramdefval">false</span>&#160;) const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds all possible new game states that can be created from this game state with one move to the newGameStates vector. The game states are fully validated to not contain moves that would put the king of the given color in check. You can generate only capture moves by setting the captureOnly parameter to true. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gameStates</td><td>The vector where the new game states will be added</td></tr>
+    <tr><td class="paramname">captureOnly</td><td>If to generate only capture moves</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -619,14 +652,14 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a354468f7425d0bafb228684f1da98278" name="a354468f7425d0bafb228684f1da98278"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a354468f7425d0bafb228684f1da98278">&#9670;&#160;</a></span>upperEnPassantColumn()</h2>
+<a id="a8871e0c8fe2a9c03a6d95e5bf1de8af2" name="a8871e0c8fe2a9c03a6d95e5bf1de8af2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8871e0c8fe2a9c03a6d95e5bf1de8af2">&#9670;&#160;</a></span>upperEnPassantColumn()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int GameState::upperEnPassantColumn </td>
+          <td class="memname">char GameState::upperEnPassantColumn </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -680,6 +713,54 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a9889ae6b21e83413441488836deb01ae" name="a9889ae6b21e83413441488836deb01ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9889ae6b21e83413441488836deb01ae">&#9670;&#160;</a></span>_blackKingX</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::_blackKingX = 4</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The black king's X coordinate. </p>
+
+</div>
+</div>
+<a id="ace986af0d8d0c7d9cec8608bd1a4b8f4" name="ace986af0d8d0c7d9cec8608bd1a4b8f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace986af0d8d0c7d9cec8608bd1a4b8f4">&#9670;&#160;</a></span>_blackKingY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::_blackKingY = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The black king's Y coordinate. </p>
+
+</div>
+</div>
 <a id="a435c34ab037751214f8f92df2a611fd5" name="a435c34ab037751214f8f92df2a611fd5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a435c34ab037751214f8f92df2a611fd5">&#9670;&#160;</a></span>_board</h2>
 
@@ -695,7 +776,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -704,8 +785,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a696859dda6e1fb510978e62094c361f1" name="a696859dda6e1fb510978e62094c361f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a696859dda6e1fb510978e62094c361f1">&#9670;&#160;</a></span>_lowerEnPassantColumn</h2>
+<a id="ab0bf81aec7e96dc3211f4b43f8b8ce2f" name="ab0bf81aec7e96dc3211f4b43f8b8ce2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0bf81aec7e96dc3211f4b43f8b8ce2f">&#9670;&#160;</a></span>_evaluationValue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -714,12 +795,132 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int GameState::_lowerEnPassantColumn = -1</td>
+          <td class="memname">int GameState::_evaluationValue = 0</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The evaluation value of this game state for white. Higher value means better position for white. </p>
+
+</div>
+</div>
+<a id="aa355c9ded1a115c132cbfd563ba7a419" name="aa355c9ded1a115c132cbfd563ba7a419"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa355c9ded1a115c132cbfd563ba7a419">&#9670;&#160;</a></span>_gamePhase</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::_gamePhase = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The game phase value which is sum of the game phase influence value of all pieces on the board. </p>
+
+</div>
+</div>
+<a id="a00543054e6695ce39d81b289c0c37ce9" name="a00543054e6695ce39d81b289c0c37ce9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00543054e6695ce39d81b289c0c37ce9">&#9670;&#160;</a></span>_hash</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t GameState::_hash = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The zobrist hash value of this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a>. </p>
+
+</div>
+</div>
+<a id="a2ad8c470e14fb0cad8f0b7bcb848ab22" name="a2ad8c470e14fb0cad8f0b7bcb848ab22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ad8c470e14fb0cad8f0b7bcb848ab22">&#9670;&#160;</a></span>_isWhiteSideToMove</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool GameState::_isWhiteSideToMove = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Information if it is white's side to move. </p>
+
+</div>
+</div>
+<a id="a6133cdc611d2c22e1477fc061200e9eb" name="a6133cdc611d2c22e1477fc061200e9eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6133cdc611d2c22e1477fc061200e9eb">&#9670;&#160;</a></span>_lastMove</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_move.html">Move</a> GameState::_lastMove = <a class="el" href="class_move.html">Move</a>(0, 0, 0, 0)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The last move that was made in this game state. If the last move is not available, the move will be <a class="el" href="class_move.html" title="Describes move from one square to another. Can also contain optional information about piece promotio...">Move(0, 0, 0, 0)</a>. </p>
+
+</div>
+</div>
+<a id="a8b47ef6c1d112a6773af7574826e88f3" name="a8b47ef6c1d112a6773af7574826e88f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b47ef6c1d112a6773af7574826e88f3">&#9670;&#160;</a></span>_lowerEnPassantColumn</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::_lowerEnPassantColumn = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -743,7 +944,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -767,7 +968,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -776,8 +977,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4738ae3752a722c49c09fee32eee9335" name="a4738ae3752a722c49c09fee32eee9335"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4738ae3752a722c49c09fee32eee9335">&#9670;&#160;</a></span>_upperEnPassantColumn</h2>
+<a id="a82ab5c1e15224f025cbf2044a72e884b" name="a82ab5c1e15224f025cbf2044a72e884b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82ab5c1e15224f025cbf2044a72e884b">&#9670;&#160;</a></span>_upperEnPassantColumn</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -786,12 +987,12 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int GameState::_upperEnPassantColumn = -1</td>
+          <td class="memname">char GameState::_upperEnPassantColumn = -1</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -815,7 +1016,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -839,7 +1040,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -848,8 +1049,8 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aedc8e366eaf95d83473a3ed95383945c" name="aedc8e366eaf95d83473a3ed95383945c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedc8e366eaf95d83473a3ed95383945c">&#9670;&#160;</a></span>ownPieces</h2>
+<a id="a37692280ef0afde83edc2d7ee4dd8fa2" name="a37692280ef0afde83edc2d7ee4dd8fa2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37692280ef0afde83edc2d7ee4dd8fa2">&#9670;&#160;</a></span>_whiteKingX</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -858,17 +1059,41 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="class_piece.html">Piece</a>*&gt; GameState::ownPieces</td>
+          <td class="memname">char GameState::_whiteKingX = 4</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel protected">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The pieces this <a class="el" href="class_game_state.html" title="Describes a game state.">GameState</a> owns and is responsible to destroy. </p>
+<p>The white king's X coordinate. </p>
+
+</div>
+</div>
+<a id="a55877cf71fca832da98578aaa8115e42" name="a55877cf71fca832da98578aaa8115e42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55877cf71fca832da98578aaa8115e42">&#9670;&#160;</a></span>_whiteKingY</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char GameState::_whiteKingY = 7</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel private">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The white king's Y coordinate. </p>
 
 </div>
 </div>

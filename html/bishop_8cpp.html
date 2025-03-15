@@ -97,6 +97,8 @@ $(function(){initNavTree('bishop_8cpp.html',''); initResizable(true); });
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">bishop.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -105,7 +107,42 @@ $(function(){initNavTree('bishop_8cpp.html',''); initResizable(true); });
 <code>#include &quot;<a class="el" href="bishop_8h_source.html">bishop.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="move_8h_source.html">../move.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="game_state_8h_source.html">../gameState/gameState.h</a>&quot;</code><br />
-</div></div><!-- contents -->
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a44e8db8c20dc236c9bef8e61584d66e4" id="r_a44e8db8c20dc236c9bef8e61584d66e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a44e8db8c20dc236c9bef8e61584d66e4">bishopValueAdditions</a> [8][8]</td></tr>
+<tr class="memdesc:a44e8db8c20dc236c9bef8e61584d66e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The additions and reductions of the value of white bishop at different positions.  <br /></td></tr>
+<tr class="separator:a44e8db8c20dc236c9bef8e61584d66e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a44e8db8c20dc236c9bef8e61584d66e4" name="a44e8db8c20dc236c9bef8e61584d66e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44e8db8c20dc236c9bef8e61584d66e4">&#9670;&#160;</a></span>bishopValueAdditions</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int bishopValueAdditions[8][8]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=</div>
+<div class="line">{</div>
+<div class="line">    {-20, -10, -10, -10, -10, -10, -10, -20},</div>
+<div class="line">    {-10, 0, 0, 0, 0, 0, 0, -10},</div>
+<div class="line">    {-10, 0, 5, 10, 10, 5, 0, -10},</div>
+<div class="line">    {-10, 5, 5, 10, 10, 5, 5, -10},</div>
+<div class="line">    {-10, 0, 10, 10, 10, 10, 0, -10},</div>
+<div class="line">    {-10, 10, 10, 10, 10, 10, 10, -10},</div>
+<div class="line">    {-10, 5, 0, 0, 0, 0, 5, -10},</div>
+<div class="line">    {-20, -10, -10, -10, -10, -10, -10, -20}</div>
+<div class="line">}</div>
+</div><!-- fragment -->
+<p>The additions and reductions of the value of white bishop at different positions. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
