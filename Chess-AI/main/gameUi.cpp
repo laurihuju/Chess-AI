@@ -33,13 +33,12 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures);
 /// <param name="gameState">The current game state</param>
 /// <param name="selectedSquare">The selected square coordinates</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
-/// <param name="lastMove">The last move</param>
 /// <param name="previousStates">The stack of previous game states</param>
 /// <param name="nextStates">The stack of next game states</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, 
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, 
     std::stack<GameState>& previousStates, std::stack<GameState>& nextStates, int boardSize, int boardOffsetX, int boardOffsetY, bool& isFlipped);
 
 /// <summary>
@@ -48,13 +47,12 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 /// <param name="gameState">The current game state</param>
 /// <param name="possibleMoves">The vector of possible moves</param>
 /// <param name="selectedSquare">The selected square coordinates</param
-/// <param name="lastMove">The last move</param>
 /// <param name="textures">Textures loaded with loadPieceTextures()</param>
 /// <param name="boardSize">The board width and height</param>
 /// <param name="boardOffsetX">The board X offset from the window 0 coordinate</param>
 /// <param name="boardOffsetY">The board Y offset from the window 0 coordinate</param>
 /// <param name="isFlipped">Whether the board is in flipped orientation</param>
-void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const Move& lastMove,
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare,
     const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY, bool isFlipped);
 
 /// <summary>
@@ -82,10 +80,9 @@ void startGameUi()
     GameInfo gameInfo;
     GameState gameState;
 
-    // The selected square, possible moves and the last move
+    // The selected square, possible moves
     Vector2 selectedSquare = { -1, -1 };
     std::vector<Move> possibleMoves;
-	Move lastMove = Move(0, 0, 0, 0);
 
     // The stacks of previous and next game states stack for the undo and redo features
 	std::stack<GameState> previousStates;
@@ -110,10 +107,10 @@ void startGameUi()
         int boardOffsetY = (currentScreenHeight - boardSize) / 2;
 
         // Read input from the user
-        handleInput(gameState, selectedSquare, possibleMoves, lastMove, previousStates, nextStates, boardSize, boardOffsetX, boardOffsetY, isFlipped);
+        handleInput(gameState, selectedSquare, possibleMoves, previousStates, nextStates, boardSize, boardOffsetX, boardOffsetY, isFlipped);
         
         // Render the board
-        drawBoard(gameState, possibleMoves, selectedSquare, lastMove, textures, boardSize, boardOffsetX, boardOffsetY, isFlipped);
+        drawBoard(gameState, possibleMoves, selectedSquare, textures, boardSize, boardOffsetX, boardOffsetY, isFlipped);
     }
 
     // Unload textures
@@ -141,7 +138,7 @@ void loadPieceTextures(std::unordered_map<std::string, Texture2D>& textures) {
     textures["KB"] = LoadTexture("main/resources/black_king.png");
 }
 
-void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, Move& lastMove, 
+void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move>& possibleMoves, 
     std::stack<GameState>& previousStates, std::stack<GameState>& nextStates, int boardSize, int boardOffsetX, int boardOffsetY, bool& isFlipped) {
     // Flip the board when pressing F key
     if (IsKeyPressed(KEY_F)) {
@@ -181,7 +178,6 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 		}
 
         gameState.applyMove(aiMove);
-		lastMove = aiMove;
         return;
     }
     // Undo move
@@ -195,7 +191,6 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 
 		gameState = previousStates.top();
 		previousStates.pop();
-		lastMove = gameState.lastMove();
 
 		selectedSquare = { -1, -1 };
 		possibleMoves.clear();
@@ -212,7 +207,6 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 
 		gameState = nextStates.top();
 		nextStates.pop();
-		lastMove = gameState.lastMove();
 
 		selectedSquare = { -1, -1 };
 		possibleMoves.clear();
@@ -341,7 +335,6 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
 		}
         
         gameState.applyMove(move);
-		lastMove = move;
         std::cout << "Evaluation value: " << gameState.evaluationValue(true) << "\n";
     }
 
@@ -350,7 +343,7 @@ void handleInput(GameState& gameState, Vector2& selectedSquare, std::vector<Move
     possibleMoves.clear();
 }
 
-void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const Move& lastMove, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY, bool isFlipped) {
+void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMoves, const Vector2& selectedSquare, const std::unordered_map<std::string, Texture2D>& textures, int boardSize, int boardOffsetX, int boardOffsetY, bool isFlipped) {
     BeginDrawing();
     ClearBackground(BLACK);
 
@@ -404,13 +397,13 @@ void drawBoard(const GameState& gameState, const std::vector<Move>& possibleMove
     }
 
     // Highlight the last move
-    if (lastMove.x1() != 0 || lastMove.x2() != 0 || lastMove.y1() != 0 || lastMove.y2() != 0) 
+    if (gameState.lastMove().x1() != 0 || gameState.lastMove().x2() != 0 || gameState.lastMove().y1() != 0 || gameState.lastMove().y2() != 0)
     {
         // Apply flipping for visualization of last move
-        int visualX1 = isFlipped ? 7 - lastMove.x1() : lastMove.x1();
-        int visualY1 = isFlipped ? 7 - lastMove.y1() : lastMove.y1();
-        int visualX2 = isFlipped ? 7 - lastMove.x2() : lastMove.x2();
-        int visualY2 = isFlipped ? 7 - lastMove.y2() : lastMove.y2();
+        int visualX1 = isFlipped ? 7 - gameState.lastMove().x1() : gameState.lastMove().x1();
+        int visualY1 = isFlipped ? 7 - gameState.lastMove().y1() : gameState.lastMove().y1();
+        int visualX2 = isFlipped ? 7 - gameState.lastMove().x2() : gameState.lastMove().x2();
+        int visualY2 = isFlipped ? 7 - gameState.lastMove().y2() : gameState.lastMove().y2();
         
         // Draw the highlighted squares for the last move
         DrawRectangle(boardOffsetX + visualX1 * (boardSize / 8), boardOffsetY + visualY1 * (boardSize / 8), (boardSize / 8), (boardSize / 8), ColorAlpha(BLUE, 0.5f));
