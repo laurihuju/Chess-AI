@@ -9,7 +9,9 @@ Chesstinator is a chess engine developed in C++. It's designed for strong chess 
 ## ✨ Key Features
 
 * Strong Chess Engine (written in C++)
-* Smart Evaluation Function
+* Smart move generator
+* Minimal evaluation function
+* Simple UI
 * Tournament Winner
 
 ## 🏆 Tournament Victory!
